@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/itunom.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+</head>
+
+<body>
+  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light bg-transparent" id="itunom-nav">
+        <div class="container"><a href="{{ url_for('home.home_page') }}" class="navbar-brand">ITU Teams</a>
+            <button class="navbar-toggler" data-target="#my-nav" onclick="myFunction(this)" data-toggle="collapse"><span
+                    class="bar1"></span> <span class="bar2"></span> <span class="bar3"></span></button>
+            <div id="my-nav" class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home.home_page') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Teams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Competitions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+                <div id="logging-button">
+                    {% if session['logged_in'] == False %}
+                    <form class="form-inline my-2 my-lg-0">
+                        <a href="{{ url_for('login.login_page') }}" class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">login</a>
+                    </form>
+                    {% else %}
+                    <form class="form-inline my-2 my-lg-0">
+                        <a href="{{ url_for('logout.logout_page') }}" class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">logout</a>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category,message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <img id="team-logo-img" src="{{ url_for('static', filename='images/team/itunom_logo.jpg') }}">
+                {% block content %}{% endblock %}
+                <hr>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="background">
+        <img src="{{ url_for('static', filename='images/style/background.jpg') }}" class="stretch" alt="" />
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+</body>
+
+
+
+
+<!-- Footer -->
+<footer class="page-footer font-small blue pt-4">
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2019 Copyright:
+        <a href="{{url_for('home.home_page') }}"> Feridcim</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<!-- Footer -->
+
+</html>

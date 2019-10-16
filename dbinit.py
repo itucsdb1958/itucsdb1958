@@ -3,6 +3,7 @@ import sys
 
 import psycopg2 as dbapi2
 
+DATABASE_URL = "postgres://itucs:itucspw@localhost:32768/itucsdb"
 
 INIT_STATEMENTS = [
     "CREATE TABLE IF NOT EXISTS DUMMY (NUM INTEGER)",
@@ -17,10 +18,11 @@ def initialize(url):
             cursor.execute(statement)
         cursor.close()
 
-
+'''
 if __name__ == "__main__":
     url = os.getenv("DATABASE_URL")
     if url is None:
         print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)
         sys.exit(1)
     initialize(url)
+'''
