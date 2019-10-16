@@ -4,11 +4,13 @@ from dbinit import initialize,DATABASE_URL
 import os
 
 from home import home
+from login import login,logout
 
 app = Flask(__name__)
 
 app.register_blueprint(home)
-
+app.register_blueprint(login)
+app.register_blueprint(logout)
 
 
 
