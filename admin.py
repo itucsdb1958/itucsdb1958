@@ -9,8 +9,6 @@ def sql_page():
 	form = SQLForm()
 	if form.validate_on_submit():
 		query = form.query.data
-		print("Running")
-		print(query)
 		result = None
 		resLen = 0
 		try:

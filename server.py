@@ -11,7 +11,7 @@ RELEASE = True
 
 if(not RELEASE):
     environ['DATABASE_URL'] = "postgres://postgres:docker@localhost:5432/postgres"
-initialize(environ.get('DATABASE_URL'))
+    initialize(environ.get('DATABASE_URL'))
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '9ioJbIGGH6ndzWOi3vEW'
