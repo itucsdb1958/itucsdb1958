@@ -4,16 +4,14 @@ import psycopg2 as db
 
 from home import home
 from login import login, logout
-
+from admin import sqlpage
 from os import environ
 
-DEBUG_MODE = True
-RELEASE = False
+RELEASE = True
 
 if(not RELEASE):
     environ['DATABASE_URL'] = "postgres://postgres:docker@localhost:5432/postgres"
 initialize(environ.get('DATABASE_URL'))
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '9ioJbIGGH6ndzWOi3vEW'
@@ -21,12 +19,11 @@ app.config['SECRET_KEY'] = '9ioJbIGGH6ndzWOi3vEW'
 app.register_blueprint(home)
 app.register_blueprint(login)
 app.register_blueprint(logout)
-
-# initialize the local database
+app.register_blueprint(sqlpage)
 
 
 if __name__ == "__main__":
-    if(DEBUG_MODE):
+    if(not RELEASE):
         app.run(debug=True)
     else:
         app.run()
