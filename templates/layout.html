@@ -27,7 +27,7 @@
                     <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                 </ul>
                 <div id="logging-button">
-                    {% if session['logged_in'] == False %}
+                    {% if session.get('logged_in') == None %}
                     <form class="form-inline my-2 my-lg-0">
                         <a href="{{ url_for('login.login_page') }}"
                             class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">login</a>
