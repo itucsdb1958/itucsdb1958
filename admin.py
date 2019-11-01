@@ -25,4 +25,4 @@ def sql_page():
 		finally:
 			connection.close()
 			return render_template('sql_page.html', form=form,queryResult=result,resultLen=resLen)
-	return render_template('sql_page.html',form=form,error=error,queryResult=None,resultLen=0)
+	return render_template('sql_page.html',form=form,queryResult=None,resultLen=0)
