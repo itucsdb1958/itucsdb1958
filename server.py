@@ -8,7 +8,7 @@ from login import login, logout
 from admin import sqlpage
 from member_profile import member_profile
 
-RELEASE = False
+RELEASE = True
 
 if(not RELEASE):
     environ['DATABASE_URL'] = "postgres://postgres:docker@localhost:5432/postgres"
