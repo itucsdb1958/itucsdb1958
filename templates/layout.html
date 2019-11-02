@@ -57,7 +57,7 @@
                 {% endif %}
                 {% endwith %}
                 {% if session.get('member') != None %}
-                    <img id="team-logo-img" src="{{ url_for('static', filename='images/team/{{ member.team_id }}.jpg') }}" alt="">
+                    <img id="team-logo-img" src="static/images/team/{{ session.get('member')['team_id'] }}.jpg" alt="Alt">
                 {% endif %}
                 {% block content %}{% endblock %}
                 <hr>
