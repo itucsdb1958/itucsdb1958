@@ -34,6 +34,7 @@ def logout_page():
 			session.pop('username', None)
 			session['member_id'] = 0
 			session.pop('logged_in', None)
+			session.pop('member', None)
 			flash('You have been successfully logged out.', 'success')
 			
 		except:
@@ -52,7 +53,7 @@ def checkMemberLogin(username,password):
 		if((result != None) and (len(result) >= 1) ):
 			flash('You have been logged in!', 'success')
 			session['logged_in'] = True
-			session['id'] = username
+			session['username'] = username
 			session['member_id'] = result[2]
 			success = True
 			return redirect(url_for('home.home_page'))
@@ -75,7 +76,7 @@ def checkAdminLogin(username,password):
 		if((result != None) and (len(result) >= 1) ):
 			flash('You have been logged in!', 'success')
 			session['logged_in'] = True
-			session['id'] = username
+			session['username'] = username
 			session['member_id'] = 'admin'
 			success = True
 			return redirect(url_for('home.home_page'))
