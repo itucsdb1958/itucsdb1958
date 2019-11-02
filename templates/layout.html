@@ -56,8 +56,9 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-
-                <img id="team-logo-img" src="{{ url_for('static', filename='images/team/itunom_logo.jpg') }}">
+                {% if session.get('member') != None %}
+                    <img id="team-logo-img" src="{{ url_for('static', filename='images/team/{{ member.team_id }}.jpg') }}" alt="">
+                {% endif %}
                 {% block content %}{% endblock %}
                 <hr>
             </div>
