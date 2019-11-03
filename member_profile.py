@@ -1,12 +1,43 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, redirect, url_for, flash, request, session, abort, Blueprint
-from forms import *
 import psycopg2 as db
-import os
-import json
-import datetime
+import os,json,datetime
+
 member_profile = Blueprint(name='member_profile',
                            import_name=__name__, template_folder='templates')
+
+
+@member_profile.route("/profile")
+def member_profile_page():
+    if not session.get('logged_in'):
+        return redirect(url_for('home.home_page'))
+    else:
+        member = Member(None, None)
+        member_id = session.get('member_id')
+        get_member = "SELECT * FROM MEMBER WHERE ID = {}".format(member_id)
+        try:
+            connection = db.connect(os.getenv("DATABASE_URL"))
+            cursor = connection.cursor()
+            cursor.execute(get_member)
+            member_result = cursor.fetchone()
+            if (member_result != None and len(member_result) >= 0):
+                get_person = "SELECT * from person where id = {}".format(
+                    member_result[6])
+                cursor.execute(get_person)
+                person_result = cursor.fetchone()
+                if (person_result != None and len(person_result) >= 0):
+                    member = Member(member_result, person_result)
+                    session['member'] = json.loads(member.toJSON())
+                    return render_template('member_profile_page.html', member=member)
+        except db.DatabaseError:
+            connection.rollback()
+            flash('There was a problem retrieving Member page.', 'danger')
+        finally:
+            connection.close()
+        if(member == None):
+            flash("There was a problem retrieving Member page.", "danger")
+            return redirect(url_for('home.home_page'))
+        return render_template('member_profile_page.html', member=None)
 
 
 class Person(object):
@@ -92,36 +123,3 @@ class Member(Person):
             return dict(year=value.year, month=value.month, day=value.day)
         else:
             return value.__dict__
-
-
-@member_profile.route("/profile")
-def member_profile_page():
-    if not session.get('logged_in'):
-        return redirect(url_for('home.home_page'))
-    else:
-        member = Member(None, None)
-        member_id = session.get('member_id')
-        get_member = "SELECT * FROM MEMBER WHERE ID = {}".format(member_id)
-        try:
-            connection = db.connect(os.getenv("DATABASE_URL"))
-            cursor = connection.cursor()
-            cursor.execute(get_member)
-            member_result = cursor.fetchone()
-            if (member_result != None and len(member_result) >= 0):
-                get_person = "SELECT * from person where id = {}".format(
-                    member_result[6])
-                cursor.execute(get_person)
-                person_result = cursor.fetchone()
-                if (person_result != None and len(person_result) >= 0):
-                    member = Member(member_result, person_result)
-                    session['member'] = member.toJSON()
-                    return render_template('member_profile_page.html', member=member)
-        except db.DatabaseError:
-            connection.rollback()
-            flash('There was a problem retrieving Member page.', 'danger')
-        finally:
-            connection.close()
-        if(member == None):
-            flash("There was a problem retrieving Member page.", "danger")
-            return redirect(url_for('home.home_page'))
-        return render_template('member_profile_page.html', member=None)
