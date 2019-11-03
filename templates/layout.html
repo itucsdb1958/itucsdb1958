@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/light-bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-
+    
 </head>
 
 <body>
@@ -34,7 +34,7 @@
                     </form>
                     {% else %}
                     <form class="form-inline my-2 my-lg-0">
-                        <a href="{{ url_for('logout.logout_page') }}"
+                        <a href="{{ url_for('login.logout_page') }}"
                             class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">logout</a>
                     </form>
                     {% endif %}

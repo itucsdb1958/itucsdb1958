@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Login Page{% endblock %}
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+		<div class="row">
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('admin.sql_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">SQL Page</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('admin.admin_competitions_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Competetitions</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('admin.admin_teams_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Teams</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('login.login_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Members</a>
+			</form>
+		</div>
+    </div>
+</div>
+{% endblock content %}

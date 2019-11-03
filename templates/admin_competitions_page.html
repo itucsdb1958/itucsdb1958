@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Admin Competitions Page{% endblock %}
+{% block content %}
+
+<h6 style="font-size: 40px; text-align: center;">Competitions Page</h6>
+
+<div class="table-responsive">
+		<table class = "table table-striped" style='margin-top: 5%; table-layout: auto;'>
+			<tr>
+				<th>Name</th>
+				<th>Date</th>
+				<th>Country</th>
+				<th>Description</th>
+				<th>Reward</th>
+				<th></th>
+			</tr>
+			{% for item in competitions %}
+			<tr>
+				<td>{{item[1]}}</td>
+				<td>{{item[2]}}</td>
+				<td>{{item[3]}}</td>
+				<td>{{item[4]}}</td>
+				<td>{{item[5]}}</td>
+				<td><form class="form-inline my-2 my-lg-2">
+						<a href="{{ url_for('login.login_page') }}"
+							class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
+					</form></td>	
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+{% endblock content %}
