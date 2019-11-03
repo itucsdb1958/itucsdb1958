@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, session, abort, Blueprint
 import psycopg2 as db
 import os
-from HelperClasses import Competition
 from forms import SQLForm
 admin = Blueprint(name='admin', import_name=__name__)
 
