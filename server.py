@@ -8,6 +8,8 @@ from login import login
 from admin import admin
 from member_profile import member_profile
 from competitions import competitions
+from sponsors import sponsors
+
 RELEASE = True
 
 if(not RELEASE):
@@ -22,6 +24,8 @@ app.register_blueprint(login)
 app.register_blueprint(member_profile)
 app.register_blueprint(admin)
 app.register_blueprint(competitions)
+app.register_blueprint(sponsors)
+
 if __name__ == "__main__":
     if(not RELEASE):
         app.run(debug=True)
