@@ -20,7 +20,7 @@
 				<td>{{item[2]}}</td>
 				<td>{{item[3]}}</td>
 				<td><form class="form-inline my-2 my-lg-2">
-						<a href="{{ url_for('login.login_page') }}"
+						<a href="{{ url_for('admin.admin_edit_member_page', id=item[4]) }}"
 							class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
 					</form></td>	
 			</tr>

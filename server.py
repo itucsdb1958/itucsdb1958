@@ -1,18 +1,25 @@
-from dbinit import initialize
-from flask import Flask, render_template, redirect, url_for, flash, request, session, abort, Blueprint
-import psycopg2 as db
-from os import environ
+import os
 
+import psycopg2 as db
+import psycopg2.extensions
+from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
+                   request, send_from_directory, session, url_for)
+
+from admin import admin
+from dbinit import initialize
 from home import home
 from login import login
-from admin import admin
 from member_profile import member_profile
+
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
+
 
 RELEASE = True
 
 if(not RELEASE):
-    environ['DATABASE_URL'] = "postgres://postgres:docker@localhost:5432/postgres"
-    initialize(environ.get('DATABASE_URL'))
+    os.environ['DATABASE_URL'] = "postgres://postgres:docker@localhost:5432/postgres"
+    initialize(os.environ.get('DATABASE_URL'))
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '9ioJbIGGH6ndzWOi3vEW'
@@ -21,6 +28,8 @@ app.register_blueprint(home)
 app.register_blueprint(login)
 app.register_blueprint(member_profile)
 app.register_blueprint(admin)
+
+
 
 if __name__ == "__main__":
     if(not RELEASE):
