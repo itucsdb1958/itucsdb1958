@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}Login Page{% endblock %}
+{% block content %}
+
+
+<h6 style="font-size: 40px; text-align: center;">Sponsors Page</h6>
+
+<div class="table-responsive">
+		<table class = "table table-striped" style='margin-top: 5%; table-layout: auto;'>
+			<tr>
+                <th>Name</th>
+                <th>Description</th>
+				<th>Field</th>
+                <th>Country</th>
+                <th>Logo</th>
+                <th>Address</th>
+				<th></th>
+			</tr>
+			{% for item in sponsors %}
+			<tr>
+				<td>{{item[0]}}</td>
+				<td>{{item[1]}}</td>
+				<td>{{item[2]}}</td>
+				<td>{{item[3]}}</td>
+                <div class="card-body">
+                    <div class="author">
+                        <img class="avatar border-gray" src="static/images/sponsors/{{ item[4] }}.jpg"
+                            alt="...">
+                    </div>
+                </div>
+                <td>{{item[5]}}</td>	
+			</tr>
+			{% endfor %}
+		</table>
+    </div>
+{% endblock content %}    

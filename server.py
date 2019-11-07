@@ -7,6 +7,7 @@ from home import home
 from login import login
 from admin import admin
 from member_profile import member_profile
+from sponsors import sponsors
 
 RELEASE = True
 
@@ -21,6 +22,7 @@ app.register_blueprint(home)
 app.register_blueprint(login)
 app.register_blueprint(member_profile)
 app.register_blueprint(admin)
+app.register_blueprint(sponsors)
 
 if __name__ == "__main__":
     if(not RELEASE):
