@@ -57,7 +57,7 @@ def admin_competitions_page():
 			flash('Query unsuccessful.', 'danger')
 		finally:
 			connection.close()
-			return render_template('admin_competitions_page.html', competitions=result, length=resLen)
+			return render_template('competitions_page.html', competitions=result, length=resLen)
 
 
 @admin.route("/admin/teams")
