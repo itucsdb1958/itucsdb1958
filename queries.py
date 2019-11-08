@@ -20,20 +20,23 @@ def delete(table,where):
 
 def run(query):
 	connection = None
+	result = None
 	try:
 		connection = db.connect(os.getenv("DATABASE_URL"))
 		cursor = connection.cursor()
 		cursor.execute(query)
-		result = cursor.fetchall()
-		resLen = len(result)
+		if(not 'drop' in query and not 'update' in query and not 'delete' in query):
+			result = cursor.fetchall()
 	except db.DatabaseError as dberror:
 		if connection != None:
 			connection.rollback()
 		result = dberror
-		resLen = 1
 		flash('Query unsuccessful.', 'danger')
 	finally:
 		if connection != None:
 			connection.commit()
 			connection.close()
+			cursor.close()
+		if(type(result) == list and len(result) == 1):
+			return result[0]
 		return result
