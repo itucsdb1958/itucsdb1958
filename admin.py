@@ -157,10 +157,11 @@ def admin_edit_member_page(id):
 
             where = "person.id={}".format(id)
             result = select(columns, table, where)
+            cvPath = None
+            for c in os.listdir(cvFolderPath):
+                if(id in c[0:len(id)] and (c[len(id)] == '_' or c[len(id)] == '.')):
+                    cvPath = c
 
-            cvPath = os.path.join(
-                os.getcwd(), 'static/cv', "{}.pdf".format(id))
-            cvPath = id if os.path.exists(cvPath) else None
             img_name = None
             for img in os.listdir(imageFolderPath):
                 if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
@@ -173,4 +174,4 @@ def admin_edit_member_page(id):
 @admin.route("/download/<filename>", methods=['GET', 'POST'])
 def download(filename):
     cvFolder = os.path.join(admin.root_path, "static/cv")
-    return send_from_directory(directory=cvFolder, filename=filename+".pdf", as_attachment=True, cache_timeout=0)
+    return send_from_directory(directory=cvFolder, filename=filename, as_attachment=True, cache_timeout=0)
