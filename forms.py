@@ -46,3 +46,5 @@ class EditMemberForm(FlaskForm):
 
 class UploadCVForm(FlaskForm):
     cv = FileField(u'CV File',[validators.regexp(u'^[^/\\]\.pdf$]')])
+class UploadImageForm(FlaskForm):
+    image = FileField(u'Image File', [validators.regexp(u'[^/\\]\.jpg]')])

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import math
 import os
+import time
 from datetime import datetime
 
 import psycopg2 as db
@@ -7,7 +9,7 @@ from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
                    request, send_from_directory, session, url_for)
 from werkzeug.utils import secure_filename
 
-from forms import EditMemberForm, SQLForm, UploadCVForm
+from forms import EditMemberForm, SQLForm, UploadCVForm, UploadImageForm
 from member_profile import Member
 from queries import run, select, update
 
@@ -72,6 +74,9 @@ def admin_edit_member_page(id):
     # TODO:: Alter table to include social accounts links in person database.
     form = EditMemberForm()
     cvForm = UploadCVForm()
+    cvFolderPath = os.path.join(os.getcwd(), 'static/cv')
+    imageForm = UploadImageForm()
+    imageFolderPath = os.path.join(os.getcwd(), 'static/images/person')
     cvPath = None
     if form.validate_on_submit():
         team = form.team.data
@@ -87,16 +92,33 @@ def admin_edit_member_page(id):
         clas = form.clas.data
         major = form.major.data
         cv = cvForm.cv.data
-        print(cv.filename)
+
         if(cv and '.pdf' in cv.filename):
-            print(dir(cv))
-            filename = secure_filename("{}.pdf".format(id))
-            filePath = os.path.join(os.getcwd(), 'static/cv', filename)
-            if(os.path.exists(filePath)):
-                os.remove(filePath)
+            date = time.gmtime()
+            filename = secure_filename("{}_{}.pdf".format(id, date[0:6]))
+            filePath = os.path.join(cvFolderPath, filename)
+            cvs = os.listdir(cvFolderPath)
+            digits = int(math.log(int(id), 10))+1
+            for c in cvs:
+                if(c[digits] == '_' and c[0:digits] == str(id)):
+                    os.remove(os.path.join(cvFolderPath, c))
             cv.save(filePath)
         elif(cv):
             flash("Please insert a pdf file.", 'danger')
+
+        image = imageForm.image.data
+        if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+            date = time.gmtime()
+            filename = secure_filename("{}_{}.jpg".format(id, date[0:6]))
+            filePath = os.path.join(imageFolderPath, filename)
+            images = os.listdir(imageFolderPath)
+            digits = int(math.log(int(id), 10))+1
+            for im in images:
+                if(im[digits] == '_' and im[0:digits] == str(id)):
+                    os.remove(os.path.join(imageFolderPath, im))
+            image.save(filePath)
+        elif(image):
+            flash("Please upload a file in JPG format", 'danger')
 
         teamID = select(columns="id", table="team",
                         where="name='{}'".format(team))
@@ -139,13 +161,16 @@ def admin_edit_member_page(id):
             cvPath = os.path.join(
                 os.getcwd(), 'static/cv', "{}.pdf".format(id))
             cvPath = id if os.path.exists(cvPath) else None
+            img_name = None
+            for img in os.listdir(imageFolderPath):
+                if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
+                    img_name = img
+            return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, result=result, cvPath=cvPath, imgName=img_name)
 
-            return render_template('admin_edit_member_page.html', form=form, upload=cvForm, result=result, cvPath=cvPath)
-
-    return render_template('admin_edit_member_page.html', form=form, upload=cvForm, cvPath=cvPath)
+    return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, cvPath=cvPath, imgName=img_name)
 
 
 @admin.route("/download/<filename>", methods=['GET', 'POST'])
 def download(filename):
     cvFolder = os.path.join(admin.root_path, "static/cv")
-    return send_from_directory(directory=cvFolder, filename=filename+".pdf", as_attachment=True)
+    return send_from_directory(directory=cvFolder, filename=filename+".pdf", as_attachment=True, cache_timeout=0)

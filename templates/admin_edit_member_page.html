@@ -109,8 +109,8 @@
 									<div class="row">
 										<div class="col-md-8 pr-1">
 											<div class="form-group">
-												<label>{{ upload.cv.label(class="form-control-label") }}</label>
-												{{ upload.cv(class="form-control form-control-lg", style="height: 55px;") }}
+												<label>{{ uploadCV.cv.label(class="form-control-label") }}</label>
+												{{ uploadCV.cv(class="form-control form-control-lg", style="height: 55px;") }}
 											</div>
 										</div>
 										{% if cvPath != None %}
@@ -141,11 +141,44 @@
 							</div>
 							<div class="card-body">
 								<div class="author">
-									<a>
-										<img class="avatar border-gray" src="/static/images/person/{{ result[-1] }}.jpg"
+									<a href="#">
+										{%  if imgName != None %}
+										<img class="avatar border-gray" data-toggle="modal"
+											data-target="#imgUploadModal" src="/static/images/person/{{ imgName }}"
 											alt="avatar">
+										{% else %}
+										<img class="avatar border-gray" data-toggle="modal"
+											data-target="#imgUploadModal" src="/static/images/person/avatar.png"
+											alt="avatar">
+										{% endif %}
 									</a>
-									<h5 class="title">{{ result[0] }}</h5>
+									{% if uploadImg != None %}
+									<div class="modal fade" id="imgUploadModal" tabindex="-1" role="dialog"
+										aria-labelledby="imgUploadModalLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h2 class="modal-title" id="imgUploadModalLabel">Upload Image</h2>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="col-md-8 pl-1">
+														<div class="form-group">
+															{{ uploadImg.image(class="form-control form-control-lg", style="height: 55px;") }}
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
 								</div>
 							</div>
 							<hr>
