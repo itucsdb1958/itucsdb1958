@@ -9,8 +9,8 @@ from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
                    request, send_from_directory, session, url_for)
 from werkzeug.utils import secure_filename
 
-from forms import (EditMemberForm, EditTeamForm, SQLForm, UploadCVForm,
-                   UploadImageForm)
+from forms import (EditCompetitionForm, EditMemberForm, EditTeamForm, SQLForm,
+                   UploadCVForm, UploadImageForm)
 from member_profile import Member
 from queries import run, select, update
 
@@ -37,12 +37,59 @@ def sql_page():
 
 @admin.route("/admin/competitions")
 def admin_competitions_page():
+
     if(session.get('member_id') != 'admin'):
         flash('No admin privileges...', 'danger')
         return redirect(url_for('home.home_page'))
     else:
         result = select(columns="*", table="competition order by name asc")
         return render_template('competitions_page.html', competitions=result, length=len(result))
+
+
+@admin.route("/admin/competitions/edit/<id>", methods=['GET', 'POST'])
+def admin_edit_competition_page(id):
+    form = EditCompetitionForm()
+    imageForm = UploadImageForm()
+    imageFolderPath = os.path.join(os.getcwd(), 'static/images/competitions')
+
+    if (request.method == 'POST' and form.submit_competition.data or form.validate()):
+        print("Not")
+        name = form.name.data
+        date = form.date.data
+        country = form.country.data
+        description = form.description.data
+        reward = form.reward.data
+        image = imageForm.image.data
+        if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+            current_date = time.gmtime()
+            filename = secure_filename(
+                "{}_{}.jpg".format(id, current_date[0:6]))
+            filePath = os.path.join(imageFolderPath, filename)
+            images = os.listdir(imageFolderPath)
+            digits = int(math.log(int(id), 10))+1
+            for im in images:
+                if(im[digits] == '_' and im[0:digits] == str(id)):
+                    os.remove(os.path.join(imageFolderPath, im))
+            image.save(filePath)
+        elif(image):
+            flash('Please upload a file in JPG format', "danger")
+        print("Before update: ", date)
+        update("competition", "name='{}', date=DATE('{}'), country='{}', description='{}', reward='{}'".format(
+            name, date, country, description, reward), "id={}".format(id))
+        return redirect(url_for('admin.admin_edit_competition_page', id=id))
+    else:
+        if(session.get('member_id') != 'admin'):
+            flash('No admin privileges...', 'danger')
+            return redirect(url_for('home.home_page'))
+        result = select('id,name,date,country,description,reward',
+                        'competition', 'id={}'.format(id))
+        img_name = None
+        for img in os.listdir(imageFolderPath):
+            if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
+                img_name = img
+        form.description.data = result[4]
+        return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=img_name, uploadImg=imageForm)
+    return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=img_name, uploadImg=imageForm)
 
 
 @admin.route("/admin/teams")
