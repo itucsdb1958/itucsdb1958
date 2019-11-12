@@ -6,16 +6,14 @@ from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
                    request, send_from_directory, session, url_for)
 
 from admin import admin
-from competitions import competitions
 from dbinit import initialize
 from home import home
 from login import login
 from member_profile import member_profile
-from sponsors import sponsors
+from visitor import visitor
 
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
-
 
 RELEASE = True
 
@@ -30,8 +28,7 @@ app.register_blueprint(home)
 app.register_blueprint(login)
 app.register_blueprint(member_profile)
 app.register_blueprint(admin)
-app.register_blueprint(competitions)
-app.register_blueprint(sponsors)
+app.register_blueprint(visitor)
 
 if __name__ == "__main__":
     if(not RELEASE):
