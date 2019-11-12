@@ -9,7 +9,8 @@ from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
                    request, send_from_directory, session, url_for)
 from werkzeug.utils import secure_filename
 
-from forms import EditMemberForm, SQLForm, UploadCVForm, UploadImageForm
+from forms import (EditMemberForm, EditTeamForm, SQLForm, UploadCVForm,
+                   UploadImageForm)
 from member_profile import Member
 from queries import run, select, update
 
@@ -46,13 +47,58 @@ def admin_competitions_page():
 
 @admin.route("/admin/teams")
 def admin_teams_page():
+    # TODO :: TAKIM ISIMLERI DUZGUN GELMIYOR
     if(session.get('member_id') != 'admin'):
         flash('No admin privileges...', 'danger')
         return redirect(url_for('home.home_page'))
     else:
-        result = select(columns="team.name,competition.name,team.email,team.adress",
+        result = select(columns="team.name,competition.name,team.email,team.adress,team.id",
                         table="team join competition on team.competition_id=competition.id order by team.name desc")
-        return render_template('admin_teams_page.html', team=result, length=len(result))
+        return render_template('admin_teams_page.html', team=result)
+
+
+@admin.route("/admin/teams/edit/<id>", methods=['GET', 'POST'])
+def admin_edit_team_page(id):
+    form = EditTeamForm()
+    imageForm = UploadImageForm()
+    imageFolderPath = os.path.join(os.getcwd(), 'static/images/team')
+    if (request.method == 'POST' and form.submit_team.data or form.validate()):
+        name = form.name.data
+        members = form.memberCtr.data
+        year = form.year.data
+        print("Year", year)
+        email = form.email.data
+        address = form.address.data
+        competition = form.competition.data
+        image = imageForm.image.data
+        if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+            date = time.gmtime()
+            filename = secure_filename("{}_{}.jpg".format(id, date[0:6]))
+            filePath = os.path.join(imageFolderPath, filename)
+            images = os.listdir(imageFolderPath)
+            digits = int(math.log(int(id), 10))+1
+            for im in images:
+                if(im[digits] == '_' and im[0:digits] == str(id)):
+                    os.remove(os.path.join(imageFolderPath, im))
+            image.save(filePath)
+        elif(image):
+            flash("Please upload a file in JPG format", 'danger')
+        update("team", "name='{}', num_members={}, found_year='{}', email='{}', adress='{}', competition_id={}, logo='{}'".format(
+            name, members, year, email, address, competition, id), where="id={}".format(id))
+        return redirect(url_for('admin.admin_edit_team_page', id=id))
+    else:
+        if(session.get('member_id') != 'admin'):
+            flash('No admin privileges...', 'danger')
+            return redirect(url_for('home.home_page'))
+        result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.name",
+                        table="team join competition on team.COMPETITION_ID=competition.id",
+                        where="team.id={}".format(id))
+        img_name = None
+        for img in os.listdir(imageFolderPath):
+            if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
+                img_name = img
+        return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imageForm, imgName=img_name)
+    return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imageForm, imgName=img_name)
 
 
 @admin.route("/admin/members")
@@ -65,12 +111,11 @@ def admin_members_page():
                         table="person join team on person.team_id=team.id \
 							join auth_type on person.auth_type=auth_type.id \
 							order by team.name asc, auth_type.name desc")
-        return render_template('admin_members_page.html', members=result, length=len(result))
+        return render_template('admin_members_page.html', members=result)
 
 
 @admin.route("/admin/members/edit/<id>", methods=['GET', 'POST'])
 def admin_edit_member_page(id):
-    # TODO:: FILE OPERATIONS ILE FOTO YUKLENECEK INDIRILECEK.
     # TODO:: Alter table to include social accounts links in person database.
     form = EditMemberForm()
     cvForm = UploadCVForm()

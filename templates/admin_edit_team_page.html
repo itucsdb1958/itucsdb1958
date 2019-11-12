@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{% block title %}Profile Page{% endblock %}
+{% block content %}
+<form method="POST" action="" enctype="multipart/form-data">
+	{{ form.csrf_token }}
+	{{ form.hidden_tag() }}
+	<fieldset class="form-group">
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-8">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Edit Profile</h4>
+							</div>
+							<div class="card-body">
+								<form>
+									<div class="row">
+										<div class="col-md-4 pr-1">
+											<div class="form-group">
+												<label>{{ form.name.label(class="form-control-label") }}</label>
+												{{ form.name(class="form-control form-control-lg",value=result[0]) }}
+											</div>
+										</div>
+										<div class="col-md-5 pl-1">
+											<div class="form-group">
+												<label>{{ form.email.label(class="form-control-label") }}</label>
+												{{ form.email(class="form-control form-control-lg",value=result[3]) }}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-5 pr-2">
+											<div class="form-group">
+												<label>{{ form.year.label(class="form-control-label") }}</label>
+												{{ form.year(class="form-control form-control-lg",value=result[2]) }}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-8 pr-1">
+											<div class="form-group">
+												<label>{{ form.address.label(class="form-control-label") }}</label>
+												{{ form.address(class="form-control form-control-lg",value=result[4]) }}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4 pr-1">
+											<div class="form-group">
+												<label>{{ form.competition.label(class="form-control-label") }}</label>
+												{{ form.competition(class="form-control form-control-lg",value=result[5],style="height: 45px;") }}
+											</div>
+										</div>
+										<div class="col-md-4 pl-1">
+											<div class="form-group">
+												<label>{{ form.memberCtr.label(class="form-control-label") }}</label>
+												{{ form.memberCtr(class="form-control form-control-lg",value=result[1],style="height: 45px;") }}
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4 pr-1">
+										<div class="form-group">
+											{{ form.submit_team(class="btn btn-info btn-fill pull-left") }}
+										</div>
+									</div>
+									<div class="clearfix"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card card-user">
+							<div class="card-image">
+								<img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
+									alt="...">
+							</div>
+							<div class="card-body">
+								<div class="author">
+									<a href="#">
+										{%  if imgName != None %}
+										<img class="avatar border-gray" data-toggle="modal"
+											data-target="#imgUploadModal" src="/static/images/team/{{ imgName }}"
+											alt="avatar">
+										{% else %}
+										<img class="avatar border-gray" data-toggle="modal"
+											data-target="#imgUploadModal" src="/static/images/team/avatar.png"
+											alt="avatar">
+										{% endif %}
+									</a>
+									{% if uploadImg != None %}
+									<div class="modal fade" id="imgUploadModal" tabindex="-1" role="dialog"
+										aria-labelledby="imgUploadModalLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h2 class="modal-title" id="imgUploadModalLabel">Upload Image</h2>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="col-md-8 pl-1">
+														<div class="form-group">
+															{{ uploadImg.image(class="form-control form-control-lg", style="height: 55px;") }}
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+								</div>
+							</div>
+							<hr>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</form>
+{% endblock content %}
