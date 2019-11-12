@@ -17,6 +17,7 @@ from queries import run, select, update
 admin = Blueprint(name='admin', import_name=__name__)
 
 
+@admin.route("/admin/")
 @admin.route("/admin")
 def admin_page():
     if (session.get('member_id') == 'admin'):
@@ -25,6 +26,7 @@ def admin_page():
         return redirect(url_for('home.home_page'))
 
 
+@admin.route("/admin/sql/", methods=['GET', 'POST'])
 @admin.route("/admin/sql", methods=['GET', 'POST'])
 def sql_page():
     form = SQLForm()
@@ -35,17 +37,6 @@ def sql_page():
     return render_template('sql_page.html', form=form, queryResult=None, resultLen=0)
 
 
-@admin.route("/admin/competitions")
-def admin_competitions_page():
-
-    if(session.get('member_id') != 'admin'):
-        flash('No admin privileges...', 'danger')
-        return redirect(url_for('home.home_page'))
-    else:
-        result = select(columns="*", table="competition order by name asc")
-        return render_template('competitions_page.html', competitions=result, length=len(result))
-
-
 @admin.route("/admin/competitions/edit/<id>", methods=['GET', 'POST'])
 def admin_edit_competition_page(id):
     form = EditCompetitionForm()
@@ -54,11 +45,11 @@ def admin_edit_competition_page(id):
 
     if (request.method == 'POST' and form.submit_competition.data or form.validate()):
         print("Not")
-        name = form.name.data
+        name = form.name.data.encode('utf-8')
         date = form.date.data
-        country = form.country.data
-        description = form.description.data
-        reward = form.reward.data
+        country = form.country.data.encode('utf-8')
+        description = form.description.data.encode('utf-8')
+        reward = form.reward.data.encode('utf-8')
         image = imageForm.image.data
         if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
             current_date = time.gmtime()
@@ -92,30 +83,18 @@ def admin_edit_competition_page(id):
     return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=img_name, uploadImg=imageForm)
 
 
-@admin.route("/admin/teams")
-def admin_teams_page():
-    # TODO :: TAKIM ISIMLERI DUZGUN GELMIYOR
-    if(session.get('member_id') != 'admin'):
-        flash('No admin privileges...', 'danger')
-        return redirect(url_for('home.home_page'))
-    else:
-        result = select(columns="team.name,competition.name,team.email,team.adress,team.id",
-                        table="team join competition on team.competition_id=competition.id order by team.name desc")
-        return render_template('admin_teams_page.html', team=result)
-
-
 @admin.route("/admin/teams/edit/<id>", methods=['GET', 'POST'])
 def admin_edit_team_page(id):
     form = EditTeamForm()
     imageForm = UploadImageForm()
     imageFolderPath = os.path.join(os.getcwd(), 'static/images/team')
     if (request.method == 'POST' and form.submit_team.data or form.validate()):
-        name = form.name.data
+        name = form.name.data.encode('utf-8')
         members = form.memberCtr.data
         year = form.year.data
         print("Year", year)
-        email = form.email.data
-        address = form.address.data
+        email = form.email.data.encode('utf-8')
+        address = form.address.data.encode('utf-8')
         competition = form.competition.data
         image = imageForm.image.data
         if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
@@ -148,6 +127,7 @@ def admin_edit_team_page(id):
     return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imageForm, imgName=img_name)
 
 
+@admin.route("/admin/members/")
 @admin.route("/admin/members")
 def admin_members_page():
     if(session.get('member_id') != 'admin'):
@@ -161,8 +141,8 @@ def admin_members_page():
         return render_template('admin_members_page.html', members=result)
 
 
-@admin.route("/admin/members/edit/<id>", methods=['GET', 'POST'])
-def admin_edit_member_page(id):
+@admin.route("/admin/members/edit/<person_id>", methods=['GET', 'POST'])
+def admin_edit_member_page(person_id):
     # TODO:: Alter table to include social accounts links in person database.
     form = EditMemberForm()
     cvForm = UploadCVForm()
@@ -173,11 +153,11 @@ def admin_edit_member_page(id):
     if form.validate_on_submit():
         team = form.team.data
         subteam = form.subteam.data
-        role = form.role.data
+        role = form.role.data.encode('utf-8')
         auth_type = form.auth_type.data
-        email = form.email.data
-        name = form.name.data
-        address = form.address.data
+        email = form.email.data.encode('utf-8')
+        name = form.name.data.encode('utf-8')
+        address = form.address.data.encode('utf-8')
         active = form.active.data
         age = form.age.data
         phone = form.phone.data
@@ -187,26 +167,28 @@ def admin_edit_member_page(id):
 
         if(cv and '.pdf' in cv.filename):
             date = time.gmtime()
-            filename = secure_filename("{}_{}.pdf".format(id, date[0:6]))
+            filename = secure_filename(
+                "{}_{}.pdf".format(person_id, date[0:6]))
             filePath = os.path.join(cvFolderPath, filename)
             cvs = os.listdir(cvFolderPath)
-            digits = int(math.log(int(id), 10))+1
+            digits = int(math.log(int(person_id), 10))+1
             for c in cvs:
-                if(c[digits] == '_' and c[0:digits] == str(id)):
+                if(c[digits] == '_' and c[0:digits] == str(person_id)):
                     os.remove(os.path.join(cvFolderPath, c))
             cv.save(filePath)
         elif(cv):
             flash("Please insert a pdf file.", 'danger')
-
+        print(cv)
         image = imageForm.image.data
         if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
             date = time.gmtime()
-            filename = secure_filename("{}_{}.jpg".format(id, date[0:6]))
+            filename = secure_filename(
+                "{}_{}.jpg".format(person_id, date[0:6]))
             filePath = os.path.join(imageFolderPath, filename)
             images = os.listdir(imageFolderPath)
-            digits = int(math.log(int(id), 10))+1
+            digits = int(math.log(int(person_id), 10))+1
             for im in images:
-                if(im[digits] == '_' and im[0:digits] == str(id)):
+                if(im[digits] == '_' and im[0:digits] == str(person_id)):
                     os.remove(os.path.join(imageFolderPath, im))
             image.save(filePath)
         elif(image):
@@ -220,7 +202,7 @@ def admin_edit_member_page(id):
                          where="code='{}'".format(major))
         memberID = select(columns="member.id",
                           table="member join person on member.person_id=person.id",
-                          where="person.id={}".format(id))
+                          where="person.id={}".format(person_id))
 
         teamID, subteamID, majorID, memberID = teamID[0], subteamID[0], majorID[0], memberID[0]
 
@@ -229,9 +211,9 @@ def admin_edit_member_page(id):
 
         update("person", "name='{}', age='{}', phone='{}', cv={}, email='{}', \
 					class={}, auth_type={}, team_id={}, subteam_id={}, major_id={}".format(
-            name, age, phone, id, email, clas, auth_type, teamID, subteamID, majorID), where="id={}".format(id))
+            name, age, phone, person_id, email, clas, auth_type, teamID, subteamID, majorID), where="id={}".format(person_id))
 
-        return redirect(url_for('admin.admin_edit_member_page', id=id, cvPath=id))
+        return redirect(url_for('admin.admin_edit_member_page', person_id=person_id, cvPath=person_id))
     else:
         if(session.get('member_id') != 'admin'):
             flash('No admin privileges...', 'danger')
@@ -247,16 +229,16 @@ def admin_edit_member_page(id):
 					join subteam on person.subteam_id=subteam.id \
 					join auth_type on person.auth_type=auth_type.id"""
 
-            where = "person.id={}".format(id)
+            where = "person.id={}".format(person_id)
             result = select(columns, table, where)
             cvPath = None
             for c in os.listdir(cvFolderPath):
-                if(id in c[0:len(id)] and (c[len(id)] == '_' or c[len(id)] == '.')):
+                if(person_id in c[0:len(person_id)] and (c[len(person_id)] == '_' or c[len(person_id)] == '.')):
                     cvPath = c
 
             img_name = None
             for img in os.listdir(imageFolderPath):
-                if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
+                if(person_id in img[0:len(person_id)] and (img[len(person_id)] == '_' or img[len(person_id)] == '.')):
                     img_name = img
             return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, result=result, cvPath=cvPath, imgName=img_name)
 

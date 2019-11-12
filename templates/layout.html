@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light bg-transparent" id="itunom-nav">
         <div class="container"><a href="{{ url_for('home.home_page') }}" class="navbar-brand">ITU Teams</a>
             <button class="navbar-toggler" data-target="#my-nav" onclick="myFunction(this)" data-toggle="collapse"><span
@@ -22,9 +21,9 @@
             <div id="my-nav" class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('home.home_page') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Teams</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Competitions</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_teams_page') }}">Teams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_competitions_page') }}">Competitions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home.home_page') }}">Contact</a></li>
                 </ul>
                 <div id="logging-button">
                     {% if session.get('logged_in') == None %}
