@@ -62,6 +62,15 @@ class EditTeamForm(FlaskForm):
     submit_team = SubmitField('Update Team')
 
 
+class EditCompetitionForm(FlaskForm):
+    name = StringField("Competition Name")
+    date = DateField("Date")
+    country = StringField("Country")
+    description = TextAreaField("Description")
+    reward = StringField("Reward")
+    submit_competition = SubmitField("Update Team")
+
+
 class UploadCVForm(FlaskForm):
     cv = FileField(u'CV File')
 
