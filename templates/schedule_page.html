@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}Sponsors Page{% endblock %}
+{% block content %}
+
+
+<h6 style="font-size: 40px; text-align: center;">Schedule Page</h6>
+
+<div class="table-responsive">
+		<table class = "table table-striped" style='margin-top: 5%; table-layout: auto;'>
+			<tr>
+                <th>Name</th>
+                <th>Deadline</th>
+				<th>Status</th>
+                <th>Description</th>
+                <th>On Duty</th>
+				<th></th>
+			</tr>
+			{% for item in schedule %}
+			<tr>
+				<td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+                <td>
+					<div class="card-body">
+						<div class="author">
+							<img class="avatar border-gray" src="static/images/schedule/{{ item[2] }}.png"
+								alt="..." style="widows: 35px;height:35px">
+						</div>
+					</div>
+				</td>
+                <td>{{item[3]}}</td>
+                <td>{{item[4]}}</td>	
+			</tr>
+			{% endfor %}
+        </table>        
+    </div>
+{% endblock content %}   
