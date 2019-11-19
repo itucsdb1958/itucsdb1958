@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}TeamInfo Page{% endblock %}
+{% block content %}
+
+
+<h6 style="font-size: 40px; text-align: center;">TeamInfo Page</h6>
+
+<div class="table-responsive">
+		<table class = "table table-striped" style='margin-top: 5%; table-layout: auto;'>
+			<tr>
+                <th>Name</th>
+				<th>#ofMembers</th>
+                <th>Found Year</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Logo</th>
+                <th>Compt ID</th>
+				<th></th>
+			</tr>
+			
+			<tr>
+                <td>{{teaminfo[0]}}</td>
+                <td>{{teaminfo[1]}}</td>
+                <td>{{teaminfo[2]}}</td>
+                <td>{{teaminfo[3]}}</td>
+                <td>{{teaminfo[4]}}</td>
+                <td>{{teaminfo[5]}}</td>
+                <td>{{teaminfo[6]}}</td>
+                
+                                				
+			</tr>
+			
+		</table>
+    </div>
+{% endblock content %}    
