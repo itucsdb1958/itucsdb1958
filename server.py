@@ -30,6 +30,10 @@ app.register_blueprint(member_profile)
 app.register_blueprint(admin)
 app.register_blueprint(visitor)
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("error_404.html")
+
 if __name__ == "__main__":
     if(not RELEASE):
         app.run(debug=True)
