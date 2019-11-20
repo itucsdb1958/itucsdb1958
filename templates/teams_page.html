@@ -5,13 +5,20 @@
 <h6 style="font-size: 40px; text-align: center;">Teams Page</h6>
 
 <div class="table-responsive">
-	<table class="table table-striped" style='margin-top: 5%; table-layout: auto;'>
+	<table id="myTable" class="table table-striped" style='margin-top: 5%; table-layout: auto;'>
 		<tr>
-			<th>Name</th>
-			<th>Competition</th>
-			<th>Email</th>
-			<th>Address</th>
-			<th></th>
+			<th  onclick="sortTable(0)" style="cursor: pointer;">Name    
+				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+			</th>
+			<th onclick="sortTable(1)" style="cursor: pointer;">Competition    
+				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+			</th>
+			<th  onclick="sortTable(2)" style="cursor: pointer;">Email    
+				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+			</th>
+			<th  onclick="sortTable(3)" style="cursor: pointer;">Address    
+				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+			</th>
 		</tr>
 		{% for item in teams %}
 		<tr>
@@ -20,6 +27,7 @@
 			<td>{{item[2]}}</td>
 			<td>{{item[3]}}</td>
 			{% if session['member_id'] == 'admin' %}
+			<th></th>
 			<td>
 				<form class="form-inline my-2 my-lg-2">
 					<a href="{{ url_for('admin.admin_edit_team_page',id=item[-1]) }}"
@@ -32,4 +40,5 @@
 	</table>
 </div>
 
+<script src="{{url_for('static', filename='js/sorttable.js')}}"></script>
 {% endblock content %}

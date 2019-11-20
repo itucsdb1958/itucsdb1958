@@ -5,11 +5,17 @@
 <h6 style="font-size: 40px; text-align: center;">Competitions Page</h6>
 
 <div class="table-responsive">
-	<table class="table table-striped" style='margin-top: 5%; table-layout: auto;'>
+	<table id="myTable" class="table table-striped" style='margin-top: 5%; table-layout: auto;'>
 		<tr>
-			<th>Name</th>
-			<th>Date</th>
-			<th>Country</th>
+			<th onclick="sortTable(0)" style="cursor: pointer;">Name    
+				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+			</th>
+			<th onclick="sortTable(1)" style="cursor: pointer;">Date    
+				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+			</th>
+			<th onclick="sortTable(2)" style="cursor: pointer;">Country    
+				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+			</th>
 			<th>Description</th>
 			<th>Reward</th>
 			<th></th>
@@ -34,4 +40,5 @@
 	</table>
 </div>
 
+<script src="{{url_for('static', filename='js/sorttable.js')}}"></script>
 {% endblock content %}
