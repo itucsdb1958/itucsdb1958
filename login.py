@@ -4,7 +4,7 @@ from forms import LoginForm
 import psycopg2 as db
 from Crypto.Hash import SHA256
 import os
-
+from queries import select
 login = Blueprint(name='login', import_name=__name__,
                   template_folder='templates')
 
@@ -33,6 +33,8 @@ def logout_page():
             session.pop('username', None)
             session['member_id'] = 0
             session.pop('logged_in', None)
+            session.pop('auth_type', None)
+            session.pop('team_id', None)
             session.pop('member', None)
             flash('You have been successfully logged out.', 'success')
 
@@ -55,6 +57,10 @@ def checkMemberLogin(username, password):
             session['logged_in'] = True
             session['username'] = username
             session['member_id'] = result[2]
+            session['team_id'] = select(
+                "team.id", "team join person on person.team_id=team.id join member on member.person_id=person.id", "member.id={}".format(result[2]))[0]
+            session['auth_type'] = select(
+                "auth_type.name", "person join member on member.person_id=person.id join auth_type on person.auth_type=auth_type.id", "member.id={}".format(result[2]))[0]
             success = True
             return redirect(url_for('home.home_page'))
     except db.DatabaseError:
@@ -78,7 +84,8 @@ def checkAdminLogin(username, password):
             flash('You have been logged in!', 'success')
             session['logged_in'] = True
             session['username'] = username
-            session['member_id'] = 'admin'
+            session['team_id'] = '-1'
+            session['auth_type'] = 'admin'
             success = True
             return redirect(url_for('home.home_page'))
     except db.DatabaseError:

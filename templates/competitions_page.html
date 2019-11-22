@@ -27,7 +27,7 @@
 			<td>{{item[3]}}</td>
 			<td>{{item[4]}}</td>
 			<td>{{item[5]}}</td>
-			{% if session['member_id'] == 'admin' %}
+			{% if session['auth_type'] == 'admin' %}
 			<td>
 				<form class="form-inline my-2 my-lg-2">
 					<a href="{{ url_for('admin.admin_edit_competition_page',id=item[0]) }}"

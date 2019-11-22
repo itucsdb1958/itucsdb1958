@@ -26,7 +26,7 @@
 			<td>{{item[1]}}</td>
 			<td>{{item[2]}}</td>
 			<td>{{item[3]}}</td>
-			{% if session['member_id'] == 'admin' %}
+			{% if session['auth_type'] == 'admin' %}
 			<th></th>
 			<td>
 				<form class="form-inline my-2 my-lg-2">
