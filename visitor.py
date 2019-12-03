@@ -15,7 +15,7 @@ visitor = Blueprint(name='visitor', import_name=__name__,
 @visitor.route("/competitions/")
 @visitor.route("/competitions")
 def visitor_competitions_page():
-    competitions = select("*", "competition")
+    competitions = select("*", "competition order by name")
     return render_template("competitions_page.html", competitions=competitions)
 
 

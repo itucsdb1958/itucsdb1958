@@ -121,8 +121,8 @@
   #itunom-nav::after {
     position: absolute;
     content: "";
-    height: 600px;
-    width: 900px;
+    height: 40px;
+    width: 40px;
     background-image: -webkit-linear-gradient(-220deg, #1d3ede, #01e6f8);
     background-image: -moz-linear-gradient(-220deg, #1d3ede, #01e6f8);
     background-image: -ms-linear-gradient(-220deg, #1d3ede, #01e6f8);
@@ -135,13 +135,13 @@
   }
   @media (max-width: 1400px) {
     #itunom-nav::after {
-      height: 550px;
-      width: 800px;
+      height: 50px;
+      width: 80px;
     }
   }
   @media (max-width: 1199px) {
     #itunom-nav::after {
-      width: 700px;
+      width: 40px;
     }
   }
   @media (max-width: 991px) {
@@ -154,14 +154,14 @@
   @media (max-width: 600px) {
     #itunom-nav::after {
       width: 100%;
-      height: 400px;
+      height: 40px;
     }
   }
   #itunom-nav::before {
     position: absolute;
     content: "";
-    height: 590px;
-    width: 930px;
+    height: 40px;
+    width: 40px;
     background-image: -webkit-linear-gradient(to right, #e8eefc, #e6fafe);
     background-image: -moz-linear-gradient(to right, #e8eefc, #e6fafe);
     background-image: -ms-linear-gradient(to right, #e8eefc, #e6fafe);
@@ -174,13 +174,13 @@
   }
   @media (max-width: 1400px) {
     #itunom-nav::before {
-      height: 540px;
-      width: 810px;
+      height: 40px;
+      width: 80px;
     }
   }
   @media (max-width: 1199px) {
     #itunom-nav::before {
-      width: 710px;
+      width: 400px;
     }
   }
   @media (max-width: 991px) {
@@ -193,7 +193,7 @@
   @media (max-width: 600px) {
     #itunom-nav::before {
       width: 100%;
-      height: 390px;
+      height: 40px;
     }
   }
   
