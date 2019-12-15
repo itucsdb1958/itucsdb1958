@@ -116,3 +116,12 @@ class AddSponsorForm(FlaskForm):
     address = TextAreaField("Address",validators=[DataRequired()])
     typ = SelectField("Type",coerce=int,validators=[DataRequired()])
     submit_add_sponsor = SubmitField("Add Sponsor")
+
+class EditSponsorForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    description = TextAreaField("Description",validators=[DataRequired()])
+    field = StringField("Field",validators=[DataRequired()])
+    country = StringField("Country",validators=[DataRequired()])
+    address = TextAreaField("Address",validators=[DataRequired()])
+    typ = SelectField("Type",coerce=int,validators=[DataRequired()])
+    submit_edit_sponsor = SubmitField("Update Sponsor")
