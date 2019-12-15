@@ -42,3 +42,34 @@ def visitor_schedule_page():
         columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name", 
         table="schedule join member on schedule.member_id=member.id join person on person.id=member.person_id order by schedule.done,schedule.deadline")
     return render_template("schedule_page.html", schedule=schedule)
+
+
+@visitor.route("/teaminfo/<team_id>")
+def visitor_teaminfo_page(team_id):
+    teaminfo = select(
+        columns="team.name,team.num_members,team.found_year,team.email,team.adress,team.logo",
+        table = "team",
+        #the selected team
+        where="id = {}".format(team_id)
+        )
+    team_designs = select(
+        columns="design.name,design.year,design.maxspeed,design.weight,design.duration,design.is_autonomous",
+        table="design join team on design.team_id=team.id",
+        where="team.id = {}".format(team_id)
+    )
+    competition = select(
+        columns="competition.name,competition.date,competition.country,competition.description,competition.reward",
+        table="team join competition on team.competition_id=competition.id",
+        where="team.id = {}".format(team_id)
+    )   
+    members_info = select(
+        columns="person.name,person.age,person.phone,person.cv,person.email,person.class,member.picture,subteam.name",
+        table="team join person on team.id=person.team_id join member on member.person_id=person.id join subteam on person.subteam_id=subteam.id",
+        where="team.id = {}".format(team_id)
+    )
+    sponsors = select(
+        columns="sponsor.name,sponsortype.name,sponsor.logo",
+        table="team join sponsorindex on team.id=sponsorindex.team_id join sponsor on sponsor.id=sponsorindex.sponsor_id join sponsortype on sponsortype.id=sponsor.type_id",
+        where="team.id = {}".format(team_id)
+    )
+    return render_template("teaminfo_page.html",teaminfo=teaminfo, team_designs=team_designs, competition=competition, members_info=members_info, sponsors=sponsors)

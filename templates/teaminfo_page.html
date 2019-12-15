@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block title %}TeamInfo Page{% endblock %}
+{% block content %}
+
+<div>
+    <div class="TeamInfo" >
+        <h6 style="font-size: 40px; text-align: center;">TeamInfo</h6>
+        <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" style="float: left; height: 400px; width: 600px;">
+        <div style="float:left; margin-left: 100px;background: rgba(0,0,0,0.3); padding: 10px; width: 400px;">
+            <h5 class="name" style="color: white; font-size: 22px;">{{teaminfo[0]}}</h5>
+            <p class="type" style="color: white; font-size: 20px;">#ofMembers:&emsp;&emsp;{{teaminfo[1]}}</p><br>
+            <p style="color: white; font-size: 20px;">Found Year:&emsp;{{teaminfo[2]}}</p><br>
+            <p style="color: white; font-size: 20px;">Email:&emsp;&emsp;{{teaminfo[3]}}</p><br>
+            <p style="color: white; font-size: 20px;">Adress:&emsp;&emsp;{{teaminfo[4]}}</p><br>
+            <p style="color: white; font-size: 20px;">Logo:&emsp;&emsp;{{teaminfo[5]}}</p><br>
+        </div>
+    </div>
+
+    <div class="DesignInfo" style="margin-top: 500px;">
+        <h6 style="font-size: 40px; text-align: center;">DesignInfo</h6>
+        <div class="table-responsive" >
+            <table class="table table-striped" style='color: white; table-layout: auto;background: rgba(0,0,0,0.3); padding: 10px;'>
+                <tr>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Maxspeed</th>
+                    <th>Weight</th>
+                    <th>Duration</th>
+                    <th>Autonomous</th>
+                </tr>
+                {% for team in team_designs  %}   
+                    <tr>
+                        <td>{{team[0]}}</td>
+                        <td>{{team[1]}}</td>
+                        <td>{{team[2]}}</td>
+                        <td>{{team[3]}}</td>
+                        <td>{{team[4]}}</td>
+                        <td>{{team[5]}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="Competition" style="margin-top: 20px; margin-bottom: 50px;">
+        <h6 style="font-size: 40px; text-align: center;">Competition</h6>
+        <div class="table-responsive" >
+            <table class="table table-striped" style='color: white; table-layout: auto;background: rgba(0,0,0,0.3); padding: 10px;'>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Country</th>
+                    <th>Description</th>
+                    <th>Reward</th>
+                </tr>
+                    <tr>
+                        <td>{{competition[0]}}</td>
+                        <td>{{competition[1]}}</td>
+                        <td>{{competition[2]}}</td>
+                        <td>{{competition[3]}}</td>
+                        <td>{{competition[4]}}</td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="myTable">
+        <h6 style="font-size: 40px; text-align: center;">Members</h6>
+        {% for mem in members_info %}
+            <div class="speaker_box" style="float: left;">
+                <div class="speaker_img">
+                    <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="speaker name" >
+                    <div class="info_box">
+                        <h5 class="name">{{ mem[0]}}</h5>
+                        <p class="type">{{mem[4]}}</p>
+                        <p class="type">{{mem[7]}}</p>
+                    </div>
+                </div>	
+            </div>	
+    {% endfor %}
+    </div>
+
+    <div class="Sponsors" style="margin-bottom: 500px; clear: both;">
+        <h6 style="font-size: 40px; text-align: center;">Sponsors</h6>
+        {% for sponsor in sponsors %}
+            <div class="brand_item text-center" style="float: left; margin:10px">
+                <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="brand">
+            </div>
+        {% endfor %}
+    </div>  
+
+</div>
+{% endblock content %}    
