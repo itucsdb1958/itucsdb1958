@@ -23,7 +23,7 @@ def visitor_competitions_page():
 @visitor.route("/teams")
 def visitor_teams_page():
     teams = select(columns="team.name,competition.name,team.email,team.adress,team.id",
-                   table="team join competition on team.competition_id=competition.id order by team.name desc")
+                   table="team left outer join competition on team.competition_id=competition.id order by team.name desc")
     return render_template("teams_page.html", teams=teams)
 
 

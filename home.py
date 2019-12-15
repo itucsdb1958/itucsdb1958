@@ -10,5 +10,5 @@ home= Blueprint(name='home', import_name=__name__,
 @home.route("/")
 def home_page():
     teams = select(columns="team.name,competition.name,team.email,team.adress,team.id,team.logo",
-                   table="team join competition on team.competition_id=competition.id order by team.name desc")
+                   table="team left outer join competition on team.competition_id=competition.id order by team.name desc")
     return render_template("home_page.html", teams=teams)

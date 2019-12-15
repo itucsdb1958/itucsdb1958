@@ -43,7 +43,7 @@ def admin_teams_page():
         return redirect(url_for('home.home_page'))
     else:
         result = select(columns="team.name,team.email,team.num_members,team.found_year,competition.name,team.id",
-                        table="team join competition on team.competition_id=competition.id \
+                        table="team left outer join competition on team.competition_id=competition.id \
 							order by team.name asc")
         return render_template('admin_teams_page.html', teams=result) 
 
