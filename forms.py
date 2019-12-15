@@ -19,7 +19,8 @@ major_choices = [('blg', 'Computer Engineering'),
                  ('uck', 'Aeronautical Engineering'),
                  ('end', 'Industrial Engineering')]
 
-
+status_choices = [('1','Active'),('2','Disactive')]
+class_choices = [('1','1'),('2','2'),('3','3'),('4','4')]
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -84,3 +85,16 @@ class AddTeamForm(FlaskForm):
     mail = EmailField('E-mail',validators=[DataRequired(), Email()])
     address = StringField('Address')
     submit_add_team = SubmitField('Add Team')
+
+class AddMemberForm(FlaskForm):
+    name=StringField("Name",validators=[DataRequired()])
+    age = StringField("Age",validators=[DataRequired()])
+    phone= StringField("Phone",validators=[DataRequired()])
+    mail = EmailField('E-mail',validators=[DataRequired(), Email()]) 
+    subteam = SelectField("Subteam",validators=[DataRequired()],coerce=int)
+    clas = SelectField("Class",validators=[DataRequired()],choices=class_choices)
+    status = SelectField('Status',choices = status_choices,validators=[DataRequired()])
+    major = SelectField('Major', choices=major_choices,
+                        validators=[DataRequired()])
+    username = StringField('Username',validators=[DataRequired()])
+    submit_add_member = SubmitField("Add Member")
