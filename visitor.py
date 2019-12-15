@@ -44,33 +44,32 @@ def visitor_schedule_page():
     return render_template("schedule_page.html", schedule=schedule)
 
 
-@visitor.route("/teaminfo/")
-@visitor.route("/teaminfo")
-def visitor_teaminfo_page():
+@visitor.route("/teaminfo/<team_id>")
+def visitor_teaminfo_page(team_id):
     teaminfo = select(
         columns="team.name,team.num_members,team.found_year,team.email,team.adress,team.logo,team.competition_id",
         table = "team",
         #the selected team
-        where="id = 3"
+        where="id = {}".format(team_id)
         )
     design = select(
         columns="design.name,design.year,design.maxspeed,design.weight,design.duration,design.is_autonomous",
         table="team join design on team.id=design.id",
-        where="team.id = 3"
+        where="team.id = {}".format(team_id)
     )
     competition = select(
         columns="competition.name,competition.date,competition.country,competition.description,competition.reward",
         table="team join competition on team.competition_id=competition.id",
-        where="team.id = 3"
+        where="team.id = {}".format(team_id)
     )   
     members = select(
         columns="person.name,person.age,person.phone,person.cv,person.email,person.class",
         table="team join person on team.id=person.team_id join member on member.person_id=person.id",
-        where="team.id = 3"
+        where="team.id = {}".format(team_id)
     )
     sponsor = select(
         columns="sponsor.name,sponsortype.name,sponsor.logo",
         table="team join sponsorindex on team.id=sponsorindex.team_id join sponsor on sponsor.id=sponsorindex.sponsor_id join sponsortype on sponsortype.id=sponsor.type_id",
-        where="team.id = 3"
+        where="team.id = {}".format(team_id)
     )
     return render_template("teaminfo_page.html",teaminfo=teaminfo, design=design, competition=competition, members=members, sponsor=sponsor)

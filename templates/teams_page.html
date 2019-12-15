@@ -19,6 +19,14 @@
 			<td>{{item[1]}}</td>
 			<td>{{item[2]}}</td>
 			<td>{{item[3]}}</td>
+			
+			<td>
+				<form class="form-inline my-2 my-lg-2">
+					<a href="{{ url_for('visitor.visitor_teaminfo_page',team_id=item[-1]) }}"
+						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Details</a>
+				</form>
+			</td>
+
 			{% if session['member_id'] == 'admin' %}
 			<td>
 				<form class="form-inline my-2 my-lg-2">
