@@ -3,11 +3,11 @@
 {% block content %}
 
 <div id="myTable">
-    {% for item in teams %}
+    {% for item in tutorials %}
         <div class="speaker_box">
-            <a href="#">
-                <div class="speaker_img">
-                    <img src="../static/images/team/{{item[5]}}.jpg" alt="speaker name" >
+            <a href="{{item[3]}}">
+                <div class="speaker_img" style="height: 300px; vertical-align: middle;">
+                    <img src="../static/images/tutorial/{{item[4]}}.png" alt="speaker name" style="vertical-align: middle;">
                     
                     <div class="info_box">
                         <h5 class="name">{{ item[0]}}</h5>

@@ -42,3 +42,11 @@ def visitor_schedule_page():
         columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name", 
         table="schedule join member on schedule.member_id=member.id join person on person.id=member.person_id order by schedule.done,schedule.deadline")
     return render_template("schedule_page.html", schedule=schedule)
+
+@visitor.route("/tutorials/")
+@visitor.route("/tutorials")
+def visitor_tutorials_page():
+    tutorials = select(
+        columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.picture,person.name", 
+        table="tutorial join member on tutorial.member_id=member.id join person on person.id=member.person_id order by tutorial.name")
+    return render_template("tutorials_page.html", tutorials=tutorials)
