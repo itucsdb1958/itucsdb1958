@@ -20,7 +20,15 @@
       <div class="img-wrapper"><img src="static/images/competitions/{{ item[-1] }}.png" alt="" /></div>
       <h1 class="name">{{item[1]}}</h1>
       <p>{{item[4]}}</p>
-    </article>
+	</article>
+	{% if session['auth_type'] == 'admin' %}
+			<td>
+				<form class="form-inline my-2 my-lg-2">
+					<a href="{{ url_for('admin_edit.admin_edit_competition_page',id=item[0]) }}"
+						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
+				</form>
+			</td>
+			{% endif %}
   </div>
   {% endfor %}
 </div>

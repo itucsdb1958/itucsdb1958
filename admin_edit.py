@@ -14,42 +14,21 @@ from forms import (EditCompetitionForm, EditMemberForm, EditTeamForm, SQLForm,
 from member_profile import Member
 from queries import run, select, update
 
-admin = Blueprint(name='admin', import_name=__name__)
+admin_edit = Blueprint(name='admin_edit', import_name=__name__)
 
 
-@admin.route("/admin/")
-@admin.route("/admin")
-def admin_page():
-    if (session.get('auth_type') == 'admin'):
-        return render_template('admin_page.html')
-    else:
-        return redirect(url_for('home.home_page'))
-
-
-@admin.route("/admin/sql/", methods=['GET', 'POST'])
-@admin.route("/admin/sql", methods=['GET', 'POST'])
-def sql_page():
-    form = SQLForm()
-    if form.validate_on_submit():
-        query = form.query.data
-        result = run(query)
-        return render_template('sql_page.html', form=form, queryResult=result, resultLen=len(result))
-    return render_template('sql_page.html', form=form, queryResult=None, resultLen=0)
-
-
-@admin.route("/admin/competitions/edit/<id>", methods=['GET', 'POST'])
+@admin_edit.route("/admin/competitions/edit/<id>", methods=['GET', 'POST'])
 def admin_edit_competition_page(id):
     form = EditCompetitionForm()
     imageForm = UploadImageForm()
     imageFolderPath = os.path.join(os.getcwd(), 'static/images/competitions')
 
     if (request.method == 'POST' and form.submit_competition.data or form.validate()):
-        print("Not")
-        name = form.name.data.encode('utf-8')
+        name = form.name.data
         date = form.date.data
-        country = form.country.data.encode('utf-8')
-        description = form.description.data.encode('utf-8')
-        reward = form.reward.data.encode('utf-8')
+        country = form.country.data
+        description = form.description.data
+        reward = form.reward.data
         image = imageForm.image.data
         if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
             current_date = time.gmtime()
@@ -67,7 +46,7 @@ def admin_edit_competition_page(id):
         print("Before update: ", date)
         update("competition", "name='{}', date=DATE('{}'), country='{}', description='{}', reward='{}'".format(
             name, date, country, description, reward), "id={}".format(id))
-        return redirect(url_for('admin.admin_edit_competition_page', id=id))
+        return redirect(url_for('admin_edit.admin_edit_competition_page', id=id))
     else:
         if(session.get('auth_type') != 'admin'):
             flash('No admin privileges...', 'danger')
@@ -83,18 +62,18 @@ def admin_edit_competition_page(id):
     return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=img_name, uploadImg=imageForm)
 
 
-@admin.route("/admin/teams/edit/<id>", methods=['GET', 'POST'])
+@admin_edit.route("/admin/teams/edit/<id>", methods=['GET', 'POST'])
 def admin_edit_team_page(id):
     form = EditTeamForm()
     imageForm = UploadImageForm()
     imageFolderPath = os.path.join(os.getcwd(), 'static/images/team')
     if (request.method == 'POST' and form.submit_team.data or form.validate()):
-        name = form.name.data.encode('utf-8')
+        name = form.name.data
         members = form.memberCtr.data
         year = form.year.data
         print("Year", year)
-        email = form.email.data.encode('utf-8')
-        address = form.address.data.encode('utf-8')
+        email = form.email.data
+        address = form.address.data
         competition = form.competition.data
         image = imageForm.image.data
         if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
@@ -111,7 +90,7 @@ def admin_edit_team_page(id):
             flash("Please upload a file in JPG format", 'danger')
         update("team", "name='{}', num_members={}, found_year='{}', email='{}', adress='{}', competition_id={}, logo='{}'".format(
             name, members, year, email, address, competition, id), where="id={}".format(id))
-        return redirect(url_for('admin.admin_edit_team_page', id=id))
+        return redirect(url_for('admin_edit.admin_edit_team_page', id=id))
     else:
         if(session.get('auth_type') != 'admin'):
             flash('No admin privileges...', 'danger')
@@ -127,21 +106,8 @@ def admin_edit_team_page(id):
     return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imageForm, imgName=img_name)
 
 
-@admin.route("/admin/members/")
-@admin.route("/admin/members")
-def admin_members_page():
-    if(session.get('auth_type') != 'admin'):
-        flash('No admin privileges...', 'danger')
-        return redirect(url_for('home.home_page'))
-    else:
-        result = select(columns="person.name,person.email,auth_type.name,team.name,person.id",
-                        table="person join team on person.team_id=team.id \
-							join auth_type on person.auth_type=auth_type.id \
-							order by team.name asc, auth_type.name desc")
-        return render_template('admin_members_page.html', members=result)
 
-
-@admin.route("/admin/members/edit/<person_id>", methods=['GET', 'POST'])
+@admin_edit.route("/admin/members/edit/<person_id>", methods=['GET', 'POST'])
 def admin_edit_member_page(person_id):
     # TODO:: Alter table to include social accounts links in person database.
     form = EditMemberForm()
@@ -153,11 +119,11 @@ def admin_edit_member_page(person_id):
     if form.validate_on_submit():
         team = form.team.data
         subteam = form.subteam.data
-        role = form.role.data.encode('utf-8')
+        role = form.role.data
         auth_type = form.auth_type.data
-        email = form.email.data.encode('utf-8')
-        name = form.name.data.encode('utf-8')
-        address = form.address.data.encode('utf-8')
+        email = form.email.data
+        name = form.name.data
+        address = form.address.data
         active = form.active.data
         age = form.age.data
         phone = form.phone.data
@@ -213,7 +179,7 @@ def admin_edit_member_page(person_id):
 					class={}, auth_type={}, team_id={}, subteam_id={}, major_id={}".format(
             name, age, phone, person_id, email, clas, auth_type, teamID, subteamID, majorID), where="id={}".format(person_id))
 
-        return redirect(url_for('admin.admin_edit_member_page', person_id=person_id, cvPath=person_id))
+        return redirect(url_for('admin_edit.admin_edit_member_page', person_id=person_id, cvPath=person_id))
     else:
         if(session.get('auth_type') != 'admin'):
             flash('No admin privileges...', 'danger')
@@ -245,7 +211,7 @@ def admin_edit_member_page(person_id):
     return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, cvPath=cvPath, imgName=img_name)
 
 
-@admin.route("/download/<filename>", methods=['GET', 'POST'])
+@admin_edit.route("/download/<filename>", methods=['GET', 'POST'])
 def download(filename):
-    cvFolder = os.path.join(admin.root_path, "static/cv")
+    cvFolder = os.path.join(admin_edit.root_path, "static/cv")
     return send_from_directory(directory=cvFolder, filename=filename, as_attachment=True, cache_timeout=0)

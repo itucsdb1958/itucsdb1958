@@ -77,3 +77,10 @@ class UploadCVForm(FlaskForm):
 
 class UploadImageForm(FlaskForm):
     image = FileField(u'Image File')
+
+class AddTeamForm(FlaskForm):
+    name = StringField('Team Name',validators=[DataRequired()])
+    year = DateField('Foundation Year')
+    mail = EmailField('E-mail',validators=[DataRequired(), Email()])
+    address = StringField('Address')
+    submit_add_team = SubmitField('Add Team')
