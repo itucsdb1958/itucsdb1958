@@ -107,3 +107,12 @@ class AddCompetitionForm(FlaskForm):
     reward = StringField("Reward",validators=[DataRequired()])
     submit_add_competition = SubmitField("Add Competition")
     #TODO:: COMPETITION'A LOGO EKLE
+
+class AddSponsorForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    description = TextAreaField("Description",validators=[DataRequired()])
+    field = StringField("Field",validators=[DataRequired()])
+    country = StringField("Country",validators=[DataRequired()])
+    address = TextAreaField("Address",validators=[DataRequired()])
+    typ = SelectField("Type",coerce=int,validators=[DataRequired()])
+    submit_add_sponsor = SubmitField("Add Sponsor")
