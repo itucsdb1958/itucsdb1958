@@ -98,3 +98,12 @@ class AddMemberForm(FlaskForm):
                         validators=[DataRequired()])
     username = StringField('Username',validators=[DataRequired()])
     submit_add_member = SubmitField("Add Member")
+
+class AddCompetitionForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    date = DateField('Date', format='%Y-%m-%d')
+    country = StringField("Country",validators=[DataRequired()])
+    description = TextAreaField("Description",validators=[DataRequired()])
+    reward = StringField("Reward",validators=[DataRequired()])
+    submit_add_competition = SubmitField("Add Competition")
+    #TODO:: COMPETITION'A LOGO EKLE
