@@ -1,6 +1,43 @@
 {% extends "layout.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
+<!--
+<div class="table-responsive">
+    <table id="myTable" class="table table-striped" style='margin-top: 5%; table-layout: auto;'>
+        <tr>
+            <th  onclick="sortTable(0)" style="cursor: pointer;">Name    
+                <img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+            </th>
+            <th onclick="sortTable(1)" style="cursor: pointer;">Competition    
+                <img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+            </th>
+            <th  onclick="sortTable(2)" style="cursor: pointer;">Email    
+                <img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+            </th>
+            <th  onclick="sortTable(3)" style="cursor: pointer;">Address    
+                <img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
+            </th>
+        </tr>
+        {% for item in teams %}
+        <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[3]}}</td>
+            {% if session['auth_type'] == 'admin' %}
+            <th></th>
+            <td>
+                <form class="form-inline my-2 my-lg-2">
+                    <a href="{{ url_for('admin.admin_edit_team_page',id=item[-1]) }}"
+                        class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+-->
 
 <div id="myTable">
     {% for item in teams %}
