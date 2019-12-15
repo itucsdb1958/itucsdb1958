@@ -1,26 +1,28 @@
 {% extends "layout.html" %}
-{% block title %}Admin Members Page{% endblock %}
+{% block title %}Admin Teams Page{% endblock %}
 {% block content %}
 
-<h6 style="font-size: 40px; text-align: center;">Members Page</h6>
+<h6 style="font-size: 40px; text-align: center;">Teams Page</h6>
 
 <div class="table-responsive">
 		<table class = "table table-striped" style='margin-top: 5%; table-layout: auto;'>
 			<tr>
 				<th>Name</th>
 				<th>Email</th>
-				<th>Authentication</th>
-				<th>Team</th>
+				<th>Members</th>
+				<th>Foundation</th>
+				<th>Competition</th>
 				<th></th>
 			</tr>
-			{% for item in members %}
+			{% for item in teams %}
 			<tr>
 				<td>{{item[0]}}</td>
 				<td>{{item[1]}}</td>
 				<td>{{item[2]}}</td>
 				<td>{{item[3]}}</td>
+				<td>{{item[4]}}</td>
 				<td><form class="form-inline my-2 my-lg-2">
-						<a href="{{ url_for('admin_edit.admin_edit_member_page', person_id=item[4]) }}"
+						<a href="{{ url_for('admin_edit.admin_edit_team_page', id=item[-1]) }}"
 							class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
 					</form></td>	
 			</tr>

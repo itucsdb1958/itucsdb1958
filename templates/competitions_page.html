@@ -30,7 +30,7 @@
 			{% if session['auth_type'] == 'admin' %}
 			<td>
 				<form class="form-inline my-2 my-lg-2">
-					<a href="{{ url_for('admin.admin_edit_competition_page',id=item[0]) }}"
+					<a href="{{ url_for('admin_edit.admin_edit_competition_page',id=item[0]) }}"
 						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
 				</form>
 			</td>

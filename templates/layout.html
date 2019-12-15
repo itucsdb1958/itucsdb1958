@@ -25,6 +25,9 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_competitions_page') }}">Competitions</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_sponsors_page') }}">Sponsors</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('home.home_page') }}">Contact</a></li>
+                    {% if session['auth_type'] == 'admin' %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_list.admin_page') }}">Admin</a></li>
+                    {% endif %}
                 </ul>
                 <div id="logging-button">
                     {% if session.get('logged_in') == None %}
