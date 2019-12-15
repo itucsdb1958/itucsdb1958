@@ -1,46 +1,24 @@
 {% extends "layout.html" %}
-{% block title %}Teams Page{% endblock %}
+{% block title %}Home Page{% endblock %}
 {% block content %}
-<<<<<<< HEAD
 
-<h6 style="font-size: 40px; text-align: center;">Teams Page</h6>
-
-<div class="table-responsive">
-	<table class="table table-striped" style='margin-top: 5%; table-layout: auto;'>
-		<tr>
-			<th>Name</th>
-			<th>Competition</th>
-			<th>Email</th>
-			<th>Address</th>
-			<th></th>
-		</tr>
-		{% for item in teams %}
-		<tr>
-			<td>{{item[0]}}</td>
-			<td>{{item[1]}}</td>
-			<td>{{item[2]}}</td>
-			<td>{{item[3]}}</td>
-			
-			<td>
-				<form class="form-inline my-2 my-lg-2">
-					<a href="{{ url_for('visitor.visitor_teaminfo_page',team_id=item[-1]) }}"
-						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Details</a>
-				</form>
-			</td>
-=======
->>>>>>> farid
-
-			{% if session['member_id'] == 'admin' %}
-			<td>
-				<form class="form-inline my-2 my-lg-2">
-					<a href="{{ url_for('admin.admin_edit_team_page',id=item[-1]) }}"
-						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
-				</form>
-			</td>
-			{% endif %}
-		</tr>
-		{% endfor %}
-	</table>
+<div id="myTable">
+    {% for item in teams %}
+        <div class="speaker_box">
+            <a href="#">
+                <div class="speaker_img">
+                    <img src="../static/images/team/{{item[5]}}.jpg" alt="speaker name" >
+                    
+                    <div class="info_box">
+                        <h5 class="name">{{ item[0]}}</h5>
+                        <p class="type">{{item[1]}}</p>
+                        <p class="position" style="margin-top: -20px;">{{item[2]}}&nbsp;/&nbsp;{{item[3]}}</p>
+                    </div>
+                </div>
+            </a>	
+        </div>
+    {% endfor %}
+    
 </div>
-
+    
 {% endblock content %}
