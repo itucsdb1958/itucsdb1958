@@ -106,22 +106,6 @@ def admin_edit_team_page(id):
     return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imageForm, imgName=img_name)
 
 
-<<<<<<< HEAD:admin_edit.py
-=======
-@admin.route("/admin/members/")
-@admin.route("/admin/members")
-def admin_members_page():
-    if(session.get('auth_type') != 'admin'):
-        flash('No admin privileges...', 'danger')
-        return redirect(url_for('home.home_page'))
-    else:
-        result = select(columns="person.name,person.email,auth_type.name,team.name,person.id",
-                        table="person join team on person.team_id=team.id \
-							join auth_type on person.auth_type=auth_type.id \
-							order by team.name asc, auth_type.name desc")
-        return render_template('admin_members_page.html', members=result)
-
->>>>>>> teaminfo:admin.py
 
 @admin_edit.route("/admin/members/edit/<person_id>", methods=['GET', 'POST'])
 def admin_edit_member_page(person_id):
