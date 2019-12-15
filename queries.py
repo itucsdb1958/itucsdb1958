@@ -6,7 +6,6 @@ from flask import flash
 
 def insert(table,columns,values):
     query = """insert into {} ({}) values({})""".format(table,columns,values)
-    print(query)
     run(query)
 
 def select(columns, table, where=None):
@@ -31,6 +30,7 @@ def run(query):
     connection = None
     cursor = None
     result = None
+    print(query)
     try:
         connection = db.connect(os.getenv("DATABASE_URL"))
         cursor = connection.cursor()
