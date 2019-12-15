@@ -73,3 +73,10 @@ def visitor_teaminfo_page(team_id):
         where="team.id = {}".format(team_id)
     )
     return render_template("teaminfo_page.html",teaminfo=teaminfo, team_designs=team_designs, competition=competition, members_info=members_info, sponsors=sponsors)
+@visitor.route("/tutorials/")
+@visitor.route("/tutorials")
+def visitor_tutorials_page():
+    tutorials = select(
+        columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.picture,person.name", 
+        table="tutorial join member on tutorial.member_id=member.id join person on person.id=member.person_id order by tutorial.name")
+    return render_template("tutorials_page.html", tutorials=tutorials)

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+<div id="myTable">
+    {% for item in tutorials %}
+        <div class="speaker_box">
+            <a href="{{item[3]}}">
+                <div class="speaker_img" style="height: 300px;">
+                    <img src="../static/images/tutorial/{{item[4]}}.png" alt="speaker name">
+                    
+                    <div class="info_box">
+                        <h5 class="name">{{ item[0]}}</h5>
+                        <p class="type">{{item[1]}}</p>
+                        <p class="position" style="margin-top: -20px;">{{item[2]}}</p>
+                    </div>
+                </div>
+            </a>	
+        </div>
+    {% endfor %}
+    
+</div>
+    
+{% endblock content %}
