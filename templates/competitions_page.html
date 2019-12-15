@@ -1,37 +1,23 @@
 {% extends "layout.html" %}
-{% block title %}Admin Competitions Page{% endblock %}
+{% block title %}Teams Page{% endblock %}
 {% block content %}
-
-<h6 style="font-size: 40px; text-align: center;">Competitions Page</h6>
-
-<div class="table-responsive">
-	<table class="table table-striped" style='margin-top: 5%; table-layout: auto;'>
-		<tr>
-			<th>Name</th>
-			<th>Date</th>
-			<th>Country</th>
-			<th>Description</th>
-			<th>Reward</th>
-			<th></th>
-		</tr>
-		{% for item in competitions %}
-		<tr>
-			<td>{{item[1]}}</td>
-			<td>{{item[2]}}</td>
-			<td>{{item[3]}}</td>
-			<td>{{item[4]}}</td>
-			<td>{{item[5]}}</td>
-			{% if session['member_id'] == 'admin' %}
-			<td>
-				<form class="form-inline my-2 my-lg-2">
-					<a href="{{ url_for('admin.admin_edit_competition_page',id=item[0]) }}"
-						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
-				</form>
-			</td>
-			{% endif %}
-		</tr>
-		{% endfor %}
-	</table>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/competitions.css') }}" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<h1 id="header" class="text-primary">Competitions</h1>
+  
+<div class="container list-article">
+    {% for item in competitions %}
+    <div class="col-xs-12 article-wrapper">
+      <article>
+        <a href="{{ item[-2] }}" class="more">more</a>
+        <div class="img-wrapper"><img src="static/images/competitions/{{ item[-1] }}.png" alt="" /></div>
+        <h1>{{item[1]}}</h1>
+        <p>{{item[4]}}</p>
+      </article>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
 {% endblock content %}

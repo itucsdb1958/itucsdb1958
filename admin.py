@@ -20,7 +20,7 @@ admin = Blueprint(name='admin', import_name=__name__)
 @admin.route("/admin/")
 @admin.route("/admin")
 def admin_page():
-    if (session.get('member_id') == 'admin'):
+    if (session.get('auth_type') == 'admin'):
         return render_template('admin_page.html')
     else:
         return redirect(url_for('home.home_page'))
@@ -69,7 +69,7 @@ def admin_edit_competition_page(id):
             name, date, country, description, reward), "id={}".format(id))
         return redirect(url_for('admin.admin_edit_competition_page', id=id))
     else:
-        if(session.get('member_id') != 'admin'):
+        if(session.get('auth_type') != 'admin'):
             flash('No admin privileges...', 'danger')
             return redirect(url_for('home.home_page'))
         result = select('id,name,date,country,description,reward',
@@ -113,7 +113,7 @@ def admin_edit_team_page(id):
             name, members, year, email, address, competition, id), where="id={}".format(id))
         return redirect(url_for('admin.admin_edit_team_page', id=id))
     else:
-        if(session.get('member_id') != 'admin'):
+        if(session.get('auth_type') != 'admin'):
             flash('No admin privileges...', 'danger')
             return redirect(url_for('home.home_page'))
         result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.name",
@@ -130,7 +130,7 @@ def admin_edit_team_page(id):
 @admin.route("/admin/members/")
 @admin.route("/admin/members")
 def admin_members_page():
-    if(session.get('member_id') != 'admin'):
+    if(session.get('auth_type') != 'admin'):
         flash('No admin privileges...', 'danger')
         return redirect(url_for('home.home_page'))
     else:
@@ -215,7 +215,7 @@ def admin_edit_member_page(person_id):
 
         return redirect(url_for('admin.admin_edit_member_page', person_id=person_id, cvPath=person_id))
     else:
-        if(session.get('member_id') != 'admin'):
+        if(session.get('auth_type') != 'admin'):
             flash('No admin privileges...', 'danger')
             return redirect(url_for('home.home_page'))
         else:
