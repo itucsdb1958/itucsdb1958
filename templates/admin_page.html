@@ -5,12 +5,16 @@
 	<div class="container-fluid">
 		<div class="row">
 			<form class="form-inline my-2 my-lg-2">
-				<a href="{{ url_for('admin.sql_page') }}"
+				<a href="{{ url_for('admin_list.sql_page') }}"
 					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">SQL Page</a>
 			</form>
 			<form class="form-inline my-2 my-lg-2">
-				<a href="{{ url_for('admin.admin_members_page') }}"
+				<a href="{{ url_for('admin_list.admin_members_page') }}"
 					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Members</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('admin_list.admin_teams_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Teams</a>
 			</form>
 		</div>
 	</div>

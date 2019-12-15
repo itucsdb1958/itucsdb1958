@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/itunom.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/light-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -25,6 +26,9 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_competitions_page') }}">Competitions</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_sponsors_page') }}">Sponsors</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('home.home_page') }}">Contact</a></li>
+                    {% if session['auth_type'] == 'admin' %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_list.admin_page') }}">Admin</a></li>
+                    {% endif %}
                 </ul>
                 <div id="logging-button">
                     {% if session.get('logged_in') == None %}
@@ -88,7 +92,7 @@
 
 
 <!-- Footer -->
-<footer class="page-footer font-small blue pt-4" style="background-color: transparent">
+<footer class="page-footer font-small blue pt-4" style="background-color: transparent; margin-top: 60px;">
     <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2019 Copyright:
         <a href="{{url_for('home.home_page') }}"> Feridcim</a>

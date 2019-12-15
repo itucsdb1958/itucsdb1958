@@ -5,7 +5,9 @@ import psycopg2.extensions
 from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
                    request, send_from_directory, session, url_for)
 
-from admin import admin
+from admin_edit import admin_edit
+from admin_list import admin_list
+from admin_add import admin_add
 from dbinit import initialize
 from home import home
 from login import login
@@ -27,7 +29,9 @@ app.config['SECRET_KEY'] = '9ioJbIGGH6ndzWOi3vEW'
 app.register_blueprint(home)
 app.register_blueprint(login)
 app.register_blueprint(member_profile)
-app.register_blueprint(admin)
+app.register_blueprint(admin_list)
+app.register_blueprint(admin_edit)
+app.register_blueprint(admin_add)
 app.register_blueprint(visitor)
 
 @app.errorhandler(404)
