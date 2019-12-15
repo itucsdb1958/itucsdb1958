@@ -77,6 +77,6 @@ def visitor_teaminfo_page(team_id):
 @visitor.route("/tutorials")
 def visitor_tutorials_page():
     tutorials = select(
-        columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.picture,person.name", 
+        columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.picture,person.name,member_id,tutorial.id", 
         table="tutorial join member on tutorial.member_id=member.id join person on person.id=member.person_id order by tutorial.name")
     return render_template("tutorials_page.html", tutorials=tutorials)

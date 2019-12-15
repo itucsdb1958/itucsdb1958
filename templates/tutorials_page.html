@@ -2,12 +2,19 @@
 {% block title %}Home Page{% endblock %}
 {% block content %}
 
+{% if session['auth_type'] == 'Team leader' or session['auth_type'] == 'Member' or session['auth_type'] == 'Subteam leader'  %}
+    <button style="size: 20px; float: right;">
+        <a href ="{{ url_for('member.member_add_tutorial_page')}}"> Create New
+    </button>
+    <br>
+{% endif %}
+
 <div id="myTable">
     {% for item in tutorials %}
         <div class="speaker_box">
             <a href="{{item[3]}}">
                 <div class="speaker_img" style="height: 300px;">
-                    <img src="../static/images/tutorial/{{item[4]}}.png" alt="speaker name">
+                    <img src="../static/images/tutorial/{{item[4]}}.png" alt="Image">
                     
                     <div class="info_box">
                         <h5 class="name">{{ item[0]}}</h5>
@@ -15,7 +22,16 @@
                         <p class="position" style="margin-top: -20px;">{{item[2]}}</p>
                     </div>
                 </div>
-            </a>	
+            </a>
+
+            {% if session['member_id'] == item[6] %}
+                <button style="size: 20px;">
+                    <a href ="{{ url_for('member.member_edit_tutorial_page', id=item[-1])}}"> Edit
+                </button>
+                <button style="size: 20px;">Delete</button>
+            {% else %}
+
+            {% endif %}	
         </div>
     {% endfor %}
     

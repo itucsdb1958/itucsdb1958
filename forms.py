@@ -98,3 +98,21 @@ class AddMemberForm(FlaskForm):
                         validators=[DataRequired()])
     username = StringField('Username',validators=[DataRequired()])
     submit_add_member = SubmitField("Add Member")
+
+class AddTutorialForm(FlaskForm):
+    name = StringField('Tutorial Name',validators=[DataRequired()])
+    area = StringField('Area')
+    description = TextAreaField('Descrtiption')
+    link = StringField('Link')
+    isvideo = BooleanField('isVideo')
+
+    submit_add_tutorial = SubmitField('Add Tutorial')
+
+class EditTutorialForm(FlaskForm):
+    name = StringField('Tutorial Name')
+    area = StringField('Area')
+    description = TextAreaField('Descrtiption')
+    link = StringField('Link')
+    isvideo = BooleanField('isVideo')
+
+    submit_edit_tutorial = SubmitField('Update Tutorial')
