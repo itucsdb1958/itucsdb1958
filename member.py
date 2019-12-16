@@ -422,6 +422,8 @@ def member_delete_schedule_page(schedule_id):
 		return redirect(url_for("home.home_page"))
 	delete(table="schedule", where="id={}".format(schedule_id))
 	return redirect(url_for("team.team_schedule_page"))
+
+	
 @member.route("/member/add/tutorial", methods=['GET', 'POST'])
 def member_add_tutorial_page():
 	if(session['auth_type'] != "Team leader"):

@@ -13,6 +13,7 @@
 				<th>Foundation</th>
 				<th>Competition</th>
 				<th></th>
+				<th></th>
 			</tr>
 			{% for item in teams %}
 			<tr>
@@ -21,10 +22,19 @@
 				<td>{{item[2]}}</td>
 				<td>{{item[3]}}</td>
 				<td>{{item[4]}}</td>
-				<td><form class="form-inline my-2 my-lg-2">
-						<a href="{{ url_for('admin_edit.admin_edit_team_page', id=item[-1]) }}"
-							class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
-					</form></td>	
+				{% if session['auth_type'] == 'admin' %}
+					<td><form class="form-inline my-2 my-lg-2">
+							<a href="{{ url_for('admin_edit.admin_edit_team_page', id=item[-1]) }}"
+								class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
+						</form>
+					</td>
+					<td>
+						<form class="form-inline my-2 my-lg-2">
+							<a href="{{ url_for('admin_delete.admin_delete_team_page',team_id=item[-1]) }}"
+								class="btn btn-outlnie-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
+						</form	>
+					</td>
+				{% endif %}	
 			</tr>
 			{% endfor %}
 		</table>
