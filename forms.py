@@ -34,7 +34,7 @@ class SQLForm(FlaskForm):
 
 class EditMemberForm(FlaskForm):
     team = StringField('Team', validators=[DataRequired()])
-    subteam = StringField('Subteam', validators=[DataRequired()])
+    subteam = SelectField('Subteam',coerce=int, validators=[DataRequired()])
     role = StringField('Role', validators=[DataRequired()])
     auth_type = SelectField(
         'Authentication', choices=auth_type_choices, validators=[DataRequired()])
