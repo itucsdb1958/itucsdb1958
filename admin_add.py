@@ -24,3 +24,10 @@ def admin_add_team_page():
                    "'{}',0,'{}','{}','{}','-1',NULL".format(name, year, email, address))
             return redirect(url_for('admin_add.admin_add_team_page'))
         return render_template('admin_add_team_page.html', imgName=None, form=form)
+
+@admin_add.route("/admin/add/member",methods=['GET','POST'])
+def addmin_add_member_page():
+    if(session.get('auth_type') != 'admin'):
+        flash('No admin privileges...', 'danger')
+        return redirect(url_for('home.home_page'))
+    # implement admin add member.

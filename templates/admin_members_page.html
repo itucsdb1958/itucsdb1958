@@ -47,10 +47,18 @@
 			<td class="Email">{{item[1]}}</td>
 			<td class="Auth">{{item[2]}}</td>
 			<td class="Team">{{item[3]}}</td>
-			<td><form class="form-inline my-2 my-lg-2">
+			<td>
+				<form class="form-inline my-2 my-lg-2">
 					<a href="{{ url_for('admin_edit.admin_edit_member_page', person_id=item[4]) }}"
 						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
-				</form></td>	
+				</form>
+			</td>
+			<td>
+				<form class="form-inline my-2 my-lg-2">
+					<a href="{{ url_for('member_delete.member_delete_member_page', person_id=item[4]) }}"
+						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
+				</form>
+			</td>	
 		</tr>
 		{% endfor %}
 	</table>

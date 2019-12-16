@@ -31,7 +31,7 @@ def member_delete_sponsor_page(sponsor_id):
 @member_delete.route("/member/delete/member/<person_id>", methods=['GET', 'POST'])
 def member_delete_member_page(person_id):
     auth = session.get('auth_type')
-    if(auth != "Team leader"):
+    if(auth != "Team leader" and auth != 'admin'):
         flash("Not an authorized person")
         return redirect(url_for("home.home_page"))
     result = select("member.id,users.username",

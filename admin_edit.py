@@ -109,6 +109,10 @@ def admin_edit_team_page(id):
 @admin_edit.route("/admin/members/edit/<person_id>", methods=['GET', 'POST'])
 def admin_edit_member_page(person_id):
 	# TODO:: Alter table to include social accounts links in person database.
+	auth = session.get('auth_type')
+	if(auth!='admin'):
+		flash("No admin",'danger')
+		return redirect(url_for("home.home_page"))
 	form = EditMemberForm()
 	subteams = select("subteam.id,subteam.name",
 					  "subteam join team on subteam.team_id=team.id join person on person.team_id=team.id", "person.id={}".format(person_id))

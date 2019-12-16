@@ -68,6 +68,10 @@ def member_edit_tutorial_page(id):
 
 @member_edit.route("/member/edit/member/<person_id>", methods=['GET', 'POST'])
 def member_edit_member_page(person_id):
+    auth = session.get('auth_type')
+    if(auth!='Team leader'):
+        flash("Not authorized",'danger')
+        return redirect(url_for("home.home_page"))
     form = EditMemberForm()
     team_id = session.get("team_id")
     print("Teamid", team_id)
