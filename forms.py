@@ -175,3 +175,16 @@ class EditTutorialForm(FlaskForm):
     isvideo = BooleanField('isVideo')
 
     submit_edit_tutorial = SubmitField('Update Tutorial')
+
+class AddTeamLeaderForm(FlaskForm):
+    name=StringField("Name",validators=[DataRequired()])
+    age = StringField("Age",validators=[DataRequired()])
+    phone= StringField("Phone",validators=[DataRequired()])
+    mail = EmailField('E-mail',validators=[DataRequired(), Email()]) 
+    team = SelectField("Team",validators=[DataRequired()],coerce=int)
+    clas = SelectField("Class",validators=[DataRequired()],choices=class_choices)
+    status = SelectField('Status',choices = status_choices,validators=[DataRequired()])
+    major = SelectField('Major', choices=major_choices,
+                        validators=[DataRequired()])
+    username = StringField('Username',validators=[DataRequired()])
+    submit_add_team_leader = SubmitField("Add Team Leader")
