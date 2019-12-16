@@ -49,12 +49,12 @@
 			<td class="Team">{{item[3]}}</td>
 			{% if session['auth_type']=='Team leader' %}
 			<td><form class="form-inline my-2 my-lg-2">
-					<a href="{{ url_for('member.member_edit_member_page', person_id=item[4]) }}"
+					<a href="{{ url_for('member_edit.member_edit_member_page', person_id=item[4]) }}"
 						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
 				</form>
 			</td>	
 			<td><form class="form-inline my-2 my-lg-2">
-				<a href="{{ url_for('member.member_delete_member_page', person_id=item[4]) }}"
+				<a href="{{ url_for('member_delete.member_delete_member_page', person_id=item[4]) }}"
 					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
 			</form>
 			</td>

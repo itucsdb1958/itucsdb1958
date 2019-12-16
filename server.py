@@ -2,19 +2,21 @@ import os
 
 import psycopg2 as db
 import psycopg2.extensions
-from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
-                   request, send_from_directory, session, url_for)
+from flask import Blueprint, Flask, render_template
 
+from admin_add import admin_add
 from admin_edit import admin_edit
 from admin_list import admin_list
-from admin_add import admin_add
 from dbinit import initialize
 from home import home
 from login import login
-from member_profile import member_profile
-from visitor import visitor
 from member import member
+from member_add import member_add
+from member_delete import member_delete
+from member_edit import member_edit
+from member_profile import member_profile
 from team import team
+from visitor import visitor
 
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
@@ -35,14 +37,17 @@ app.register_blueprint(admin_list)
 app.register_blueprint(admin_edit)
 app.register_blueprint(admin_add)
 app.register_blueprint(member)
+app.register_blueprint(member_add)
+app.register_blueprint(member_delete)
+app.register_blueprint(member_edit)
 app.register_blueprint(visitor)
 app.register_blueprint(team)
-
 
 
 @app.errorhandler(404)
 def not_found(e):
     return render_template("error_404.html")
+
 
 if __name__ == "__main__":
     if(not RELEASE):

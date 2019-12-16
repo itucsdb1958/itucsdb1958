@@ -41,13 +41,13 @@
 			{% if session['auth_type'] == 'Team leader' or session['auth_type'] == 'Subteam leader' %}
 				<td>
 					<form class="form-inline my-2 my-lg-2">
-						<a href="{{ url_for('member.member_edit_schedule_page',schedule_id=item[-1]) }}"
+						<a href="{{ url_for('member_edit.member_edit_schedule_page',schedule_id=item[-1]) }}"
 							class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
 					</form>
 				</td>
 				<td>
 					<form class="form-inline my-2 my-lg-2">
-						<a href="{{ url_for('member.member_delete_schedule_page',schedule_id=item[-1]) }}"
+						<a href="{{ url_for('member_delete.member_delete_schedule_page',schedule_id=item[-1]) }}"
 							class="btn btn-outlnie-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
 					</form	>
 				</td>

@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if session['auth_type'] == 'Team leader' or session['auth_type'] == 'Member' or session['auth_type'] == 'Subteam leader'  %}
-    <a href ="{{ url_for('member.member_add_tutorial_page')}}" style="size: 20px; float: right;" class="btn btn-round"> Create New</a>
+    <a href ="{{ url_for('member_add.member_add_tutorial_page')}}" style="size: 20px; float: right;" class="btn btn-round"> Create New</a>
     <br>
     <br>
     <br>
@@ -12,7 +12,7 @@
 <div id="myTable">
     {% for item in tutorials %}
         <div class="speaker_box">
-            <a href="{{item[3]}}">
+            <a href="https://{{item[3]}}">
                 <div class="speaker_img" style="height: 300px;">
                     <img src="../static/images/tutorial/{{item[4]}} " alt="Image">
                     
@@ -25,9 +25,9 @@
             </a>
 
             {% if session['member_id'] == item[6] %}
-                <a href ="{{ url_for('member.member_edit_tutorial_page', id=item[-1])}}" class="btn btn-round"> Edit</a>
+                <a href ="{{ url_for('member_edit.member_edit_tutorial_page', id=item[-1])}}" class="btn btn-round"> Edit</a>
                 <a onclick="myFunction()" class="btn btn-round">Delete</a>
-                <a href ="{{ url_for('member.member_delete_tutorial_page', tutorial_id=item[-1])}}" id="myLink"></a>
+                <a href ="{{ url_for('member_delete.member_delete_tutorial_page', tutorial_id=item[-1])}}" id="myLink"></a>
             {% else %}
 
             {% endif %}	
