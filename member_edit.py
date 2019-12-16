@@ -222,7 +222,7 @@ def member_edit_sponsor_page(sponsor_id):
     form.typ.choices = sponsortypechoices
     imageForm = UploadImageForm()
     imageFolderPath = os.path.join(os.getcwd(), 'static/images/sponsors')
-    if(auth != "Team leader" and auth != "Subteam leader" and auth != "Member"):
+    if(auth != "Team leader"):
         flash("Not an authorized person")
         return redirect(url_for("home.home_page"))
     if (request.method == 'POST' and form.submit_add_sponsor.data or form.validate()):

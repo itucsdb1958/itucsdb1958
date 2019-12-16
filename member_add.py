@@ -47,7 +47,7 @@ def member_add_member_page():
 @member_add.route("/member/add/competition", methods=['GET', 'POST'])
 def member_add_competition_page():
 	auth = session.get('auth_type')
-	if(auth != "Team leader" and auth != "Subteam leader" and auth != "Member"):
+	if(auth != "Team leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
 	form = AddCompetitionForm()
@@ -71,7 +71,7 @@ def member_add_sponsor_page():
 		"sponsortype.id,sponsortype.name", "sponsortype")
 	form = AddSponsorForm()
 	form.typ.choices = sponsortypechoices
-	if(auth != "Team leader" and auth != "Subteam leader" and auth != "Member"):
+	if(auth != "Team leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
 	if (request.method == 'POST' and form.submit_add_sponsor.data or form.validate()):

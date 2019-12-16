@@ -48,7 +48,7 @@ def admin_edit_competition_page(id):
 			name, date, country, description, reward), "id={}".format(id))
 		return redirect(url_for('admin_edit.admin_edit_competition_page', id=id))
 	else:
-		if(session.get('auth_type') != 'admin'):
+		if(session.get('auth_type') != 'Team leader'):
 			flash('No admin privileges...', 'danger')
 			return redirect(url_for('home.home_page'))
 		result = select('id,name,date,country,description,reward',
