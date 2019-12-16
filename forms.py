@@ -158,3 +158,20 @@ class EditScheduleForm(FlaskForm):
     description = StringField("Description",validators=[DataRequired()])
     budget = StringField("Budget",validators=[DataRequired()])
     submit_edit_schedule = SubmitField("Add Schedule")
+class AddTutorialForm(FlaskForm):
+    name = StringField('Tutorial Name',validators=[DataRequired()])
+    area = StringField('Area')
+    description = TextAreaField('Descrtiption')
+    link = StringField('Link')
+    isvideo = BooleanField('isVideo')
+
+    submit_add_tutorial = SubmitField('Add Tutorial')
+
+class EditTutorialForm(FlaskForm):
+    name = StringField('Tutorial Name')
+    area = StringField('Area')
+    description = TextAreaField('Descrtiption')
+    link = StringField('Link')
+    isvideo = BooleanField('isVideo')
+
+    submit_edit_tutorial = SubmitField('Update Tutorial')
