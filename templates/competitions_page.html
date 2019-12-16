@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Teams Page{% endblock %}
+{% block title %}Competitions Page{% endblock %}
 {% block content %}
 <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/competitions.css') }}" />
@@ -21,14 +21,20 @@
       <h1 class="name">{{item[1]}}</h1>
       <p>{{item[4]}}</p>
 	</article>
-	{% if session['auth_type'] == 'admin' %}
+	{% if session['auth_type'] == 'admin' or session['auth_type'] == 'Team leader' %}
 			<td>
 				<form class="form-inline my-2 my-lg-2">
 					<a href="{{ url_for('admin_edit.admin_edit_competition_page',id=item[0]) }}"
 						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
 				</form>
 			</td>
-			{% endif %}
+			<td>
+				<form class="form-inline my-2 my-lg-2">
+					<a href="{{ url_for('member.member_delete_competition_page',competition_id=item[0]) }}"
+						class="btn btn-outlnie-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
+				</form	>
+			</td>
+	{% endif %}
   </div>
   {% endfor %}
 </div>
