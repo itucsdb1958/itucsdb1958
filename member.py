@@ -10,15 +10,12 @@ from werkzeug.utils import secure_filename
 
 from forms import (AddCompetitionForm, AddMemberForm, AddSponsorForm,
                    UploadImageForm)
-<<<<<<< HEAD
 from queries import insert, select, update
 from forms import AddMemberForm
 from forms import AddEquipmentForm
 from forms import AddScheduleForm
 from queries import select, insert
-=======
 from queries import insert, select, update, delete
->>>>>>> add_competition
 
 member = Blueprint(name='member', import_name=__name__,
 				   template_folder='templates')
