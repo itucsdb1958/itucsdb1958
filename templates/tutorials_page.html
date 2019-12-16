@@ -3,9 +3,9 @@
 {% block content %}
 
 {% if session['auth_type'] == 'Team leader' or session['auth_type'] == 'Member' or session['auth_type'] == 'Subteam leader'  %}
-    <button style="size: 20px; float: right;">
-        <a href ="{{ url_for('member.member_add_tutorial_page')}}"> Create New
-    </button>
+    <a href ="{{ url_for('member.member_add_tutorial_page')}}" style="size: 20px; float: right;" class="btn btn-round"> Create New</a>
+    <br>
+    <br>
     <br>
 {% endif %}
 
@@ -14,7 +14,7 @@
         <div class="speaker_box">
             <a href="{{item[3]}}">
                 <div class="speaker_img" style="height: 300px;">
-                    <img src="../static/images/tutorial/{{item[4]}}.png" alt="Image">
+                    <img src="../static/images/tutorial/{{item[4]}} " alt="Image">
                     
                     <div class="info_box">
                         <h5 class="name">{{ item[0]}}</h5>
@@ -25,10 +25,9 @@
             </a>
 
             {% if session['member_id'] == item[6] %}
-                <button style="size: 20px;">
-                    <a href ="{{ url_for('member.member_edit_tutorial_page', id=item[-1])}}"> Edit
-                </button>
-                <button style="size: 20px;">Delete</button>
+                <a href ="{{ url_for('member.member_edit_tutorial_page', id=item[-1])}}" class="btn btn-round"> Edit</a>
+                <a onclick="myFunction()" class="btn btn-round">Delete</a>
+                <a href ="{{ url_for('member.member_delete_tutorial_page', tutorial_id=item[-1])}}" id="myLink"></a>
             {% else %}
 
             {% endif %}	
@@ -36,5 +35,15 @@
     {% endfor %}
     
 </div>
-    
+<script>
+function myFunction() {
+    var txt;
+    var r = confirm("The element is going to be deleted permanently!");
+    if (r == true) {
+        document.getElementById("myLink").click();
+    } else {
+        txt = "You pressed Cancel!";
+    }
+}
+</script>
 {% endblock content %}

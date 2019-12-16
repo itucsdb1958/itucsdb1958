@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, redirect, url_for, flash, request, session, abort, Blueprint
 import psycopg2 as db
-from forms import AddMemberForm,AddTutorialForm,EditTutorialForm
-from queries import select, insert, update
-
+import os
+import time
+import math
+from forms import AddMemberForm,AddTutorialForm,EditTutorialForm,UploadImageForm
+from queries import select, insert, update, delete
+from werkzeug.utils import secure_filename
 member = Blueprint(name='member', import_name=__name__,
 				   template_folder='templates')
 
@@ -60,12 +63,14 @@ def member_add_tutorial_page():
 
 		insert("tutorial" , "NAME, AREA, DESCRIPTION, LINK, PICTURE, ISVIDEO, MEMBER_ID",
 		 "'{}','{}','{}','{}','avatar',{},{}".format(name, area, description, link, isvideo, member_id))
-		return redirect(url_for("member.member_add_tutorial_page"))
+		return redirect(url_for("visitor.visitor_tutorials_page"))
 	return render_template("member_add_tutorial_page.html",form=form)
 
-@member.route("/member/tutorials/edit/<id>", methods=['GET', 'POST'])
+@member.route("/member/tutorial/edit/<id>", methods=['GET', 'POST'])
 def member_edit_tutorial_page(id):
 	form = EditTutorialForm()
+	imageForm = UploadImageForm()
+	imageFolderPath = os.path.join(os.getcwd(), 'static/images/tutorial')
 
 	if (request.method == 'POST' and form.submit_edit_tutorial.data or form.validate()):
 		name = form.name.data
@@ -74,18 +79,56 @@ def member_edit_tutorial_page(id):
 		link = form.link.data
 		isvideo = form.isvideo.data
 		member_id = session.get('member_id')
+		image = imageForm.image.data
 
-		update("tutorial", "name='{}', area='{}', description='{}', link='{}', isvideo={}".format(
-			name, area, description, link, isvideo), where="id={}".format(id))
-		return redirect(url_for('member.member_edit_tutorial_page', id=id))
+		if(image):
+			extension=image.filename.split('.')[1]
+			current_date = time.gmtime()
+			filename = secure_filename(
+				"{}_{}.{}".format(id, current_date[0:6],extension))
+			filePath = os.path.join(imageFolderPath, filename)
+			images = os.listdir(imageFolderPath)
+			digits = int(math.log(int(id), 10))+1
+			for im in images:
+				if(im[digits] == '_' and im[0:digits] == str(id)):
+					os.remove(os.path.join(imageFolderPath, im))
+			image.save(filePath)
+		elif(image):
+			flash('Please upload a file in JPG format', "danger")
+
+		update("tutorial", "name='{}', area='{}', description='{}', picture='{}',link='{}', isvideo={}".format(
+			name, area, description, filename,link, isvideo), where="id={}".format(id))
+		return redirect(url_for('visitor.visitor_tutorials_page'))
 	else:
 		if(session.get('auth_type') == 'Member' or session.get('auth_type') == 'Team leader' or session.get('auth_type') == 'Subteam leader'):
-			result = select(columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.isvideo,tutorial.member_id",
+			result = select(columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.isvideo,tutorial.picture,tutorial.member_id",
 						table="tutorial",
 						where="tutorial.id={}".format(id))
+			form.name.data = result[0]
+			form.area.data = result[1]
+			form.description.data = result[2]
+			form.link.data = result[3]
+			form.isvideo.data = result[4]
+			img_name = result[5]
+			
 		else:
-			flash('No member privileges...', 'danger')
-			return redirect(url_for('home.home_page'))
+			flash('Not an authorized person', 'danger')
+			return redirect(url_for('visitor.visitor_tutorials_page'))
 		
-		return render_template('member_edit_tutorial_page.html', form=form, result=result)
-	return render_template('member_edit_tutorial_page.html', form=form, result=result)
+		return render_template('member_edit_tutorial_page.html', form=form, result=result, uploadImg=imageForm)
+	return render_template('member_edit_tutorial_page.html', form=form, result=result, uploadImg=imageForm,imgName=img_name)
+
+@member.route("/member/delete/tutorial/<tutorial_id>",methods=['GET','POST'])
+def member_delete_tutorial_page(tutorial_id):
+	auth = session.get('auth_type')
+	member_id = session.get('member_id')
+
+	if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader" and auth != "Member"):
+		flash("Not an authorized person")
+		return redirect(url_for("visitor.visitor_tutorials_page"))
+	if( member_id == select("member_id","tutorial","id={}".format(tutorial_id))[0] ):
+		delete(table="tutorial",where="id={}".format(tutorial_id))
+	else:
+		flash("Not an authorized person")
+		return redirect(url_for("visitor.visitor_tutorials_page"))
+	return redirect(url_for("visitor.visitor_tutorials_page"))
