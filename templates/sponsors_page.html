@@ -1,9 +1,13 @@
 {% extends "layout.html" %}
 {% block title %}Sponsors Page{% endblock %}
 {% block content %}
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/competitions.css') }}" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+<h1 id="header" class="text-primary">Sponsors</h1>
 
 
-<h6 style="font-size: 40px; text-align: center;">Sponsors Page</h6>
 
 <div class="table-responsive">
 	<table id="myTable" class = "table table-striped" style='margin-top: 5%; table-layout: auto;'>
@@ -60,5 +64,6 @@
 	</table>
 </div>
 
+<script src="{{url_for('static', filename='js/sorttable.js')}}"></script>
 <script src="{{url_for('static', filename='js/sorttable.js')}}"></script>
 {% endblock content %}    

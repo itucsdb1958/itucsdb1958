@@ -5,14 +5,13 @@
 <div>
     <div class="TeamInfo" >
         <h6 style="font-size: 40px; text-align: center;">TeamInfo</h6>
-        <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" style="float: left; height: 400px; width: 600px;">
+        <img src="/static/images/team/{{teaminfo[5]}}.png" style="float: left; height: 400px; width: 600px;">
         <div style="float:left; margin-left: 100px;background: rgba(0,0,0,0.3); padding: 10px; width: 400px;">
             <h5 class="name" style="color: white; font-size: 22px;">{{teaminfo[0]}}</h5>
             <p class="type" style="color: white; font-size: 20px;">#ofMembers:&emsp;&emsp;{{teaminfo[1]}}</p><br>
             <p style="color: white; font-size: 20px;">Found Year:&emsp;{{teaminfo[2]}}</p><br>
             <p style="color: white; font-size: 20px;">Email:&emsp;&emsp;{{teaminfo[3]}}</p><br>
-            <p style="color: white; font-size: 20px;">Adress:&emsp;&emsp;{{teaminfo[4]}}</p><br>
-            <p style="color: white; font-size: 20px;">Logo:&emsp;&emsp;{{teaminfo[5]}}</p><br>
+            <p style="color: white; font-size: 20px;">Address:&emsp;&emsp;{{teaminfo[4]}}</p><br>
         </div>
     </div>
 
@@ -86,7 +85,7 @@
         {% for mem in members_info %}
             <div class="speaker_box" style="float: left;">
                 <div class="speaker_img">
-                    <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="speaker name" >
+                    <img src="/static/images/person/{{mem[6]}}.png" alt="speaker name" >
                     <div class="info_box">
                         <h5 class="name">{{ mem[0]}}</h5>
                         <p class="type">{{mem[4]}}</p>
@@ -101,7 +100,7 @@
         <h6 style="font-size: 40px; text-align: center;">Sponsors</h6>
         {% for sponsor in sponsors %}
             <div class="brand_item text-center" style="float: left; margin:10px">
-                <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="brand">
+                <img src="/static/images/sponsors/{{sponsor[2]}}.png" alt="brand">
             </div>
         {% endfor %}
     </div>  

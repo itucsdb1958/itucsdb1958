@@ -69,6 +69,8 @@ def admin_edit_team_page(id):
 			flash('No admin privileges...', 'danger')
 			return redirect(url_for('home.home_page'))
 	form = EditTeamForm()
+	competitions = select("id,name", "competition")
+	form.competition.choices = competitions
 	imageForm = UploadImageForm()
 	imageFolderPath = os.path.join(os.getcwd(), 'static/images/team')
 	if (request.method == 'POST' and form.submit_team.data or form.validate()):
@@ -96,9 +98,17 @@ def admin_edit_team_page(id):
 			name, members, year, email, address, competition, id), where="id={}".format(id))
 		return redirect(url_for('admin_edit.admin_edit_team_page', id=id))
 	else:
-		result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.name",
+		result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.id",
 						table="team join competition on team.COMPETITION_ID=competition.id",
 						where="team.id={}".format(id))
+		
+		form.name.data = result[0]
+		form.memberCtr.data = result[1]
+		form.year.data = result[2]
+		form.email.data = result[3]
+		form.address.data = result[4]
+		form.competition.data = result[5]
+
 		img_name = None
 		for img in os.listdir(imageFolderPath):
 			if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):

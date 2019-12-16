@@ -57,9 +57,9 @@ class EditTeamForm(FlaskForm):
     year = StringField('Foundation Year')
     email = StringField('Email')
     address = StringField('Address')
-    res = select('id,name', 'competition')
+    
     competition = SelectField(
-        'Competition', choices=res)
+        'Competition',coerce=int)
     submit_team = SubmitField('Update Team')
 
 
