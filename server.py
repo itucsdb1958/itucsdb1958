@@ -7,6 +7,8 @@ from flask import Blueprint, Flask, render_template
 from admin_add import admin_add
 from admin_edit import admin_edit
 from admin_list import admin_list
+from admin_delete import admin_delete
+from admin_add import admin_add
 from dbinit import initialize
 from home import home
 from login import login
@@ -36,6 +38,7 @@ app.register_blueprint(member_profile)
 app.register_blueprint(admin_list)
 app.register_blueprint(admin_edit)
 app.register_blueprint(admin_add)
+app.register_blueprint(admin_delete)
 app.register_blueprint(member)
 app.register_blueprint(member_add)
 app.register_blueprint(member_delete)
