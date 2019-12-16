@@ -19,8 +19,10 @@ major_choices = [('blg', 'Computer Engineering'),
                  ('uck', 'Aeronautical Engineering'),
                  ('end', 'Industrial Engineering')]
 
-status_choices = [('1','Active'),('2','Disactive')]
-class_choices = [('1','1'),('2','2'),('3','3'),('4','4')]
+status_choices = [('1', 'Active'), ('2', 'Disactive')]
+class_choices = [('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')]
+
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -34,7 +36,7 @@ class SQLForm(FlaskForm):
 
 class EditMemberForm(FlaskForm):
     team = StringField('Team', validators=[DataRequired()])
-    subteam = SelectField('Subteam',coerce=int, validators=[DataRequired()])
+    subteam = SelectField('Subteam', coerce=int, validators=[DataRequired()])
     role = StringField('Role', validators=[DataRequired()])
     auth_type = SelectField(
         'Authentication', choices=auth_type_choices, validators=[DataRequired()])
@@ -79,84 +81,95 @@ class UploadCVForm(FlaskForm):
 class UploadImageForm(FlaskForm):
     image = FileField(u'Image File')
 
+
 class AddTeamForm(FlaskForm):
-    name = StringField('Team Name',validators=[DataRequired()])
+    name = StringField('Team Name', validators=[DataRequired()])
     year = DateField('Foundation Year')
-    mail = EmailField('E-mail',validators=[DataRequired(), Email()])
+    mail = EmailField('E-mail', validators=[DataRequired(), Email()])
     address = StringField('Address')
     submit_add_team = SubmitField('Add Team')
 
+
 class AddMemberForm(FlaskForm):
-    name=StringField("Name",validators=[DataRequired()])
-    age = StringField("Age",validators=[DataRequired()])
-    phone= StringField("Phone",validators=[DataRequired()])
-    mail = EmailField('E-mail',validators=[DataRequired(), Email()]) 
-    subteam = SelectField("Subteam",validators=[DataRequired()],coerce=int)
-    clas = SelectField("Class",validators=[DataRequired()],choices=class_choices)
-    status = SelectField('Status',choices = status_choices,validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    age = StringField("Age", validators=[DataRequired()])
+    phone = StringField("Phone", validators=[DataRequired()])
+    mail = EmailField('E-mail', validators=[DataRequired(), Email()])
+    subteam = SelectField("Subteam", validators=[DataRequired()], coerce=int)
+    clas = SelectField("Class", validators=[
+                       DataRequired()], choices=class_choices)
+    status = SelectField('Status', choices=status_choices,
+                         validators=[DataRequired()])
     major = SelectField('Major', choices=major_choices,
                         validators=[DataRequired()])
-    username = StringField('Username',validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
     submit_add_member = SubmitField("Add Member")
 
+
 class AddCompetitionForm(FlaskForm):
-    name = StringField("Name",validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
     date = DateField('Date', format='%Y-%m-%d')
-    country = StringField("Country",validators=[DataRequired()])
-    description = TextAreaField("Description",validators=[DataRequired()])
-    reward = StringField("Reward",validators=[DataRequired()])
+    country = StringField("Country", validators=[DataRequired()])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    reward = StringField("Reward", validators=[DataRequired()])
     submit_add_competition = SubmitField("Add Competition")
-    #TODO:: COMPETITION'A LOGO EKLE
+    # TODO:: COMPETITION'A LOGO EKLE
+
 
 class AddSponsorForm(FlaskForm):
-    name = StringField("Name",validators=[DataRequired()])
-    description = TextAreaField("Description",validators=[DataRequired()])
-    field = StringField("Field",validators=[DataRequired()])
-    country = StringField("Country",validators=[DataRequired()])
-    address = TextAreaField("Address",validators=[DataRequired()])
-    typ = SelectField("Type",coerce=int,validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    field = StringField("Field", validators=[DataRequired()])
+    country = StringField("Country", validators=[DataRequired()])
+    address = TextAreaField("Address", validators=[DataRequired()])
+    typ = SelectField("Type", coerce=int, validators=[DataRequired()])
     submit_add_sponsor = SubmitField("Add Sponsor")
 
+
 class EditSponsorForm(FlaskForm):
-    name = StringField("Name",validators=[DataRequired()])
-    description = TextAreaField("Description",validators=[DataRequired()])
-    field = StringField("Field",validators=[DataRequired()])
-    country = StringField("Country",validators=[DataRequired()])
-    address = TextAreaField("Address",validators=[DataRequired()])
-    typ = SelectField("Type",coerce=int,validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    field = StringField("Field", validators=[DataRequired()])
+    country = StringField("Country", validators=[DataRequired()])
+    address = TextAreaField("Address", validators=[DataRequired()])
+    typ = SelectField("Type", coerce=int, validators=[DataRequired()])
     submit_edit_sponsor = SubmitField("Update Sponsor")
-    
+
+
 class AddEquipmentForm(FlaskForm):
-    name = StringField("Name",validators=[DataRequired()])
-    link = StringField("Link",validators=[DataRequired()])
-    purchasedate = DateField("PurchaseDate",validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    link = StringField("Link", validators=[DataRequired()])
+    purchasedate = DateField("PurchaseDate", validators=[DataRequired()])
     available = BooleanField('Available')
-    subteam = SelectField("Subteam",coerce=int,validators=[DataRequired()])
+    subteam = SelectField("Subteam", coerce=int, validators=[DataRequired()])
     submit_add_equipment = SubmitField("Add Equipment")
     picture = FileField(u'Picture')
 
+
 class EditEquipmentForm(FlaskForm):
-    name = StringField("Name",validators=[DataRequired()])
-    link = StringField("Link",validators=[DataRequired()])
-    purchasedate = DateField("PurchaseDate",validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    link = StringField("Link", validators=[DataRequired()])
+    purchasedate = DateField("PurchaseDate", validators=[DataRequired()])
     available = BooleanField('Available')
-    subteam = SelectField("Subteam",coerce=int,validators=[DataRequired()])
+    subteam = SelectField("Subteam", coerce=int, validators=[DataRequired()])
     submit_edit_equipment = SubmitField("Update Equipment")
-    
+
+
 class AddScheduleForm(FlaskForm):
-    name = StringField("Name",validators=[DataRequired()])
-    deadline = DateField("Deadline",validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    deadline = DateField("Deadline", validators=[DataRequired()])
     done = BooleanField('Done')
-    description = StringField("Description",validators=[DataRequired()])
-    budget = StringField("Budget",validators=[DataRequired()])
+    description = StringField("Description", validators=[DataRequired()])
+    budget = StringField("Budget", validators=[DataRequired()])
     submit_add_schedule = SubmitField("Add Schedule")
 
+
 class EditScheduleForm(FlaskForm):
-    name = StringField("Name",validators=[DataRequired()])
-    deadline = DateField("Deadline",validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    deadline = DateField("Deadline", validators=[DataRequired()])
     done = BooleanField('Done')
-    description = StringField("Description",validators=[DataRequired()])
-    budget = StringField("Budget",validators=[DataRequired()])
+    description = StringField("Description", validators=[DataRequired()])
+    budget = StringField("Budget", validators=[DataRequired()])
     submit_edit_schedule = SubmitField("Update Schedule")
     
 
@@ -181,13 +194,14 @@ class EditDesignForm(FlaskForm):
     submit_edit_design = SubmitField("Update Design")
 
 class AddTutorialForm(FlaskForm):
-    name = StringField('Tutorial Name',validators=[DataRequired()])
+    name = StringField('Tutorial Name', validators=[DataRequired()])
     area = StringField('Area')
     description = TextAreaField('Descrtiption')
     link = StringField('Link')
     isvideo = BooleanField('isVideo')
 
     submit_add_tutorial = SubmitField('Add Tutorial')
+
 
 class EditTutorialForm(FlaskForm):
     name = StringField('Tutorial Name')
@@ -198,15 +212,37 @@ class EditTutorialForm(FlaskForm):
 
     submit_edit_tutorial = SubmitField('Update Tutorial')
 
+
 class AddTeamLeaderForm(FlaskForm):
-    name=StringField("Name",validators=[DataRequired()])
-    age = StringField("Age",validators=[DataRequired()])
-    phone= StringField("Phone",validators=[DataRequired()])
-    mail = EmailField('E-mail',validators=[DataRequired(), Email()]) 
-    team = SelectField("Team",validators=[DataRequired()],coerce=int)
-    clas = SelectField("Class",validators=[DataRequired()],choices=class_choices)
-    status = SelectField('Status',choices = status_choices,validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    age = StringField("Age", validators=[DataRequired()])
+    phone = StringField("Phone", validators=[DataRequired()])
+    mail = EmailField('E-mail', validators=[DataRequired(), Email()])
+    team = SelectField("Team", validators=[DataRequired()], coerce=int)
+    clas = SelectField("Class", validators=[
+                       DataRequired()], choices=class_choices)
+    status = SelectField('Status', choices=status_choices,
+                         validators=[DataRequired()])
     major = SelectField('Major', choices=major_choices,
                         validators=[DataRequired()])
-    username = StringField('Username',validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
     submit_add_team_leader = SubmitField("Add Team Leader")
+
+
+class EditProfileForm(FlaskForm):
+    name = StringField('Full Name', validators=[DataRequired()])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    team = StringField('Team', validators=[DataRequired()])
+    subteam = StringField('Subteam', validators=[DataRequired()])
+    role = StringField('Role', validators=[DataRequired()])
+    active = BooleanField('Active')
+    entry = DateField('Entry Date', format='%Y-%m-%d')
+    auth_type = SelectField(
+        'Authentication', coerce=int, validators=[DataRequired()])
+    address = StringField('Address')
+    phone = StringField('Phone', validators=[DataRequired()])
+    major = SelectField('Major', coerce=int,
+                        validators=[DataRequired()])
+    clas = IntegerField('Class')
+    age = IntegerField('Age')
+    submit_edit_profile = SubmitField('Update Profile')

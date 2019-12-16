@@ -49,8 +49,8 @@ def member_edit_tutorial_page(id):
     else:
         if(session.get('auth_type') == 'Member' or session.get('auth_type') == 'Team leader' or session.get('auth_type') == 'Subteam leader'):
             result = select(columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.isvideo,tutorial.picture,tutorial.member_id",
-                                    table="tutorial",
-                                    where="tutorial.id={}".format(id))
+                            table="tutorial",
+                            where="tutorial.id={}".format(id))
             form.name.data = result[0]
             form.area.data = result[1]
             form.description.data = result[2]
@@ -69,8 +69,8 @@ def member_edit_tutorial_page(id):
 @member_edit.route("/member/edit/member/<person_id>", methods=['GET', 'POST'])
 def member_edit_member_page(person_id):
     auth = session.get('auth_type')
-    if(auth!='Team leader'):
-        flash("Not authorized",'danger')
+    if(auth != 'Team leader'):
+        flash("Not authorized", 'danger')
         return redirect(url_for("home.home_page"))
     form = EditMemberForm()
     team_id = session.get("team_id")
@@ -225,8 +225,8 @@ def member_edit_design_page(design_id):
         return redirect(url_for("home.home_page"))
 
     typs = select("vehicle_type.id,vehicle_type.name",
-                      "vehicle_type")
-    
+                  "vehicle_type")
+
     team_id = session.get('team_id')
     member_id = session.get('member_id')
     form = EditDesignForm()
@@ -241,7 +241,7 @@ def member_edit_design_page(design_id):
         is_autonomous = form.is_autonomous.data
         typ = form.typ.data
         update("design", "name='{}',year='{}',maxspeed='{}',weight='{}',duration='{}', is_autonomous='{}', team_id='{}', type_of_vehicle = '{}'".format(
-            name, year, maxspeed, weight, duration, is_autonomous,team_id,typ), where="id={}".format(design_id))
+            name, year, maxspeed, weight, duration, is_autonomous, team_id, typ), where="id={}".format(design_id))
         return redirect(url_for("visitor.visitor_teaminfo_page"))
     else:
         result = select("design.name,year,maxspeed,weight,duration,is_autonomous,vehicle_type.id",
