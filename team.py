@@ -13,19 +13,20 @@ team = Blueprint(name='team', import_name=__name__,
 @team.route("/schedule")
 def team_schedule_page():
     schedule = select(
-        columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name", 
+        columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name,schedule.id", 
         table="schedule join member on schedule.member_id=member.id join person on person.id=member.person_id order by schedule.done,schedule.deadline")
     return render_template("schedule_page.html", schedule=schedule)
 
 @team.route("/equipments/")
 def team_equipments_page():
+    print(session.get('team_id'))
     auth = session.get('auth_type')
     if(auth != 'Team leader' and auth != 'Member' and auth!='Subteam leader'):
         flash('unauth','danger')
         return redirect(url_for("home.home_page"))
     
     equipments = select(
-        columns="equipment.name,equipment.link,equipment.purchasedate,equipment.available,equipment.picture,subteam.name", 
+        columns="equipment.name,equipment.link,equipment.purchasedate,equipment.available,equipment.picture,subteam.name,equipment.id", 
         table="equipment join team on equipment.team_id = team.id join subteam on equipment.subteam_id=subteam.id",
         where="team.id = {}".format(session.get("team_id"))
         )
