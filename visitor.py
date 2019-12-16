@@ -39,7 +39,7 @@ def visitor_sponsors_page():
 @visitor.route("/schedule")
 def visitor_schedule_page():
 	schedule = select(
-		columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name", 
+		columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name,schedule.id", 
 		table="schedule join member on schedule.member_id=member.id join person on person.id=member.person_id order by schedule.done,schedule.deadline")
 	return render_template("schedule_page.html", schedule=schedule)
 
