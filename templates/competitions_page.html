@@ -30,9 +30,10 @@
 			</td>
 			<td>
 				<form class="form-inline my-2 my-lg-2">
-					<a href="{{ url_for('member_delete.member_delete_competition_page',competition_id=item[0]) }}"
+					<a onclick="delete_popup()"
 						class="btn btn-outlnie-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
-				</form	>
+					<a href ="{{ url_for('member_delete.member_delete_competition_page',competition_id=item[0]) }}" id="DeleteLink"></a>
+				</form>
 			</td>
 	{% endif %}
   </div>
@@ -59,4 +60,6 @@
 		}
 	}
 </script>
+<script src="{{url_for('static', filename='js/delete_popup.js')}}"></script>
+
 {% endblock content %}

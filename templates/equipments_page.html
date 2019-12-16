@@ -48,8 +48,9 @@
 				</td>
 				<td>
 					<form class="form-inline my-2 my-lg-2">
-						<a href="{{ url_for('member_delete.member_delete_equipment_page',equipment_id=item[-1]) }}"
+						<a onclick="delete_popup()"
 							class="btn btn-outlnie-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
+						<a href ="{{ url_for('member_delete.member_delete_equipment_page',equipment_id=item[-1]) }}" id="DeleteLink"></a>
 					</form	>
 				</td>
 			{% endif %}	
@@ -59,5 +60,6 @@
 </div>
 
 <script src="{{url_for('static', filename='js/sorttable.js')}}"></script>
+<script src="{{url_for('static', filename='js/delete_popup.js')}}"></script>
 
 {% endblock content %}   
