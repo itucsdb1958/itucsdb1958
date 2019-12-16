@@ -38,7 +38,7 @@
                         <td>{{team[3]}}</td>
                         <td>{{team[4]}}</td>
                         <td>{{team[5]}}</td>
-                        {% if session['auth_type'] == "Team leader" %}
+                        {% if session['auth_type'] == "Team leader" and session['team_id']==team[-1] %}
                             <td>
                                 <form class="form-inline my-2 my-lg-2">
                                     <a href="{{ url_for('member_edit.member_edit_design_page',design_id=team[-1]) }}"

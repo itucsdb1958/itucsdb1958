@@ -44,9 +44,9 @@ def visitor_schedule_page():
 	return render_template("schedule_page.html", schedule=schedule)
 
 
-@visitor.route("/teaminfo/")
-def visitor_teaminfo_page():
-	team_id = session.get('team_id')
+@visitor.route("/teaminfo/<team_id>")
+def visitor_teaminfo_page(team_id):
+	
 	teaminfo = select(
 		columns="team.name,team.num_members,team.found_year,team.email,team.adress,team.logo",
 		table = "team",
