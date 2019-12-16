@@ -226,7 +226,8 @@ def admin_edit_member_page(person_id):
 	return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, cvPath=cvPath, imgName=img_name)
 
 
-@admin_edit.route("/download/<filename>", methods=['GET', 'POST'])
-def download(filename):
+@admin_edit.route("/download", methods=['GET', 'POST'])
+def download():
 	cvFolder = os.path.join(admin_edit.root_path, "static/cv")
+	filename = select("person.cv","person join member on member.person_id=person.id","member.id={}".format(session.get('member_id')))[0]
 	return send_from_directory(directory=cvFolder, filename=filename, as_attachment=True, cache_timeout=0)
