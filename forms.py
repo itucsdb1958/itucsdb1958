@@ -125,20 +125,29 @@ class EditSponsorForm(FlaskForm):
     address = TextAreaField("Address",validators=[DataRequired()])
     typ = SelectField("Type",coerce=int,validators=[DataRequired()])
     submit_edit_sponsor = SubmitField("Update Sponsor")
+    
 class AddEquipmentForm(FlaskForm):
     name = StringField("Name",validators=[DataRequired()])
     link = StringField("Link",validators=[DataRequired()])
     purchasedate = DateField("PurchaseDate",validators=[DataRequired()])
-    available = BooleanField('Available',validators=[DataRequired()])
+    available = BooleanField('Available')
     subteam = SelectField("Subteam",coerce=int,validators=[DataRequired()])
     submit_add_equipment = SubmitField("Add Equipment")
     picture = FileField(u'Picture')
 
+class EditEquipmentForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    link = StringField("Link",validators=[DataRequired()])
+    purchasedate = DateField("PurchaseDate",validators=[DataRequired()])
+    available = BooleanField('Available')
+    subteam = SelectField("Subteam",coerce=int,validators=[DataRequired()])
+    submit_edit_equipment = SubmitField("Add Equipment")
+    
 class AddScheduleForm(FlaskForm):
     name = StringField("Name",validators=[DataRequired()])
     deadline = DateField("Deadline",validators=[DataRequired()])
-    done = BooleanField('Done',validators=[DataRequired()])
-    description = StringField("Description",validators=[DataRequired])
-    budget = StringField("Budget",validators=[DataRequired])
+    done = BooleanField('Done')
+    description = StringField("Description",validators=[DataRequired()])
+    budget = StringField("Budget",validators=[DataRequired()])
     submit_add_schedule = SubmitField("Add Schedule")
 

@@ -20,6 +20,8 @@
 			<th onclick="sortTable(2)" style="cursor: pointer;">Subteam    
 				<img src="static/images/schedule/order.png" alt="..." style="widows: 15px; height: 15px; align-self: right;">
 			</th>
+			<th></th>
+			<th></th>
 		</tr>
 		{% for item in equipments %}
 		<tr>
@@ -36,7 +38,21 @@
 				</div>
 			</td>
 			
-			<td>{{item[5]}}</td>	
+			<td>{{item[5]}}</td>
+			{% if session['auth_type'] == 'Team leader' or session['auth_type'] == 'Subteam leader' %}
+				<td>
+					<form class="form-inline my-2 my-lg-2">
+						<a href="{{ url_for('member.member_edit_equipment_page',equipment_id=item[-1]) }}"
+							class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
+					</form>
+				</td>
+				<td>
+					<form class="form-inline my-2 my-lg-2">
+						<a href="{{ url_for('member.member_delete_equipment_page',equipment_id=item[-1]) }}"
+							class="btn btn-outlnie-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
+					</form	>
+				</td>
+			{% endif %}	
 		</tr>
 		{% endfor %}
 	</table>        

@@ -9,7 +9,7 @@ from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
 from werkzeug.utils import secure_filename
 
 from forms import (AddCompetitionForm, AddMemberForm, AddSponsorForm,
-				   UploadImageForm, EditMemberForm)
+				   UploadImageForm, EditMemberForm, EditSponsorForm, EditEquipmentForm)
 from queries import insert, select, update
 from forms import AddMemberForm
 from forms import AddEquipmentForm
@@ -106,7 +106,7 @@ def member_edit_sponsor_page(sponsor_id):
 	auth = session.get('auth_type')
 	sponsortypechoices = select(
 		"sponsortype.id,sponsortype.name", "sponsortype")
-	form = AddSponsorForm()
+	form = EditSponsorForm()
 	form.typ.choices = sponsortypechoices
 	imageForm = UploadImageForm()
 	imageFolderPath = os.path.join(os.getcwd(), 'static/images/sponsors')
@@ -156,6 +156,62 @@ def member_edit_sponsor_page(sponsor_id):
 		return render_template("member_edit_sponsor_page.html", form=form, uploadImg=imageForm, result=result, imgName=img_name)
 
 
+@member.route("/member/edit/equipment/<equipment_id>", methods=['GET', 'POST'])
+def member_edit_equipment_page(equipment_id):
+	auth = session.get('auth_type')
+	if(auth != "Team leader" and auth != "Subteam leader"):
+		flash("Not an authorized person")
+		return redirect(url_for("home.home_page"))
+	team_id = session.get("team_id")
+	subteams = select("subteam.id,subteam.name",
+					  "subteam join team on subteam.team_id=team.id", "team.id={}".format(team_id))
+	form = EditEquipmentForm()
+	form.subteam.choices=subteams
+	imageForm = UploadImageForm()
+	imageFolderPath = os.path.join(os.getcwd(), 'static/images/equipments')
+	if (request.method == 'POST' and form.submit_edit_equipment.data or form.validate()):
+		name = form.name.data
+		link = form.link.data
+		purchasedate = form.purchasedate.data
+		available = form.available.data
+		subteam_id = form.subteam.data
+		image = imageForm.image.data
+		if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+			date = time.gmtime()
+			filename = secure_filename(
+				"{}_{}.jpg".format(equipment_id, date[0:6]))
+			filePath = os.path.join(imageFolderPath, filename)
+			images = os.listdir(imageFolderPath)
+			digits = int(math.log(int(equipment_id), 10))+1
+			for im in images:
+				if(im[digits] == '_' and im[0:digits] == str(equipment_id)):
+					print("deleting",im)
+					os.remove(os.path.join(imageFolderPath, im))
+			image.save(filePath)
+		elif(image):
+			flash("Please upload a file in JPG format", 'danger')
+		
+		update("equipment", "name='{}',link='{}',purchasedate='{}',available='{}',picture={}, team_id='{}',subteam_id={}".format(
+			name, link, purchasedate, available, equipment_id ,team_id, subteam_id), where="id={}".format(equipment_id))
+		return redirect(url_for("team.team_equipments_page"))
+	else:
+		img_name = None
+		for img in os.listdir(imageFolderPath):
+			if(equipment_id in img[0:len(equipment_id)] and (img[len(equipment_id)] == '_' or img[len(equipment_id)] == '.')):
+				img_name = img
+		result = select("equipment.name,link,purchasedate,available,subteam.id",
+						"equipment join subteam on equipment.subteam_id=subteam.id", "equipment.id={}".format(equipment_id))
+		print(result)
+		form.name.data = result[0]
+		form.link.data = result[1]
+		form.purchasedate.data = result[2]
+		form.available.data = result[3]
+		form.subteam.data = result[4]
+		return render_template("member_edit_equipment_page.html", form=form, uploadImg=imageForm,result=result,imgName=img_name)
+
+
+
+
 @member.route("/member/add/equipment", methods=['GET', 'POST'])
 def member_add_equipment_page():
 	auth = session.get('auth_type')
@@ -163,10 +219,7 @@ def member_add_equipment_page():
 	if(auth != "Team leader" and auth != "Subteam leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
-	# team_id = select(
-	#	"team.id", "team join person on team.id=person.team_id join member on member.person_id=person.id", "person.id={}".format(session['member_id']))
 	team_id = session.get("team_id")
-	print("Teamid", team_id)
 	subteams = select("subteam.id,subteam.name",
 					  "subteam join team on subteam.team_id=team.id", "team.id={}".format(team_id))
 	form = AddEquipmentForm()
@@ -188,24 +241,27 @@ def member_add_equipment_page():
 
 @member.route("/member/add/schedule", methods=['GET', 'POST'])
 def member_add_schedule_page():
-	if(session['auth_type'] != "Team leader" or session['auth_type'] != "Subteam leader"):
+	auth = session.get('auth_type')
+	print(auth)
+	if(auth != "Team leader" and auth != "Subteam leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
 
+	member_id = session.get('member_id')
 	form = AddScheduleForm()
-	if (request.method == 'POST' and form.submit_add_equipment.data or form.validate()):
+	if (request.method == 'POST' and form.submit_add_schedule.data or form.validate()):
 		name = form.name.data
 		deadline = form.deadline.data
 		done = form.done.data
 		description = form.description.data
 		budget = form.budget.data
-
-		insert("schedule", "NAME, DEADLINE, DONE, DESCRIPTION, BUDGET, MEMBER_ID",
-			   "'{}','{}','{}','{}','{}','1'".format(
-				   name, deadline, done, description, budget
+				
+		insert("schedule","NAME, DEADLINE, DONE, DESCRIPTION, BUDGET, MEMBER_ID",
+				"'{}','{}','{}','{}','{}',{}".format(
+				   name,deadline,done,description,budget,member_id
 			   ))
-
-		return redirect(url_for("member.member_add_schedule_page"))
+	
+		#return redirect(url_for("member.member_add_schedule_page"))
 	return render_template("member_add_schedule_page.html", form=form)
 
 
@@ -318,3 +374,20 @@ def member_delete_member_page(person_id):
 	delete("member", "id={}".format(member_id))
 	delete(table="person", where="id={}".format(person_id))
 	return redirect(url_for("member.member_members_page"))
+@member.route("/member/delete/equipment/<equipment_id>",methods=['GET','POST'])
+def member_delete_equipment_page(equipment_id):
+	auth = session.get('auth_type')
+	if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader"):
+		flash("Not an authorized person")
+		return redirect(url_for("home.home_page"))
+	delete(table="equipment",where="id={}".format(equipment_id))
+	return redirect(url_for("team.team_equipments_page"))
+
+@member.route("/member/delete/schedule/<schedule_id>",methods=['GET','POST'])
+def member_delete_schedule_page(schedule_id):
+	auth = session.get('auth_type')
+	if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader"):
+		flash("Not an authorized person")
+		return redirect(url_for("home.home_page"))
+	delete(table="schedule",where="id={}".format(schedule_id))
+	return redirect(url_for("team.team_schedule_page"))
