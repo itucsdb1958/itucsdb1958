@@ -13,7 +13,7 @@ member_edit = Blueprint(name='member_edit', import_name=__name__,
                         template_folder='templates')
 
 
-@member_edit.route("/member/tutorial/edit/<id>", methods=['GET', 'POST'])
+@member_edit.route("/member/edit/tutorial/<id>", methods=['GET', 'POST'])
 def member_edit_tutorial_page(id):
     form = EditTutorialForm()
     imageForm = UploadImageForm()
@@ -27,7 +27,7 @@ def member_edit_tutorial_page(id):
         isvideo = form.isvideo.data
         member_id = session.get('member_id')
         image = imageForm.image.data
-        filename = '-1'
+        filename = select("picture", "tutorial", "id={}".format(id))[0]
         if(image):
             extension = image.filename.split('.')[1]
             current_date = time.gmtime()

@@ -110,7 +110,7 @@ def member_add_sponsor_page():
 		country = form.country.data
 		type_id = form.typ.data
 		insert("sponsor", "name,description,field,country,logo,address,type_id",
-			   "'{}','{}','{}','{}','-1','{}',{}".format(name, description, field, country, address, type_id))
+			   "'{}','{}','{}','{}','-1.png','{}',{}".format(name, description, field, country, address, type_id))
 		return redirect(url_for("member_add.member_add_sponsor_page"))
 	return render_template("member_add_sponsor_page.html", form=form)
 
@@ -134,7 +134,7 @@ def member_add_equipment_page():
 		available = form.available.data
 		subteam_id = form.subteam.data
 		insert("equipment", "NAME, LINK, PURCHASEDATE, AVAILABLE, PICTURE, TEAM_ID, SUBTEAM_ID",
-			   "'{}','{}','{}','{}','-1','{}','{}'".format(
+			   "'{}','{}','{}','{}','-1.png','{}','{}'".format(
 				   name, link, purchasedate, available, team_id, subteam_id
 			   ))
 
@@ -183,6 +183,6 @@ def member_add_tutorial_page():
         member_id = session.get('member_id')
 
         insert("tutorial", "NAME, AREA, DESCRIPTION, LINK, PICTURE, ISVIDEO, MEMBER_ID",
-               "'{}','{}','{}','{}','avatar',{},{}".format(name, area, description, link, isvideo, member_id))
+               "'{}','{}','{}','{}','-1.png',{},{}".format(name, area, description, link, isvideo, member_id))
         return redirect(url_for("visitor.visitor_tutorials_page"))
     return render_template("member_add_tutorial_page.html", form=form)

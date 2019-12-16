@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Admin Panel{% endblock %}
+{% block title %}Team Leader Panel{% endblock %}
 {% block content %}
 <div class="content">
 	<div class="container-fluid">
@@ -19,6 +19,10 @@
 			<form class="form-inline my-2 my-lg-2">
 				<a href="{{ url_for('admin_edit.admin_edit_team_page', id=session['team_id']) }}"
 					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Team Information</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('member_add.member_add_tutorial_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Add Tutorial</a>
 			</form>
 		</div>
 		<div class="row">
