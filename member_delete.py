@@ -27,6 +27,14 @@ def member_delete_sponsor_page(sponsor_id):
     delete(table="sponsor", where="id={}".format(sponsor_id))
     return redirect(url_for("home.home_page"))
 
+@member_delete.route("/member/delete/design/<design_id>", methods=['GET', 'POST'])
+def member_delete_design_page(design_id):
+    auth = session.get('auth_type')
+    if(auth != "Team leader"):
+        flash("Not an authorized person")
+        return redirect(url_for("home.home_page"))
+    delete(table="design", where="id={}".format(design_id))
+    return redirect(url_for("visitor.visitor_teaminfo_page"))
 
 @member_delete.route("/member/delete/member/<person_id>", methods=['GET', 'POST'])
 def member_delete_member_page(person_id):

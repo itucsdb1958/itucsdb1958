@@ -63,6 +63,34 @@ def member_add_competition_page():
 
 	return render_template("member_add_competition_page.html", form=form)
 
+@member_add.route("/member/add/design", methods=['GET', 'POST'])
+def member_add_design_page():
+	auth = session.get('auth_type')
+	if(auth != "Team leader"):
+		flash("Not an authorized person")
+		return redirect(url_for("home.home_page"))
+	form = AddDesignForm()
+	team_id = session.get("team_id")
+	typ = select("vehicle_type.id,vehicle_type.name",
+					  "vehicle_type")
+	form = AddDesignForm()
+	form.typ.choices = typ
+	if (request.method == 'POST' and form.submit_add_design.data or form.validate()):
+		name = form.name.data
+		year = form.year.data
+		maxspeed = form.maxspeed.data
+		weight = form.weight.data
+		duration = form.duration.data
+		is_autonomous = form.is_autonomous.data
+		type_id = form.typ.data
+		insert("design", "NAME, YEAR, MAXSPEED, WEIGHT, DURATION, IS_AUTONOMOUS, TEAM_ID, TYPE_OF_VEHICLE",
+			   "'{}','{}','{}','{}','{}','{}','{}','{}'".format(
+				   name, year, maxspeed, weight, duration, is_autonomous, team_id, type_id
+			   ))
+
+		return redirect(url_for("member_add.member_add_design_page"))
+	return render_template("member_add_design_page.html", form=form)
+
 
 @member_add.route("/member/add/sponsor", methods=['GET', 'POST'])
 def member_add_sponsor_page():
