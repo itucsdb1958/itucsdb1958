@@ -141,7 +141,7 @@ class EditEquipmentForm(FlaskForm):
     purchasedate = DateField("PurchaseDate",validators=[DataRequired()])
     available = BooleanField('Available')
     subteam = SelectField("Subteam",coerce=int,validators=[DataRequired()])
-    submit_edit_equipment = SubmitField("Add Equipment")
+    submit_edit_equipment = SubmitField("Update Equipment")
     
 class AddScheduleForm(FlaskForm):
     name = StringField("Name",validators=[DataRequired()])
@@ -157,7 +157,7 @@ class EditScheduleForm(FlaskForm):
     done = BooleanField('Done')
     description = StringField("Description",validators=[DataRequired()])
     budget = StringField("Budget",validators=[DataRequired()])
-    submit_edit_schedule = SubmitField("Add Schedule")
+    submit_edit_schedule = SubmitField("Update Schedule")
 class AddTutorialForm(FlaskForm):
     name = StringField('Tutorial Name',validators=[DataRequired()])
     area = StringField('Area')

@@ -141,7 +141,7 @@ def member_add_schedule_page():
 
 @member_add.route("/member/add/tutorial", methods=['GET', 'POST'])
 def member_add_tutorial_page():
-    if(session['auth_type'] != "Team leader"):
+    if(session['auth_type'] != "Team leader" and session['auth_type'] != "Subteam leader" and session['auth_type'] != "Member"):
         flash("Not an authorized person")
         return redirect(url_for("home.home_page"))
 
