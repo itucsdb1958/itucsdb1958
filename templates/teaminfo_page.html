@@ -27,6 +27,8 @@
                     <th>Weight</th>
                     <th>Duration</th>
                     <th>Autonomous</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 {% for team in team_designs  %}   
                     <tr>
@@ -36,6 +38,21 @@
                         <td>{{team[3]}}</td>
                         <td>{{team[4]}}</td>
                         <td>{{team[5]}}</td>
+                        {% if session['auth_type'] == "Team leader" %}
+                            <td>
+                                <form class="form-inline my-2 my-lg-2">
+                                    <a href="{{ url_for('member_edit.member_edit_design_page',design_id=team[-1]) }}"
+                                        class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
+                                </form>
+                            </td>
+                            <td>
+                                <form class="form-inline my-2 my-lg-2">
+                                    <a onclick="delete_popup()"
+                                        class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
+                                    <a href ="{{ url_for('member_delete.member_delete_design_page',design_id=team[-1]) }}" id="DeleteLink"></a>
+                                </form>
+                            </td>
+			            {% endif %}	
                     </tr>
                 {% endfor %}
             </table>
@@ -90,4 +107,6 @@
     </div>  
 
 </div>
+
+<script src="{{url_for('static', filename='js/delete_popup.js')}}"></script>
 {% endblock content %}    

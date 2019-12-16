@@ -44,8 +44,9 @@ def visitor_schedule_page():
 	return render_template("schedule_page.html", schedule=schedule)
 
 
-@visitor.route("/teaminfo/<team_id>")
-def visitor_teaminfo_page(team_id):
+@visitor.route("/teaminfo/")
+def visitor_teaminfo_page():
+	team_id = session.get('team_id')
 	teaminfo = select(
 		columns="team.name,team.num_members,team.found_year,team.email,team.adress,team.logo",
 		table = "team",
@@ -53,7 +54,7 @@ def visitor_teaminfo_page(team_id):
 		where="id = {}".format(team_id)
 		)
 	team_designs = select(
-		columns="design.name,design.year,design.maxspeed,design.weight,design.duration,design.is_autonomous",
+		columns="design.name,design.year,design.maxspeed,design.weight,design.duration,design.is_autonomous,design.id",
 		table="design join team on design.team_id=team.id",
 		where="team.id = {}".format(team_id)
 	)

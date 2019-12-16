@@ -217,6 +217,46 @@ def member_edit_equipment_page(equipment_id):
         return render_template("member_edit_equipment_page.html", form=form, uploadImg=imageForm, result=result, imgName=img_name)
 
 
+@member_edit.route("/member/edit/design/<design_id>", methods=['GET', 'POST'])
+def member_edit_design_page(design_id):
+    auth = session.get('auth_type')
+    if(auth != "Team leader"):
+        flash("Not an authorized person")
+        return redirect(url_for("home.home_page"))
+
+    typs = select("vehicle_type.id,vehicle_type.name",
+                      "vehicle_type")
+    
+    team_id = session.get('team_id')
+    member_id = session.get('member_id')
+    form = EditDesignForm()
+    form.typ.choices = typs
+
+    if (request.method == 'POST' and form.submit_edit_design.data or form.validate()):
+        name = form.name.data
+        year = form.year.data
+        maxspeed = form.maxspeed.data
+        weight = form.weight.data
+        duration = form.duration.data
+        is_autonomous = form.is_autonomous.data
+        typ = form.typ.data
+        update("design", "name='{}',year='{}',maxspeed='{}',weight='{}',duration='{}', is_autonomous='{}', team_id='{}', type_of_vehicle = '{}'".format(
+            name, year, maxspeed, weight, duration, is_autonomous,team_id,typ), where="id={}".format(design_id))
+        return redirect(url_for("visitor.visitor_teaminfo_page"))
+    else:
+        result = select("design.name,year,maxspeed,weight,duration,is_autonomous,vehicle_type.id",
+                        "design join vehicle_type on design.type_of_vehicle=vehicle_type.id", "design.id={}".format(design_id))
+        print(result)
+        form.name.data = result[0]
+        form.year.data = result[1]
+        form.maxspeed.data = result[2]
+        form.weight.data = result[3]
+        form.duration.data = result[4]
+        form.is_autonomous.data = result[5]
+        form.typ.data = result[6]
+        return render_template("member_edit_design_page.html", form=form, result=result)
+
+
 @member_edit.route("/member/edit/sponsor/<sponsor_id>", methods=['GET', 'POST'])
 def member_edit_sponsor_page(sponsor_id):
     auth = session.get('auth_type')

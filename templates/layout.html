@@ -25,7 +25,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_competitions_page') }}">Competitions</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_sponsors_page') }}">Sponsors</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_tutorials_page') }}">Tutorials</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home.home_page') }}">Contact</a></li>
+                    
                     {% if session['auth_type'] == 'admin' %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_list.admin_page') }}">Admin</a></li>
                     {% endif %}
@@ -95,7 +95,7 @@
 <footer class="page-footer font-small blue pt-4" style="background-color: transparent;">
     <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2019 Copyright:
-        <a href="{{url_for('home.home_page') }}"> Feridcim</a>
+        <a href="{{url_for('home.home_page') }}"> ITUCSDB1958</a>
     </div>
     <!-- Copyright -->
 </footer>

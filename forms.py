@@ -158,6 +158,27 @@ class EditScheduleForm(FlaskForm):
     description = StringField("Description",validators=[DataRequired()])
     budget = StringField("Budget",validators=[DataRequired()])
     submit_edit_schedule = SubmitField("Add Schedule")
+
+class AddDesignForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    year = StringField("Year",validators=[DataRequired()])
+    maxspeed = StringField("Maxspeed",validators=[DataRequired()])
+    weight = StringField("Weight",validators=[DataRequired()])
+    duration = StringField("Duration",validators=[DataRequired()])
+    is_autonomous = BooleanField("Is_Autonomous")
+    typ = SelectField("Type",coerce=int,validators=[DataRequired()])
+    submit_add_design = SubmitField("Add Design")
+
+class EditDesignForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    year = StringField("Year",validators=[DataRequired()])
+    maxspeed = StringField("Maxspeed",validators=[DataRequired()])
+    weight = StringField("Weight",validators=[DataRequired()])
+    duration = StringField("Duration",validators=[DataRequired()])
+    is_autonomous = BooleanField("Is_Autonomous")
+    typ = SelectField("Type",coerce=int,validators=[DataRequired()])
+    submit_edit_design = SubmitField("Add Design")
+
 class AddTutorialForm(FlaskForm):
     name = StringField('Tutorial Name',validators=[DataRequired()])
     area = StringField('Area')
