@@ -2,24 +2,17 @@
 import math
 import os
 import time
-import sys  
-
-reload(sys)  
-sys.setdefaultencoding('utf8')
 
 import psycopg2 as db
 from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
 				   request, session, url_for)
 from werkzeug.utils import secure_filename
 
-from forms import (AddCompetitionForm, AddMemberForm, AddSponsorForm,
-				   UploadImageForm, EditMemberForm, EditSponsorForm, EditScheduleForm, EditEquipmentForm)
-from queries import insert, select, update
-from forms import AddMemberForm
-from forms import AddEquipmentForm
-from forms import AddScheduleForm
-from queries import select, insert
-from queries import insert, select, update, delete
+from forms import (AddCompetitionForm, AddEquipmentForm, AddMemberForm,
+				   AddScheduleForm, AddSponsorForm, EditEquipmentForm,
+				   EditMemberForm, EditScheduleForm, EditSponsorForm,
+				   UploadImageForm)
+from queries import delete, insert, select, update
 
 member = Blueprint(name='member', import_name=__name__,
 				   template_folder='templates')
@@ -170,7 +163,7 @@ def member_edit_equipment_page(equipment_id):
 	subteams = select("subteam.id,subteam.name",
 					  "subteam join team on subteam.team_id=team.id", "team.id={}".format(team_id))
 	form = EditEquipmentForm()
-	form.subteam.choices=subteams
+	form.subteam.choices = subteams
 	imageForm = UploadImageForm()
 	imageFolderPath = os.path.join(os.getcwd(), 'static/images/equipments')
 	if (request.method == 'POST' and form.submit_edit_equipment.data or form.validate()):
@@ -189,14 +182,14 @@ def member_edit_equipment_page(equipment_id):
 			digits = int(math.log(int(equipment_id), 10))+1
 			for im in images:
 				if(im[digits] == '_' and im[0:digits] == str(equipment_id)):
-					print("deleting",im)
+					print("deleting", im)
 					os.remove(os.path.join(imageFolderPath, im))
 			image.save(filePath)
 		elif(image):
 			flash("Please upload a file in JPG format", 'danger')
-		
+
 		update("equipment", "name='{}',link='{}',purchasedate='{}',available='{}',picture={}, team_id='{}',subteam_id={}".format(
-			name, link, purchasedate, available, equipment_id ,team_id, subteam_id), where="id={}".format(equipment_id))
+			name, link, purchasedate, available, equipment_id, team_id, subteam_id), where="id={}".format(equipment_id))
 		return redirect(url_for("team.team_equipments_page"))
 	else:
 		img_name = None
@@ -211,9 +204,7 @@ def member_edit_equipment_page(equipment_id):
 		form.purchasedate.data = result[2]
 		form.available.data = result[3]
 		form.subteam.data = result[4]
-		return render_template("member_edit_equipment_page.html", form=form, uploadImg=imageForm,result=result,imgName=img_name)
-
-
+		return render_template("member_edit_equipment_page.html", form=form, uploadImg=imageForm, result=result, imgName=img_name)
 
 
 @member.route("/member/add/equipment", methods=['GET', 'POST'])
@@ -242,6 +233,7 @@ def member_add_equipment_page():
 		return redirect(url_for("member.member_add_equipment_page"))
 	return render_template("member_add_equipment_page.html", form=form)
 
+
 @member.route("/member/edit/schedule/<schedule_id>", methods=['GET', 'POST'])
 def member_edit_schedule_page(schedule_id):
 	auth = session.get('auth_type')
@@ -252,14 +244,14 @@ def member_edit_schedule_page(schedule_id):
 
 	member_id = session.get('member_id')
 	form = EditScheduleForm()
-	
+
 	if (request.method == 'POST' and form.submit_edit_schedule.data or form.validate()):
 		name = form.name.data
 		deadline = form.deadline.data
 		done = form.done.data
 		description = form.description.data
 		budget = form.budget.data
-		
+
 		update("schedule", "name='{}',deadline='{}',done='{}',description='{}',budget='{}', member_id='{}'".format(
 			name, deadline, done, description, budget, member_id), where="id={}".format(schedule_id))
 		return redirect(url_for("team.team_schedule_page"))
@@ -272,8 +264,7 @@ def member_edit_schedule_page(schedule_id):
 		form.done.data = result[2]
 		form.description.data = result[3]
 		form.budget.data = result[4]
-		return render_template("member_edit_schedule_page.html", form=form,result=result)
-
+		return render_template("member_edit_schedule_page.html", form=form, result=result)
 
 
 @member.route("/member/add/schedule", methods=['GET', 'POST'])
@@ -292,12 +283,12 @@ def member_add_schedule_page():
 		done = form.done.data
 		description = form.description.data
 		budget = form.budget.data
-				
-		insert("schedule","NAME, DEADLINE, DONE, DESCRIPTION, BUDGET, MEMBER_ID",
-				"'{}','{}','{}','{}','{}',{}".format(
-				   name,deadline,done,description,budget,member_id
+
+		insert("schedule", "NAME, DEADLINE, DONE, DESCRIPTION, BUDGET, MEMBER_ID",
+			   "'{}','{}','{}','{}','{}',{}".format(
+						   name, deadline, done, description, budget, member_id
 			   ))
-	
+
 		return redirect(url_for("member.member_add_schedule_page"))
 	return render_template("member_add_schedule_page.html", form=form)
 
@@ -411,20 +402,23 @@ def member_delete_member_page(person_id):
 	delete("member", "id={}".format(member_id))
 	delete(table="person", where="id={}".format(person_id))
 	return redirect(url_for("member.member_members_page"))
-@member.route("/member/delete/equipment/<equipment_id>",methods=['GET','POST'])
+
+
+@member.route("/member/delete/equipment/<equipment_id>", methods=['GET', 'POST'])
 def member_delete_equipment_page(equipment_id):
 	auth = session.get('auth_type')
 	if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
-	delete(table="equipment",where="id={}".format(equipment_id))
+	delete(table="equipment", where="id={}".format(equipment_id))
 	return redirect(url_for("team.team_equipments_page"))
 
-@member.route("/member/delete/schedule/<schedule_id>",methods=['GET','POST'])
+
+@member.route("/member/delete/schedule/<schedule_id>", methods=['GET', 'POST'])
 def member_delete_schedule_page(schedule_id):
 	auth = session.get('auth_type')
 	if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
-	delete(table="schedule",where="id={}".format(schedule_id))
+	delete(table="schedule", where="id={}".format(schedule_id))
 	return redirect(url_for("team.team_schedule_page"))
