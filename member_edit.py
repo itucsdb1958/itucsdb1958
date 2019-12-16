@@ -269,7 +269,7 @@ def member_edit_sponsor_page(sponsor_id):
     if(auth != "Team leader"):
         flash("Not an authorized person")
         return redirect(url_for("home.home_page"))
-    if (request.method == 'POST' and form.submit_add_sponsor.data or form.validate()):
+    if (request.method == 'POST' and form.submit_edit_sponsor.data or form.validate()):
         name = form.name.data
         description = form.description.data
         address = form.address.data
