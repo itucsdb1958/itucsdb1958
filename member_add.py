@@ -36,6 +36,7 @@ def member_add_member_page():
 			   ))
 		person_id = select("id", "person", "name='{}'".format(name))[0]
 		insert("member", "ROLE, ENTRYDATE, ACTIVE, PICTURE, ADDRESS, PERSON_ID",
+			   "'Uye',CURRENT_DATE,true,'-1','Address',{}".format(person_id))
 		member_id = select("id", "member", "person_id={}".format(person_id))[0]
 		insert("users", "username,password,member_id",
 			   "'{}',crypt('1234',gen_salt('bf')),{}".format(username, member_id))
