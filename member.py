@@ -2,6 +2,10 @@
 import math
 import os
 import time
+import sys  
+
+reload(sys)  
+sys.setdefaultencoding('utf8')
 
 import psycopg2 as db
 from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
@@ -9,7 +13,7 @@ from flask import (Blueprint, Flask, abort, flash, redirect, render_template,
 from werkzeug.utils import secure_filename
 
 from forms import (AddCompetitionForm, AddMemberForm, AddSponsorForm,
-				   UploadImageForm, EditMemberForm, EditSponsorForm, EditEquipmentForm)
+				   UploadImageForm, EditMemberForm, EditSponsorForm, EditScheduleForm, EditEquipmentForm)
 from queries import insert, select, update
 from forms import AddMemberForm
 from forms import AddEquipmentForm
@@ -235,8 +239,41 @@ def member_add_equipment_page():
 				   name, link, purchasedate, available, team_id, subteam_id
 			   ))
 
-		# return redirect(url_for("member.member_add_equipment_page"))
+		return redirect(url_for("member.member_add_equipment_page"))
 	return render_template("member_add_equipment_page.html", form=form)
+
+@member.route("/member/edit/schedule/<schedule_id>", methods=['GET', 'POST'])
+def member_edit_schedule_page(schedule_id):
+	auth = session.get('auth_type')
+	print(auth)
+	if(auth != "Team leader" and auth != "Subteam leader"):
+		flash("Not an authorized person")
+		return redirect(url_for("home.home_page"))
+
+	member_id = session.get('member_id')
+	form = EditScheduleForm()
+	
+	if (request.method == 'POST' and form.submit_edit_schedule.data or form.validate()):
+		name = form.name.data
+		deadline = form.deadline.data
+		done = form.done.data
+		description = form.description.data
+		budget = form.budget.data
+		
+		update("schedule", "name='{}',deadline='{}',done='{}',description='{}',budget='{}', member_id='{}'".format(
+			name, deadline, done, description, budget, member_id), where="id={}".format(schedule_id))
+		return redirect(url_for("team.team_schedule_page"))
+	else:
+		result = select("schedule.name,deadline,done,description,budget",
+						"schedule", "schedule.id={}".format(schedule_id))
+		print(result)
+		form.name.data = result[0]
+		form.deadline.data = result[1]
+		form.done.data = result[2]
+		form.description.data = result[3]
+		form.budget.data = result[4]
+		return render_template("member_edit_schedule_page.html", form=form,result=result)
+
 
 
 @member.route("/member/add/schedule", methods=['GET', 'POST'])
@@ -261,7 +298,7 @@ def member_add_schedule_page():
 				   name,deadline,done,description,budget,member_id
 			   ))
 	
-		#return redirect(url_for("member.member_add_schedule_page"))
+		return redirect(url_for("member.member_add_schedule_page"))
 	return render_template("member_add_schedule_page.html", form=form)
 
 

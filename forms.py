@@ -151,3 +151,10 @@ class AddScheduleForm(FlaskForm):
     budget = StringField("Budget",validators=[DataRequired()])
     submit_add_schedule = SubmitField("Add Schedule")
 
+class EditScheduleForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    deadline = DateField("Deadline",validators=[DataRequired()])
+    done = BooleanField('Done')
+    description = StringField("Description",validators=[DataRequired()])
+    budget = StringField("Budget",validators=[DataRequired()])
+    submit_edit_schedule = SubmitField("Add Schedule")
