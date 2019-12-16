@@ -312,7 +312,102 @@ def member_edit_sponsor_page(sponsor_id):
         return render_template("member_edit_sponsor_page.html", form=form, uploadImg=imageForm, result=result, imgName=img_name)
 
 
-@member_edit.route("/member/profile")
-def member_member_profile_page():
-    # TODO:: MEMBER PROFIL EKLENECEK
-    print(5)
+@member_edit.route("/member/profile", methods=['GET', 'POST'])
+def member_profile_page():
+	auth = session.get('auth_type')
+	if(auth != 'Member' and auth != 'Team leader' and auth != 'Subteam leader'):
+		flash("Not authorized...", "danger")
+		return redirect(url_for("home.home_page"))
+	form = EditProfileForm()
+	majors = select("major.id,major.name","major")
+	auth_types = select("id,name","auth_type")
+	form.major.choices=majors
+	form.auth_type.choices=auth_types
+	imgForm = UploadImageForm()
+	cvForm = UploadCVForm()
+	team_id = session.get('team_id')
+	member_id = session.get('member_id')
+	person_id = select(
+		"person.id", "person join member on member.person_id=person.id", "member.id={}".format(member_id))[0]
+	cvPath = None
+	cvFolder = os.path.join(os.getcwd(), 'static/cv')
+	imgPath = None
+	imgFolder = os.path.join(os.getcwd(), 'static/images/person')
+
+	if (request.method == 'POST' and form.submit_edit_profile.data or form.validate()):
+		name = form.name.data
+		email = form.email.data
+		address = form.address.data
+		phone = form.phone.data
+		major = form.major.data
+		clas = form.clas.data
+		age = form.age.data
+		cv = cvForm.cv.data
+		image = imgForm.image.data
+
+		if(cv and '.pdf' in cv.filename):
+			date = time.gmtime()
+			filename = secure_filename(
+				"{}_{}.pdf".format(person_id, date[0:6]))
+			cvPath = os.path.join(cvFolder, filename)
+			cvs = os.listdir(cvFolder)
+			digits = int(math.log(int(person_id), 10))+1
+			for c in cvs:
+				if(c[digits] == '_' and c[0:digits] == str(person_id)):
+					os.remove(os.path.join(cvFolder, c))
+			cv.save(cvPath)
+			update("person", "cv='{}'".format(
+				filename), "id={}".format(person_id))
+			# update persons cv file name
+		elif(cv):
+			flash("Upload a PDF file.", 'danger')
+
+		if(image and '.jpg' in image.filename or '.jpeg' in image.filename or '.png' in image.filename):
+			date = time.gmtime()
+			extension = image.filename.split('.')[1]
+			filename = secure_filename(
+				"{}_{}.{}".format(person_id, date[0:6], extension))
+			imgPath = os.path.join(imgFolder, filename)
+			images = os.listdir(imgFolder)
+			digits = int(math.log(int(person_id), 10))+1
+			for im in images:
+				if(im[digits] == '_' and im[0:digits] == str(person_id)):
+					os.remove(os.path.join(imgFolder, im))
+			image.save(imgPath)
+			update("member", "picture='{}'".format(
+				filename), "id={}".format(member_id))
+		elif(image):
+			flash("Please upload a file in JPG format", 'danger')
+		majorID = select("major.id","major","id='{}'".format(major))[0]
+		print("MAJORRRR",majorID)
+		update("person","name='{}', email='{}',phone='{}', class={}, age={}, major_id={}".format(name,email,phone,clas,age,majorID),"id={}".format(person_id))
+		update("member","address='{}'".format(address),"id={}".format(member_id))
+		
+		return redirect(url_for("member_edit.member_profile_page"))
+	else:
+		result = select("person.name,person.email,team.name,subteam.name,member.role,member.active, \
+						member.entrydate,auth_type.id,member.address,person.phone,major.id, \
+						person.class,person.age,person.cv,member.picture",
+						"person join member on member.person_id=person.id \
+						join team on person.team_id=team.id \
+						join subteam on person.subteam_id=subteam.id \
+						join auth_type on person.auth_type=auth_type.id \
+						join major on person.major_id=major.id	",
+						"member.id={}".format(member_id))
+		form.name.data = result[0]
+		form.email.data = result[1]
+		form.team.data = result[2]
+		form.subteam.data = result[3]
+		form.role.data = result[4]
+		form.active.data = result[5]
+		form.entry.data = result[6]
+		form.auth_type.data = result[7]
+		form.address.data = result[8]
+		form.phone.data = result[9]
+		form.major.data = result[10]
+		form.clas.data = result[11]
+		form.age.data = result[12]
+		cvPath = result[13]
+		imgPath = result[14]
+		print(result)
+	return render_template("member_profile_page.html", form=form, imgForm=imgForm, cvForm=cvForm, cvPath=cvPath, imgPath=imgPath)
