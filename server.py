@@ -14,6 +14,7 @@ from login import login
 from member_profile import member_profile
 from visitor import visitor
 from member import member
+from team import team
 
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
@@ -35,6 +36,9 @@ app.register_blueprint(admin_edit)
 app.register_blueprint(admin_add)
 app.register_blueprint(member)
 app.register_blueprint(visitor)
+app.register_blueprint(team)
+
+
 
 @app.errorhandler(404)
 def not_found(e):

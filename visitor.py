@@ -35,15 +35,6 @@ def visitor_sponsors_page():
     return render_template("sponsors_page.html", sponsors=sponsors)
 
 
-@visitor.route("/schedule/")
-@visitor.route("/schedule")
-def visitor_schedule_page():
-    schedule = select(
-        columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name", 
-        table="schedule join member on schedule.member_id=member.id join person on person.id=member.person_id order by schedule.done,schedule.deadline")
-    return render_template("schedule_page.html", schedule=schedule)
-
-
 @visitor.route("/teaminfo/<team_id>")
 def visitor_teaminfo_page(team_id):
     teaminfo = select(
