@@ -26,8 +26,8 @@
 
             {% if session['member_id'] == item[6] %}
                 <a href ="{{ url_for('member.member_edit_tutorial_page', id=item[-1])}}" class="btn btn-round"> Edit</a>
-                <a onclick="myFunction()" class="btn btn-round">Delete</a>
-                <a href ="{{ url_for('member.member_delete_tutorial_page', tutorial_id=item[-1])}}" id="myLink"></a>
+                <a onclick="delete_popup()" class="btn btn-round">Delete</a>
+                <a href ="{{ url_for('member.member_delete_tutorial_page', tutorial_id=item[-1])}}" id="DeleteLink"></a>
             {% else %}
 
             {% endif %}	
@@ -35,15 +35,5 @@
     {% endfor %}
     
 </div>
-<script>
-function myFunction() {
-    var txt;
-    var r = confirm("The element is going to be deleted permanently!");
-    if (r == true) {
-        document.getElementById("myLink").click();
-    } else {
-        txt = "You pressed Cancel!";
-    }
-}
-</script>
+<script src="{{url_for('static', filename='js/delete_popup.js')}}"></script>
 {% endblock content %}
