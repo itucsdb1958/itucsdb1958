@@ -48,7 +48,7 @@ def member_delete_member_page(person_id):
     delete("users", "username='{}'".format(username))
     delete("member", "id={}".format(member_id))
     delete(table="person", where="id={}".format(person_id))
-    return redirect(url_for("member.member_members_page"))
+    return redirect(url_for("member_list.member_members_page"))
 
 
 @member_delete.route("/member/delete/equipment/<equipment_id>", methods=['GET', 'POST'])
