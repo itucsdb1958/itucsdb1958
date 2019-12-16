@@ -30,8 +30,9 @@ def visitor_teams_page():
 @visitor.route("/sponsors/")
 @visitor.route("/sponsors")
 def visitor_sponsors_page():
+    #made a change for sponsor page . INCLUDE THIS COMMIT
     sponsors = select(
-        "name,description,field,country,logo,address", "sponsor order by name asc")
+        "name,description,field,country,logo,address,id", "sponsor order by name asc")
     return render_template("sponsors_page.html", sponsors=sponsors)
 
 

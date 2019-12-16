@@ -38,7 +38,15 @@
 					</div>
 				</div>
 			</td>
-			<td>{{item[5]}}</td>	
+			<td>{{item[5]}}</td>
+			{% if session['auth_type'] == "admin" or session['auth_type'] == "Team leader" %}
+			<td>
+				<form class="form-inline my-2 my-lg-2">
+					<a href="{{ url_for('member.member_delete_sponsor_page',sponsor_id=item[-1]) }}"
+						class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
+				</form>
+			</td>
+			{% endif %}	
 		</tr>
 		{% endfor %}
 	</table>

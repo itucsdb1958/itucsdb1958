@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 
 from forms import (AddCompetitionForm, AddMemberForm, AddSponsorForm,
                    UploadImageForm)
-from queries import insert, select, update
+from queries import insert, select, update, delete
 
 member = Blueprint(name='member', import_name=__name__,
 				   template_folder='templates')
@@ -149,3 +149,21 @@ def member_edit_sponsor_page(sponsor_id):
 		form.address.data = result[5]
 		form.typ.data = sponsortypechoices[result[6]]
 		return render_template("member_edit_sponsor_page.html", form=form, uploadImg=imageForm,result=result,imgName=img_name)
+
+@member.route("/member/delete/competition/<competition_id>",methods=['GET','POST'])
+def member_delete_competition_page(competition_id):
+	auth = session.get('auth_type')
+	if(auth != "Team leader" and auth != "admin"):
+		flash("Not an authorized person")
+		return redirect(url_for("home.home_page"))
+	delete(table="competition",where="id={}".format(competition_id))
+	return redirect(url_for("home.home_page"))
+
+@member.route("/member/delete/sponsor/<sponsor_id>",methods=['GET','POST'])
+def member_delete_sponsor_page(sponsor_id):
+	auth = session.get('auth_type')
+	if(auth != "Team leader" and auth != "admin"):
+		flash("Not an authorized person")
+		return redirect(url_for("home.home_page"))
+	delete(table="sponsor",where="id={}".format(sponsor_id))
+	return redirect(url_for("home.home_page"))
