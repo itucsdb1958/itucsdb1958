@@ -5,18 +5,18 @@ import psycopg2.extensions
 from flask import Blueprint, Flask, render_template
 
 from admin_add import admin_add
+from admin_delete import admin_delete
 from admin_edit import admin_edit
 from admin_list import admin_list
-from admin_delete import admin_delete
-from admin_add import admin_add
 from dbinit import initialize
 from home import home
 from login import login
-from member import member
 from member_add import member_add
 from member_delete import member_delete
 from member_edit import member_edit
+from member_list import member_list
 from member_profile import member_profile
+from panel import panel
 from team import team
 from visitor import visitor
 
@@ -39,12 +39,13 @@ app.register_blueprint(admin_list)
 app.register_blueprint(admin_edit)
 app.register_blueprint(admin_add)
 app.register_blueprint(admin_delete)
-app.register_blueprint(member)
+app.register_blueprint(member_list)
 app.register_blueprint(member_add)
 app.register_blueprint(member_delete)
 app.register_blueprint(member_edit)
 app.register_blueprint(visitor)
 app.register_blueprint(team)
+app.register_blueprint(panel)
 
 
 @app.errorhandler(404)

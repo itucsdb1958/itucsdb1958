@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('member_list.member_list_members_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">List Team Members</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('team.team_equipments_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">List Team Equipment</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('team.team_schedule_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">List Team Schedule</a>
+			</form>
+		</div>
+		<div class="row">
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('member_add.member_add_schedule_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Add Schedule</a>
+			</form>
+			<form class="form-inline my-2 my-lg-2">
+				<a href="{{ url_for('member_add.member_add_equipment_page') }}"
+					class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Add Equipment</a>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock content %}

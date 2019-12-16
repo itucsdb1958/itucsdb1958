@@ -3,7 +3,6 @@
 {% block content %}
 
 {% if session['auth_type'] == 'Team leader' or session['auth_type'] == 'Member' or session['auth_type'] == 'Subteam leader'  %}
-    <a href ="{{ url_for('member_add.member_add_tutorial_page')}}" style="size: 20px; float: right;" class="btn btn-round"> Create New</a>
     <br>
     <br>
     <br>

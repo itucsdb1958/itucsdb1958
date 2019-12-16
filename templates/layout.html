@@ -27,7 +27,16 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('visitor.visitor_tutorials_page') }}">Tutorials</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('home.home_page') }}">Contact</a></li>
                     {% if session['auth_type'] == 'admin' %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_list.admin_page') }}">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('panel.admin_panel_page') }}">Admin</a></li>
+                    {% endif %}
+                    {% if session['auth_type'] == 'Team leader' %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('panel.team_leader_panel_page') }}">Team Leader</a></li>
+                    {% endif %}
+                    {% if session['auth_type'] == 'Subteam leader' %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('panel.subteam_leader_panel_page') }}">Subteam Leader</a></li>
+                    {% endif %}
+                    {% if session['auth_type'] == 'Member' %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('panel.member_panel_page') }}">Member</a></li>
                     {% endif %}
                 </ul>
                 <div id="logging-button">

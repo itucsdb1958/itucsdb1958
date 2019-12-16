@@ -17,14 +17,6 @@ from queries import run, select, update
 admin_list = Blueprint(name='admin_list', import_name=__name__)
 
 
-@admin_list.route("/admin/")
-@admin_list.route("/admin")
-def admin_page():
-    if (session.get('auth_type') == 'admin'):
-        return render_template('admin_page.html')
-    else:
-        return redirect(url_for('home.home_page'))
-
 @admin_list.route("/admin/sql/", methods=['GET', 'POST'])
 @admin_list.route("/admin/sql", methods=['GET', 'POST'])
 def sql_page():

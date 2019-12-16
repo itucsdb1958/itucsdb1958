@@ -64,6 +64,10 @@ def admin_edit_competition_page(id):
 
 @admin_edit.route("/admin/teams/edit/<id>", methods=['GET', 'POST'])
 def admin_edit_team_page(id):
+	auth = session.get('auth_type')
+	if(auth!='admin' and (auth!='Team leader' and id!=session.get('team_id'))):
+			flash('No admin privileges...', 'danger')
+			return redirect(url_for('home.home_page'))
 	form = EditTeamForm()
 	imageForm = UploadImageForm()
 	imageFolderPath = os.path.join(os.getcwd(), 'static/images/team')
@@ -92,9 +96,6 @@ def admin_edit_team_page(id):
 			name, members, year, email, address, competition, id), where="id={}".format(id))
 		return redirect(url_for('admin_edit.admin_edit_team_page', id=id))
 	else:
-		if(session.get('auth_type') != 'admin'):
-			flash('No admin privileges...', 'danger')
-			return redirect(url_for('home.home_page'))
 		result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.name",
 						table="team join competition on team.COMPETITION_ID=competition.id",
 						where="team.id={}".format(id))

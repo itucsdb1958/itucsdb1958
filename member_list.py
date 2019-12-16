@@ -9,12 +9,12 @@ from flask import (Blueprint, flash, redirect, render_template, request,
 
 from queries import select
 
-member = Blueprint(name='member', import_name=__name__,
-                   template_folder='templates')
+member_list = Blueprint(name='member_list', import_name=__name__,
+                        template_folder='templates')
 
 
-@member.route("/member/members")
-def member_members_page():
+@member_list.route("/member/members")
+def member_list_members_page():
     auth = session.get('auth_type')
     if(auth != "Team leader"):
         flash("Not an authorized person")
