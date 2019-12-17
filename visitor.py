@@ -77,13 +77,13 @@ def visitor_teaminfo_page(team_id):
         columns="person.name,person.age,person.phone,person.cv,person.email,person.class,member.picture,subteam.name",
         table="team join person on team.id=person.team_id join member on member.person_id=person.id join subteam on person.subteam_id=subteam.id",
         where="team.id = {}".format(team_id)
-    )[0]
+    )
     print("Member info",members_info)
     sponsors = select(
         columns="sponsor.name,sponsortype.name,sponsor.logo",
         table="team join sponsorindex on team.id=sponsorindex.team_id join sponsor on sponsor.id=sponsorindex.sponsor_id join sponsortype on sponsortype.id=sponsor.type_id",
         where="team.id = {}".format(team_id)
-    )[0]
+    )
     return render_template("teaminfo_page.html", teaminfo=teaminfo, team_designs=team_designs, competition=competition, members_info=members_info, sponsors=sponsors)
 
 
