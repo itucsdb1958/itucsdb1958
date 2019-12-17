@@ -26,7 +26,7 @@ def visitor_competitions_page():
 @visitor.route("/teams")
 def visitor_teams_page():
     teams = select(columns="team.name,competition.name,team.email,team.adress,team.id",
-                   table="team left outer join competition on team.competition_id=competition.id order by team.name desc")[0]
+                   table="team left outer join competition on team.competition_id=competition.id order by team.name desc")
     return render_template("teams_page.html", teams=teams)
 
 
@@ -50,7 +50,7 @@ def visitor_schedule_page():
     schedule = select(
         columns="schedule.name,schedule.deadline,schedule.done,schedule.description,person.name,schedule.id",
         table="schedule join member on schedule.member_id=member.id join person on person.id=member.person_id", 
-		where="member.id={} order by schedule.done,schedule.deadline".format(member_id))[0]
+		where="member.id={} order by schedule.done,schedule.deadline".format(member_id))
     return render_template("schedule_page.html", schedule=schedule)
 
 
@@ -62,7 +62,7 @@ def visitor_teaminfo_page(team_id):
         table="team",
         # the selected team
         where="id = {}".format(team_id)
-    )[0]
+    )
     team_designs = select(
         columns="design.name,design.year,design.maxspeed,design.weight,design.duration,design.is_autonomous,design.id",
         table="design join team on design.team_id=team.id",
@@ -72,7 +72,7 @@ def visitor_teaminfo_page(team_id):
         columns="competition.name,competition.date,competition.country,competition.description,competition.reward",
         table="team join competition on team.competition_id=competition.id",
         where="team.id = {}".format(team_id)
-    )[0]
+    )
     members_info = select(
         columns="person.name,person.age,person.phone,person.cv,person.email,person.class,member.picture,subteam.name",
         table="team join person on team.id=person.team_id join member on member.person_id=person.id join subteam on person.subteam_id=subteam.id",
