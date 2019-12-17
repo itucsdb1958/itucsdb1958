@@ -16,6 +16,9 @@ visitor = Blueprint(name='visitor', import_name=__name__,
 @visitor.route("/competitions")
 def visitor_competitions_page():
     competitions = select("*", "competition order by name")
+    print("BUARDA:..")
+    print(competitions[0][-2])
+    print(competitions[0][-1])
     return render_template("competitions_page.html", competitions=competitions)
 
 
@@ -75,6 +78,7 @@ def visitor_teaminfo_page(team_id):
         table="team join person on team.id=person.team_id join member on member.person_id=person.id join subteam on person.subteam_id=subteam.id",
         where="team.id = {}".format(team_id)
     )
+    print("Member info",members_info)
     sponsors = select(
         columns="sponsor.name,sponsortype.name,sponsor.logo",
         table="team join sponsorindex on team.id=sponsorindex.team_id join sponsor on sponsor.id=sponsorindex.sponsor_id join sponsortype on sponsortype.id=sponsor.type_id",

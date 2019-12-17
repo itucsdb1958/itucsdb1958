@@ -49,6 +49,6 @@ def run(query):
             connection.close()
         if cursor != None:
             cursor.close()
-        if(type(result) == list and len(result) == 1):
-            return result[0]
+        #if(type(result) == list and len(result) == 1):
+        #    return result[0]
         return result

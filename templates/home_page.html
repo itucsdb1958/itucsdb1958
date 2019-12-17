@@ -8,9 +8,9 @@
             <a href="{{ url_for('visitor.visitor_teaminfo_page', team_id=item[4]) }}">
                 <div class="speaker_img" style="height: 400px;">
                     {% if item[5]== -1%}
-                        <img src="../static/images/team/avatar.png" alt="speaker name" >
+                        <img src="../static/images/team/-1.png" alt="speaker name" >
                     {% else %}
-                        <img src="../static/images/team/{{item[5]}}.jpg" alt="speaker name" >
+                        <img src="../static/images/team/{{item[5]}}" alt="speaker name" >
                     {% endif %}
                     <div class="info_box">
                         <h5 class="name">{{ item[0]}}</h5>
