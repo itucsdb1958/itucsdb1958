@@ -52,7 +52,7 @@ def admin_edit_competition_page(id):
 			flash('No admin privileges...', 'danger')
 			return redirect(url_for('home.home_page'))
 		result = select('id,name,date,country,description,reward',
-						'competition', 'id={}'.format(id))
+						'competition', 'id={}'.format(id))[0]
 		img_name = None
 		for img in os.listdir(imageFolderPath):
 			if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
@@ -100,7 +100,7 @@ def admin_edit_team_page(id):
 	else:
 		result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.id",
 						table="team join competition on team.COMPETITION_ID=competition.id",
-						where="team.id={}".format(id))
+						where="team.id={}".format(id))[0]
 		
 		form.name.data = result[0]
 		form.memberCtr.data = result[1]
@@ -128,6 +128,8 @@ def admin_edit_member_page(person_id):
 	subteams = select("subteam.id,subteam.name",
 					  "subteam join team on subteam.team_id=team.id join person on person.team_id=team.id", "person.id={}".format(person_id))
 	form.subteam.choices = subteams
+	majors = select("major.id,major.name","major")
+	form.major.choices=majors
 	cvForm = UploadCVForm()
 	cvFolderPath = os.path.join(os.getcwd(), 'static/cv')
 	imageForm = UploadImageForm()
@@ -178,12 +180,12 @@ def admin_edit_member_page(person_id):
 			flash("Please upload a file in JPG format", 'danger')
 
 		teamID = select(columns="id", table="team",
-						where="name='{}'".format(team))
+						where="name='{}'".format(team))[0]
 		majorID = select(columns="id", table="major",
-						 where="code='{}'".format(major))
+						 where="id='{}'".format(major))[0]
 		memberID = select(columns="member.id",
 						  table="member join person on member.person_id=person.id",
-						  where="person.id={}".format(person_id))
+						  where="person.id={}".format(person_id))[0]
 
 		teamID, majorID, memberID = teamID[0], majorID[0], memberID[0]
 
@@ -211,7 +213,7 @@ def admin_edit_member_page(person_id):
 					join auth_type on person.auth_type=auth_type.id"""
 
 			where = "person.id={}".format(person_id)
-			result = select(columns, table, where)
+			result = select(columns, table, where)[0]
 			cvPath = None
 			for c in os.listdir(cvFolderPath):
 				if(person_id in c[0:len(person_id)] and (c[len(person_id)] == '_' or c[len(person_id)] == '.')):

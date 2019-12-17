@@ -13,11 +13,11 @@ from queries import select
 auth_type_choices = [('3', 'Team Leader'),
                      ('4', 'Subteam Leader'),
                      ('1', 'Member')]
-major_choices = [('blg', 'Computer Engineering'),
-                 ('ehb', 'Electronics and Communication'),
-                 ('kon', 'Control and Automation Engineering'),
-                 ('uck', 'Aeronautical Engineering'),
-                 ('end', 'Industrial Engineering')]
+major_choices = [('1', 'Computer Engineering'),
+                 ('2', 'Electronics and Communication'),
+                 ('3', 'Control and Automation Engineering'),
+                 ('4', 'Aeronautical Engineering'),
+                 ('5', 'Industrial Engineering')]
 
 status_choices = [('1', 'Active'), ('2', 'Disactive')]
 class_choices = [('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')]
@@ -48,7 +48,7 @@ class EditMemberForm(FlaskForm):
     age = IntegerField('Age')
     phone = StringField('Phone', validators=[DataRequired()])
     clas = IntegerField('Class')
-    major = SelectField('Major', choices=major_choices,
+    major = SelectField('Major', coerce=int,
                         validators=[DataRequired()])
     submit_member = SubmitField('Update Profile')
 
