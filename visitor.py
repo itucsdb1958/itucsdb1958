@@ -17,8 +17,7 @@ visitor = Blueprint(name='visitor', import_name=__name__,
 def visitor_competitions_page():
     competitions = select("*", "competition order by name")
     print("BUARDA:..")
-    print(competitions[0][-2])
-    print(competitions[0][-1])
+
     return render_template("competitions_page.html", competitions=competitions)
 
 

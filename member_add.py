@@ -13,12 +13,13 @@ def member_add_member_page():
 	if(session.get('auth_type') != "Team leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
-	team_id = select(
-		"team.id", "team join person on team.id=person.team_id join member on member.person_id=person.id", "person.id={}".format(session['member_id']))[0]
+	team_id = session.get('team_id')
 	subteams = select("subteam.id,subteam.name",
 					  "subteam join team on subteam.team_id=team.id", "team.id={}".format(team_id))
 	form = AddMemberForm()
 	form.subteam.choices = subteams
+	majors = select("id,name","major")
+	form.major.choices = majors
 	if (request.method == 'POST' and form.submit_add_member.data or form.validate()):
 		name = form.name.data
 		age = form.age.data
@@ -29,7 +30,7 @@ def member_add_member_page():
 		status = form.status.data
 		major = form.major.data
 		username = form.username.data
-		major_id = select("id", "major", "code='{}'".format(major))[0]
+		major_id = select("id", "major", "id='{}'".format(major))[0]
 		insert("person", "NAME, AGE, PHONE, CV, EMAIL, CLASS, AUTH_TYPE, STATUS, TEAM_ID, SUBTEAM_ID, MAJOR_ID",
 			   "'{}','{}','{}','-1','{}',{},1,{},{},{},{}".format(
 				   name, age, phone, mail, clas, status, team_id, subteam, major_id
@@ -58,8 +59,8 @@ def member_add_competition_page():
 		date = form.date.data
 		country = form.country.data
 
-		insert("competition", "name,date,country,description,reward",
-			   "'{}','{}','{}','{}','{}'".format(name, date, country, description, reward))
+		insert("competition", "name,date,country,description,reward,team_id",
+			   "'{}','{}','{}','{}','{}',{}".format(name, date, country, description, reward,session.get('team_id')))
 
 	return render_template("member_add_competition_page.html", form=form)
 
@@ -122,7 +123,8 @@ def member_add_equipment_page():
 	if(auth != "Team leader" and auth != "Subteam leader"):
 		flash("Not an authorized person")
 		return redirect(url_for("home.home_page"))
-	team_id = session.get("team_id")
+	team_id = session.get('team_id')
+	
 	subteams = select("subteam.id,subteam.name",
 					  "subteam join team on subteam.team_id=team.id", "team.id={}".format(team_id))
 	form = AddEquipmentForm()

@@ -100,8 +100,7 @@ def admin_edit_team_page(id):
 	else:
 		result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.id",
 						table="team join competition on team.COMPETITION_ID=competition.id",
-						where="team.id={}".format(id))[0]
-		
+						where="team.id={}".format(id))
 		form.name.data = result[0]
 		form.memberCtr.data = result[1]
 		form.year.data = result[2]
@@ -130,6 +129,8 @@ def admin_edit_member_page(person_id):
 	form.subteam.choices = subteams
 	majors = select("major.id,major.name","major")
 	form.major.choices=majors
+	auth_types = select("id,name","auth_type")
+	form.auth_type.choices=auth_types
 	cvForm = UploadCVForm()
 	cvFolderPath = os.path.join(os.getcwd(), 'static/cv')
 	imageForm = UploadImageForm()
@@ -187,7 +188,6 @@ def admin_edit_member_page(person_id):
 						  table="member join person on member.person_id=person.id",
 						  where="person.id={}".format(person_id))[0]
 
-		teamID, majorID, memberID = teamID[0], majorID[0], memberID[0]
 
 		update("member", "role='{}', active={}, address='{}'".format(
 			role, active, address), where="id={}".format(memberID))
@@ -202,30 +202,33 @@ def admin_edit_member_page(person_id):
 			flash('No admin privileges...', 'danger')
 			return redirect(url_for('home.home_page'))
 		else:
-			columns = """person.name,person.email,team.name,subteam.name,\
-					member.role,member.active,member.entrydate,auth_type.name, \
-					member.address,person.phone,major.name,person.class,person.age,member.id,person.cv"""
-
-			table = """member join person on member.person_id=person.id \
-					join major on person.major_id=major.id \
-					join team on person.team_id=team.id \
-					join subteam on person.subteam_id=subteam.id \
-					join auth_type on person.auth_type=auth_type.id"""
-
-			where = "person.id={}".format(person_id)
-			result = select(columns, table, where)[0]
-			cvPath = None
-			for c in os.listdir(cvFolderPath):
-				if(person_id in c[0:len(person_id)] and (c[len(person_id)] == '_' or c[len(person_id)] == '.')):
-					cvPath = c
-
-			img_name = None
-			for img in os.listdir(imageFolderPath):
-				if(person_id in img[0:len(person_id)] and (img[len(person_id)] == '_' or img[len(person_id)] == '.')):
-					img_name = img
-			return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, result=result, cvPath=cvPath, imgName=img_name)
-
-	return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, cvPath=cvPath, imgName=img_name)
+			result = select("person.name,person.email,team.name,subteam.name,member.role,member.active, \
+						member.entrydate,auth_type.id,member.address,person.phone,major.id, \
+						person.class,person.age,person.cv,member.picture",
+						"person join member on member.person_id=person.id \
+						join team on person.team_id=team.id \
+						join subteam on person.subteam_id=subteam.id \
+						join auth_type on person.auth_type=auth_type.id \
+						join major on person.major_id=major.id	",
+						"person.id={}".format(person_id))
+			print("QUERY----", result)
+			form.name.data = result[0]
+			form.email.data = result[1]
+			form.team.data = result[2]
+			form.subteam.data = result[3]
+			form.role.data = result[4]
+			form.active.data = result[5]
+			form.entry.data = result[6]
+			form.auth_type.data = result[7]
+			form.address.data = result[8]
+			form.phone.data = result[9]
+			form.major.data = result[10]
+			form.clas.data = result[11]
+			form.age.data = result[12]
+			cvPath = result[13]
+			img_name = result[14]
+	
+		return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, cvPath=cvPath, imgName=img_name)
 
 
 @admin_edit.route("/download", methods=['GET', 'POST'])

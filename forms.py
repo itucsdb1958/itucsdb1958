@@ -39,7 +39,7 @@ class EditMemberForm(FlaskForm):
     subteam = SelectField('Subteam', coerce=int, validators=[DataRequired()])
     role = StringField('Role', validators=[DataRequired()])
     auth_type = SelectField(
-        'Authentication', choices=auth_type_choices, validators=[DataRequired()])
+        'Authentication', coerce=int, validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     name = StringField('Full Name', validators=[DataRequired()])
     address = StringField('Address')
@@ -100,7 +100,7 @@ class AddMemberForm(FlaskForm):
                        DataRequired()], choices=class_choices)
     status = SelectField('Status', choices=status_choices,
                          validators=[DataRequired()])
-    major = SelectField('Major', choices=major_choices,
+    major = SelectField('Major', coerce=int,
                         validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
     submit_add_member = SubmitField("Add Member")
@@ -223,7 +223,7 @@ class AddTeamLeaderForm(FlaskForm):
                        DataRequired()], choices=class_choices)
     status = SelectField('Status', choices=status_choices,
                          validators=[DataRequired()])
-    major = SelectField('Major', choices=major_choices,
+    major = SelectField('Major', coerce=int,
                         validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
     submit_add_team_leader = SubmitField("Add Team Leader")

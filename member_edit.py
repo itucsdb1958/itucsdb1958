@@ -80,8 +80,10 @@ def member_edit_member_page(person_id):
 					  "subteam join team on subteam.team_id=team.id", "team.id={}".format(team_id))
 	current_auth = select("auth_type", "person", "id={}".format(person_id))
 	majors = select("id,name","major")
+	auths = select("id,name","auth_type")
 	form.subteam.choices = subteams
 	form.major.choices = majors
+	form.auth_type.choices=auths
 	form.auth_type.data = current_auth
 	if (request.method == 'POST' and form.submit_member.data or form.validate()):
 		subteam = form.subteam.data
@@ -410,21 +412,20 @@ def member_profile_page():
 						join auth_type on person.auth_type=auth_type.id \
 						join major on person.major_id=major.id	",
 						"member.id={}".format(member_id))
-		print("QUERY----", result)
-	form.name.data = result[0]
-	form.email.data = result[1]
-	form.team.data = result[2]
-	form.subteam.data = result[3]
-	form.role.data = result[4]
-	form.active.data = result[5]
-	form.entry.data = result[6]
-	form.auth_type.data = result[7]
-	form.address.data = result[8]
-	form.phone.data = result[9]
-	form.major.data = result[10]
-	form.clas.data = result[11]
-	form.age.data = result[12]
-	cvPath = result[13]
-	imgPath = result[14]
+		form.name.data = result[0]
+		form.email.data = result[1]
+		form.team.data = result[2]
+		form.subteam.data = result[3]
+		form.role.data = result[4]
+		form.active.data = result[5]
+		form.entry.data = result[6]
+		form.auth_type.data = result[7]
+		form.address.data = result[8]
+		form.phone.data = result[9]
+		form.major.data = result[10]
+		form.clas.data = result[11]
+		form.age.data = result[12]
+		cvPath = result[13]
+		imgPath = result[14]
 
-	return render_template("member_profile_page.html", form=form, imgForm=imgForm, cvForm=cvForm, cvPath=cvPath, imgPath=imgPath)
+		return render_template("member_profile_page.html", form=form, imgForm=imgForm, cvForm=cvForm, cvPath=cvPath, imgPath=imgPath)

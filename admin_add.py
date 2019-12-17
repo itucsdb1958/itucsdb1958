@@ -34,6 +34,8 @@ def admin_add_team_leader_page():
 	form = AddTeamLeaderForm()
 	teams = select("id,name","team")
 	form.team.choices = teams
+	majors = select("id,name","major")
+	form.major.choices=majors
 	if (request.method == 'POST' and form.submit_add_team_leader.data or form.validate()):
 		name = form.name.data
 		age = form.age.data
@@ -44,10 +46,9 @@ def admin_add_team_leader_page():
 		username = form.username.data
 		team_id = form.team.data
 		major = form.major.data
-		major_id = select("id", "major", "code='{}'".format(major))[0]
 		insert("person", "NAME, AGE, PHONE, CV, EMAIL, CLASS, AUTH_TYPE, STATUS, TEAM_ID, SUBTEAM_ID, MAJOR_ID",
 			   "'{}','{}','{}','-1','{}',{},3,{},{},{},{}".format(
-				   name, age, phone, mail, clas, status, team_id, 1, major_id
+				   name, age, phone, mail, clas, status, team_id, 1, major
 			   ))
 		person_id = select("id", "person", "name='{}'".format(name))[0]
 		insert("member", "ROLE, ENTRYDATE, ACTIVE, PICTURE, ADDRESS, PERSON_ID",

@@ -52,15 +52,17 @@ def checkMemberLogin(username, password):
 				""" % (username, password)
         cursor.execute(statement)
         result = cursor.fetchone()
+        print("LOGIN RESULT",result)
         if((result != None) and (len(result) >= 1)):
             flash('You have been logged in!', 'success')
             session['logged_in'] = True
             session['username'] = username
             session['member_id'] = result[2]
             session['team_id'] = select(
-                "team.id", "team join person on person.team_id=team.id join member on member.person_id=person.id", "member.id={}".format(result[2]))[0][0]
+                "team.id", "team join person on person.team_id=team.id join member on member.person_id=person.id", "member.id={}".format(result[2]))[0]
+            print("HEREEE",session.get('team_id'))
             session['auth_type'] = select(
-                "auth_type.name", "person join member on member.person_id=person.id join auth_type on person.auth_type=auth_type.id", "member.id={}".format(result[2]))[0][0]
+                "auth_type.name", "person join member on member.person_id=person.id join auth_type on person.auth_type=auth_type.id", "member.id={}".format(result[2]))[0]
             print("GIRISTEKI AUTH TYPE:",session.get('auth_type'),session.get('team_id'))
             success = True
             return redirect(url_for('home.home_page'))
