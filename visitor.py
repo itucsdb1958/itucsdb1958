@@ -35,7 +35,7 @@ def visitor_teams_page():
 def visitor_sponsors_page():
     # made a change for sponsor page . INCLUDE THIS COMMIT
     sponsors = select(
-        "name,description,field,country,logo,address,id", "sponsor order by name asc")[0]
+        "name,description,field,country,logo,address,id", "sponsor order by name asc")
     return render_template("sponsors_page.html", sponsors=sponsors)
 
 
@@ -92,5 +92,5 @@ def visitor_teaminfo_page(team_id):
 def visitor_tutorials_page():
     tutorials = select(
         columns="tutorial.name,tutorial.area,tutorial.description,tutorial.link,tutorial.picture,person.name,member_id,tutorial.id",
-        table="tutorial join member on tutorial.member_id=member.id join person on person.id=member.person_id order by tutorial.name")[0]
+        table="tutorial join member on tutorial.member_id=member.id join person on person.id=member.person_id order by tutorial.name")
     return render_template("tutorials_page.html", tutorials=tutorials)
