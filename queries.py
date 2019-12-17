@@ -51,5 +51,4 @@ def run(query):
             cursor.close()
         if(type(result) == list and len(result) == 1):
             return result[0]
-        print(result)
         return result

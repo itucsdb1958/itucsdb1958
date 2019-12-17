@@ -19,13 +19,13 @@
 										<div class="col-md-4 pr-1">
 											<div class="form-group">
 												<label>{{ form.name.label(class="form-control-label") }}</label>
-												{{ form.name(class="form-control form-control-lg",value=result[0]) }}
+												{{ form.name(class="form-control form-control-lg") }}
 											</div>
 										</div>
 										<div class="col-md-5 pl-1">
 											<div class="form-group">
 												<label>{{ form.email.label(class="form-control-label") }}</label>
-												{{ form.email(class="form-control form-control-lg",value=result[1]) }}
+												{{ form.email(class="form-control form-control-lg") }}
 											</div>
 										</div>
 									</div>
@@ -33,19 +33,19 @@
 										<div class="col-md-4 pr-1">
 											<div class="form-group">
 												<label>{{ form.team.label(class="form-control-label") }}</label>
-												{{ form.team(class="form-control form-control-lg",value=result[2]) }}
+												{{ form.team(class="form-control form-control-lg") }}
 											</div>
 										</div>
 										<div class="col-md-4 px-1">
 											<div class="form-group">
 												<label>{{ form.subteam.label(class="form-control-label") }}</label>
-												{{ form.subteam(class="form-control form-control-lg",value=result[3]) }}
+												{{ form.subteam(class="form-control form-control-lg") }}
 											</div>
 										</div>
 										<div class="col-md-4 pl-1">
 											<div class="form-group">
 												<label>{{ form.role.label(class="form-control-label") }}</label>
-												{{ form.role(class="form-control form-control-lg",value=result[4]) }}
+												{{ form.role(class="form-control form-control-lg") }}
 											</div>
 										</div>
 									</div>
@@ -53,23 +53,19 @@
 										<div class="col-md-1 pr-2">
 											<div class="form-group">
 												<label>{{ form.active.label(class="form-control-label") }}</label>
-												{% if result[5] == False %}
-												{{ form.active(class="form-control form-control-lg",checked=False) }}
-												{% else %}
-												{{ form.active(class="form-control form-control-lg",checked=True) }}
-												{% endif %}
+												{{ form.active(class="form-control form-control-lg") }}
 											</div>
 										</div>
 										<div class="col-md-5 px-2">
 											<div class="form-group">
 												<label>{{ form.entry.label(class="form-control-label") }}</label>
-												{{ form.entry(class="form-control form-control-lg",value=result[6], disabled="") }}
+												{{ form.entry(class="form-control form-control-lg", disabled="") }}
 											</div>
 										</div>
 										<div class="col-md-6 pl-2">
 											<div class="form-group">
 												<label>{{ form.auth_type.label(class="form-control-label") }}</label>
-												{{ form.auth_type(class="form-control form-control-lg",value=result[7]) }}
+												{{ form.auth_type(class="form-control form-control-lg") }}
 											</div>
 										</div>
 									</div>
@@ -77,13 +73,13 @@
 										<div class="col-md-8 pr-1">
 											<div class="form-group">
 												<label>{{ form.address.label(class="form-control-label") }}</label>
-												{{ form.address(class="form-control form-control-lg",value=result[8]) }}
+												{{ form.address(class="form-control form-control-lg") }}
 											</div>
 										</div>
 										<div class="col-md-4 pl-1">
 											<div class="form-group">
 												<label>{{ form.phone.label(class="form-control-label") }}</label>
-												{{ form.phone(class="form-control form-control-lg",value=result[9]) }}
+												{{ form.phone(class="form-control form-control-lg") }}
 											</div>
 										</div>
 									</div>
@@ -91,19 +87,19 @@
 										<div class="col-md-6 pr-1">
 											<div class="form-group">
 												<label>{{ form.major.label(class="form-control-label") }}</label>
-												{{ form.major(class="form-control form-control-lg",value=result[10],style="height: 45px;") }}
+												{{ form.major(class="form-control form-control-lg",style="height: 45px;") }}
 											</div>
 										</div>
 										<div class="col-md-2 px-1">
 											<div class="form-group">
 												<label>{{ form.clas.label(class="form-control-label") }}</label>
-												{{ form.clas(class="form-control form-control-lg",value=result[11],style="height: 45px;") }}
+												{{ form.clas(class="form-control form-control-lg",style="height: 45px;") }}
 											</div>
 										</div>
 										<div class="col-md-4 pl-1">
 											<div class="form-group">
 												<label>{{ form.age.label(class="form-control-label") }}</label>
-												{{ form.age(class="form-control form-control-lg",value=result[12],style="height: 45px;") }}
+												{{ form.age(class="form-control form-control-lg",style="height: 45px;") }}
 											</div>
 										</div>
 									</div>
