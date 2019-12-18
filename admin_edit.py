@@ -30,10 +30,12 @@ def admin_edit_competition_page(id):
 		description = form.description.data
 		reward = form.reward.data
 		image = imageForm.image.data
-		if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+		filename = select("logo","competition","id={}".format(id))
+		if(image):
+			extension = image.filename.split('.')[1]
 			current_date = time.gmtime()
 			filename = secure_filename(
-				"{}_{}.jpg".format(id, current_date[0:6]))
+				"{}_{}.{}".format(id, current_date[0:6], extension))
 			filePath = os.path.join(imageFolderPath, filename)
 			images = os.listdir(imageFolderPath)
 			digits = int(math.log(int(id), 10))+1
@@ -44,22 +46,18 @@ def admin_edit_competition_page(id):
 		elif(image):
 			flash('Please upload a file in JPG format', "danger")
 		print("Before update: ", date)
-		update("competition", "name='{}', date=DATE('{}'), country='{}', description='{}', reward='{}'".format(
-			name, date, country, description, reward), "id={}".format(id))
+		update("competition", "name='{}', date=DATE('{}'), country='{}', description='{}', reward='{}',logo='{}'".format(
+			name, date, country, description, reward,filename), "id={}".format(id))
 		return redirect(url_for('admin_edit.admin_edit_competition_page', id=id))
 	else:
 		if(session.get('auth_type') != 'Team leader'):
 			flash('No admin privileges...', 'danger')
 			return redirect(url_for('home.home_page'))
 		result = select('id,name,date,country,description,reward',
-						'competition', 'id={}'.format(id))[0]
-		img_name = None
-		for img in os.listdir(imageFolderPath):
-			if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
-				img_name = img
+						'competition, logo', 'id={}'.format(id))[0]
 		form.description.data = result[4]
-		return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=img_name, uploadImg=imageForm)
-	return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=img_name, uploadImg=imageForm)
+		return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=result[5], uploadImg=imageForm)
+	return render_template('admin_edit_competition_page.html', form=form, result=result, imgName=result[5], uploadImg=imageForm)
 
 
 @admin_edit.route("/admin/teams/edit/<id>", methods=['GET', 'POST'])

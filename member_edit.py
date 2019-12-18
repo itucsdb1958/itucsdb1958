@@ -96,7 +96,7 @@ def member_edit_member_page(person_id):
 		age = form.age.data
 		phone = form.phone.data
 		clas = form.clas.data
-
+		major = form.major.data
 		memberID = select(columns="member.id",
 						  table="member join person on member.person_id=person.id",
 						  where="person.id={}".format(person_id))
@@ -107,8 +107,8 @@ def member_edit_member_page(person_id):
 			role, active, address), where="id={}".format(memberID))
 
 		update("person", "name='{}', age='{}', phone='{}', email='{}', \
-					class={}, auth_type={}, subteam_id={}".format(
-			name, age, phone,  email, clas, auth_type, subteam), where="id={}".format(person_id))
+					class={}, auth_type={}, subteam_id={}, major_id={}".format(
+			name, age, phone,  email, clas, auth_type, subteam, major), where="id={}".format(person_id))
 
 		return redirect(url_for('member_edit.member_edit_member_page', person_id=person_id))
 	else:
@@ -294,6 +294,7 @@ def member_edit_sponsor_page(sponsor_id):
 		country = form.country.data
 		type_id = form.typ.data
 		image = imageForm.image.data
+		filename="-1.png"
 		if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
 			date = time.gmtime()
 			filename = secure_filename(
@@ -309,14 +310,11 @@ def member_edit_sponsor_page(sponsor_id):
 		elif(image):
 			flash("Please upload a file in JPG format", 'danger')
 		print(name, description, address, field, country, type_id)
-		update("sponsor", "name='{}',description='{}',field='{}',country='{}',logo='-1',address='{}',type_id={}".format(
-			name, description, field, country, address, type_id), where="id={}".format(sponsor_id))
+		update("sponsor", "name='{}',description='{}',field='{}',country='{}',logo='{}',address='{}',type_id={}".format(
+			name, description, field, country,filename, address, type_id), where="id={}".format(sponsor_id))
 		return redirect(url_for("visitor.visitor_sponsors_page"))
 	else:
-		img_name = None
-		for img in os.listdir(imageFolderPath):
-			if(sponsor_id in img[0:len(sponsor_id)] and (img[len(sponsor_id)] == '_' or img[len(sponsor_id)] == '.')):
-				img_name = img
+
 		result = select("sponsor.name,description,field,country,logo,address,type_id",
 						"sponsor join sponsortype on sponsor.type_id=sponsortype.id", "sponsor.id={}".format(sponsor_id))
 		print(result)

@@ -21,7 +21,7 @@ def admin_add_team_page():
 			address = form.address.data
 			year = form.year.data
 			insert("team", "name,num_members,found_year,email,adress,logo,competition_id",
-				   "'{}',0,'{}','{}','{}','-1',NULL".format(name, year, email, address))
+				   "'{}',0,'{}','{}','{}','-1.png',NULL".format(name, year, email, address))
 			return redirect(url_for('admin_add.admin_add_team_page'))
 		return render_template('admin_add_team_page.html', imgName=None, form=form)
 
