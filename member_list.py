@@ -17,7 +17,7 @@ member_list = Blueprint(name='member_list', import_name=__name__,
 def member_list_members_page():
     auth = session.get('auth_type')
     if(auth != "Team leader" and auth!= 'Member' and auth!='Subteam leader'):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
     members = select(columns="person.name,person.email,auth_type.name,team.name,person.id",
                      table="person join team on person.team_id=team.id \

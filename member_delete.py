@@ -12,7 +12,7 @@ member_delete = Blueprint(name='member_delete', import_name=__name__,
 def member_delete_competition_page(competition_id):
     auth = session.get('auth_type')
     if(auth != "Team leader"):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
     delete(table="competition", where="id={}".format(competition_id))
     return redirect(url_for("home.home_page"))
@@ -22,7 +22,7 @@ def member_delete_competition_page(competition_id):
 def member_delete_sponsor_page(sponsor_id):
     auth = session.get('auth_type')
     if(auth != "Team leader"):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
     delete(table="sponsor", where="id={}".format(sponsor_id))
     return redirect(url_for("home.home_page"))
@@ -31,7 +31,7 @@ def member_delete_sponsor_page(sponsor_id):
 def member_delete_design_page(design_id):
     auth = session.get('auth_type')
     if(auth != "Team leader"):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
     delete(table="design", where="id={}".format(design_id))
     return redirect(url_for("visitor.visitor_teaminfo_page"))
@@ -40,7 +40,7 @@ def member_delete_design_page(design_id):
 def member_delete_member_page(person_id):
     auth = session.get('auth_type')
     if(auth != "Team leader" and auth != 'admin'):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
     result = select("member.id,users.username",
                     "member join users on users.member_id=member.id join person on member.person_id=person.id", where="person.id={}".format(person_id))
@@ -55,7 +55,7 @@ def member_delete_member_page(person_id):
 def member_delete_equipment_page(equipment_id):
     auth = session.get('auth_type')
     if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader"):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
     delete(table="equipment", where="id={}".format(equipment_id))
     return redirect(url_for("team.team_equipments_page"))
@@ -65,7 +65,7 @@ def member_delete_equipment_page(equipment_id):
 def member_delete_schedule_page(schedule_id):
     auth = session.get('auth_type')
     if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader"):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
     delete(table="schedule", where="id={}".format(schedule_id))
     return redirect(url_for("team.team_schedule_page"))
@@ -77,11 +77,11 @@ def member_delete_tutorial_page(tutorial_id):
     member_id = session.get('member_id')
 
     if(auth != "Team leader" and auth != "admin" and auth != "Subteam leader" and auth != "Member"):
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("visitor.visitor_tutorials_page"))
     if(member_id == select("member_id", "tutorial", "id={}".format(tutorial_id))[0]):
         delete(table="tutorial", where="id={}".format(tutorial_id))
     else:
-        flash("Not an authorized person")
+       flash("Not an authorized person",'danger')
         return redirect(url_for("visitor.visitor_tutorials_page"))
     return redirect(url_for("visitor.visitor_tutorials_page"))

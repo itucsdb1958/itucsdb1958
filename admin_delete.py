@@ -17,7 +17,7 @@ admin_delete = Blueprint(name='admin_delete', import_name=__name__)
 def admin_delete_team_page(team_id):
 	auth = session.get('auth_type')
 	if(auth != "admin"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	delete(table="team", where="id={}".format(team_id))
 	return redirect(url_for("admin_list.admin_teams_page"))

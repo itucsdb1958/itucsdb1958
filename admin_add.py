@@ -29,7 +29,7 @@ def admin_add_team_page():
 @admin_add.route("/admin/add/team_leader", methods=['GET', 'POST'])
 def admin_add_team_leader_page():
 	if(session.get('auth_type') != "admin"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	form = AddTeamLeaderForm()
 	teams = select("id,name","team")

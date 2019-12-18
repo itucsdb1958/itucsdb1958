@@ -2,7 +2,7 @@ import os
 
 import psycopg2 as db
 import psycopg2.extensions
-from flask import Blueprint, Flask, render_template
+from flask import Blueprint, Flask, render_template, redirect, url_for
 
 from admin_add import admin_add
 from admin_delete import admin_delete
@@ -52,6 +52,9 @@ app.register_blueprint(panel)
 def not_found(e):
     return render_template("error_404.html")
 
+@app.errorhandler(500)
+def server_error(e):
+    return render_template("error_500.html")
 
 if __name__ == "__main__":
     if(not RELEASE):

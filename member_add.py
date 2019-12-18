@@ -11,7 +11,7 @@ member_add = Blueprint(name='member_add', import_name=__name__,
 @member_add.route("/member/add/member", methods=['GET', 'POST'])
 def member_add_member_page():
 	if(session.get('auth_type') != "Team leader"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	team_id = session.get('team_id')
 	subteams = select("subteam.id,subteam.name",
@@ -49,7 +49,7 @@ def member_add_member_page():
 def member_add_competition_page():
 	auth = session.get('auth_type')
 	if(auth != "Team leader"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	form = AddCompetitionForm()
 	if (request.method == 'POST' and form.submit_add_competition.data or form.validate()):
@@ -68,7 +68,7 @@ def member_add_competition_page():
 def member_add_design_page():
 	auth = session.get('auth_type')
 	if(auth != "Team leader"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	form = AddDesignForm()
 	team_id = session.get("team_id")
@@ -101,7 +101,7 @@ def member_add_sponsor_page():
 	form = AddSponsorForm()
 	form.typ.choices = sponsortypechoices
 	if(auth != "Team leader"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	if (request.method == 'POST' and form.submit_add_sponsor.data or form.validate()):
 		name = form.name.data
@@ -121,7 +121,7 @@ def member_add_equipment_page():
 	auth = session.get('auth_type')
 
 	if(auth != "Team leader" and auth != "Subteam leader"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	team_id = session.get('team_id')
 	
@@ -149,7 +149,7 @@ def member_add_schedule_page():
 	auth = session.get('auth_type')
 	print(auth)
 	if(auth != "Team leader" and auth != "Subteam leader"):
-		flash("Not an authorized person")
+		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 
 	member_id = session.get('member_id')
@@ -172,7 +172,7 @@ def member_add_schedule_page():
 @member_add.route("/member/add/tutorial", methods=['GET', 'POST'])
 def member_add_tutorial_page():
     if(session['auth_type'] != "Team leader" and session['auth_type'] != "Subteam leader" and session['auth_type'] != "Member"):
-        flash("Not an authorized person")
+        flash("Not an authorized person",'danger')
         return redirect(url_for("home.home_page"))
 
     form = AddTutorialForm()

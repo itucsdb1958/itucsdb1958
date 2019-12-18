@@ -39,7 +39,7 @@ def logout_page():
             flash('You have been successfully logged out.', 'success')
 
         except:
-            flash('Logging out is not completed.')
+            flash('Logging out is not completed.','danger')
     return redirect(url_for('home.home_page'))
 
 
