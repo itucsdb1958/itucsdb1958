@@ -199,23 +199,24 @@ def member_edit_equipment_page(equipment_id):
 		available = form.available.data
 		subteam_id = form.subteam.data
 		image = imageForm.image.data
-		if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+		filename = select("picture", "equipment", "id={}".format(equipment_id))[0]
+		if(image and '.jpg' in image.filename or '.jpeg' in image.filename or '.png' in image.filename):
 			date = time.gmtime()
+			extension = image.filename.split('.')[1]
 			filename = secure_filename(
-				"{}_{}.jpg".format(equipment_id, date[0:6]))
+				"{}_{}.{}".format(equipment_id, date[0:6], extension))
 			filePath = os.path.join(imageFolderPath, filename)
 			images = os.listdir(imageFolderPath)
 			digits = int(math.log(int(equipment_id), 10))+1
 			for im in images:
 				if(im[digits] == '_' and im[0:digits] == str(equipment_id)):
-					print("deleting", im)
 					os.remove(os.path.join(imageFolderPath, im))
 			image.save(filePath)
 		elif(image):
 			flash("Please upload a file in JPG format", 'danger')
 
-		update("equipment", "name='{}',link='{}',purchasedate='{}',available='{}',picture={}, team_id='{}',subteam_id={}".format(
-			name, link, purchasedate, available, equipment_id, team_id, subteam_id), where="id={}".format(equipment_id))
+		update("equipment", "name='{}',link='{}',purchasedate='{}',available='{}', picture='{}',team_id='{}',subteam_id={}".format(
+			name, link, purchasedate, available, filename, team_id, subteam_id), where="id={}".format(equipment_id))
 		return redirect(url_for("team.team_equipments_page"))
 	else:
 		img_name = None
