@@ -71,49 +71,49 @@ def admin_edit_team_page(id):
 	form = EditTeamForm()
 	competitions = select("id,name", "competition")
 	form.competition.choices = competitions
-	imageForm = UploadImageForm()
-	imageFolderPath = os.path.join(os.getcwd(), 'static/images/team')
+	imgForm = UploadImageForm()
+	imgFolder = os.path.join(os.getcwd(), 'static/images/team')
 	if (request.method == 'POST' and form.submit_team.data or form.validate()):
 		name = form.name.data
 		members = form.memberCtr.data
 		year = form.year.data
-		print("Year", year)
 		email = form.email.data
 		address = form.address.data
 		competition = form.competition.data
-		image = imageForm.image.data
-		if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+		image = imgForm.image.data
+		if(image and '.jpg' in image.filename or '.jpeg' in image.filename or '.png' in image.filename):
 			date = time.gmtime()
-			filename = secure_filename("{}_{}.jpg".format(id, date[0:6]))
-			filePath = os.path.join(imageFolderPath, filename)
-			images = os.listdir(imageFolderPath)
+			extension = image.filename.split('.')[1]
+			filename = secure_filename(
+				"{}_{}.{}".format(id, date[0:6], extension))
+			filePath = os.path.join(imgFolder, filename)
+			images = os.listdir(imgFolder)
 			digits = int(math.log(int(id), 10))+1
 			for im in images:
 				if(im[digits] == '_' and im[0:digits] == str(id)):
-					os.remove(os.path.join(imageFolderPath, im))
+					os.remove(os.path.join(imgFolder, im))
 			image.save(filePath)
+			update("team","logo='{}'".format(filename),"id={}".format(id))
 		elif(image):
 			flash("Please upload a file in JPG format", 'danger')
-		update("team", "name='{}', num_members={}, found_year='{}', email='{}', adress='{}', competition_id={}, logo='{}'".format(
-			name, members, year, email, address, competition, id), where="id={}".format(id))
+		
+		update("team", "name='{}', num_members={}, found_year='{}', email='{}', adress='{}', competition_id={}".format(
+			name, members, year, email, address, competition), where="id={}".format(id))
 		return redirect(url_for('admin_edit.admin_edit_team_page', id=id))
 	else:
-		result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,competition.id",
-						table="team join competition on team.COMPETITION_ID=competition.id",
+		result = select(columns="team.name,team.num_members,team.found_year,team.email,team.adress,team.logo,competition.id",
+						table="team left outer join competition on team.COMPETITION_ID=competition.id",
 						where="team.id={}".format(id))
+		print("EDIT TEAM RESULT",result)
 		form.name.data = result[0]
 		form.memberCtr.data = result[1]
 		form.year.data = result[2]
 		form.email.data = result[3]
 		form.address.data = result[4]
-		form.competition.data = result[5]
-
-		img_name = None
-		for img in os.listdir(imageFolderPath):
-			if(id in img[0:len(id)] and (img[len(id)] == '_' or img[len(id)] == '.')):
-				img_name = img
-		return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imageForm, imgName=img_name)
-	return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imageForm, imgName=img_name)
+		img_name = result[5]
+		form.competition.data = result[6]
+		return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imgForm,imgName=img_name)
+	return render_template('admin_edit_team_page.html', form=form, result=result, uploadImg=imgForm,imgName=img_name)
 
 
 @admin_edit.route("/admin/members/edit/<person_id>", methods=['GET', 'POST'])
@@ -132,10 +132,12 @@ def admin_edit_member_page(person_id):
 	auth_types = select("id,name","auth_type")
 	form.auth_type.choices=auth_types
 	cvForm = UploadCVForm()
-	cvFolderPath = os.path.join(os.getcwd(), 'static/cv')
-	imageForm = UploadImageForm()
-	imageFolderPath = os.path.join(os.getcwd(), 'static/images/person')
 	cvPath = None
+	cvFolder = os.path.join(os.getcwd(), 'static/cv')
+	imgForm = UploadImageForm()
+	imgPath = None
+	imgFolder = os.path.join(os.getcwd(), 'static/images/person')
+	member_id = select("member.id","member join person on person.id=member.person_id",where="person.id={}".format(person_id))[0]
 	if form.validate_on_submit():
 		team = form.team.data
 		subteam = form.subteam.data
@@ -150,33 +152,39 @@ def admin_edit_member_page(person_id):
 		clas = form.clas.data
 		major = form.major.data
 		cv = cvForm.cv.data
-
+		image = imgForm.image.data
 		if(cv and '.pdf' in cv.filename):
 			date = time.gmtime()
 			filename = secure_filename(
 				"{}_{}.pdf".format(person_id, date[0:6]))
-			filePath = os.path.join(cvFolderPath, filename)
-			cvs = os.listdir(cvFolderPath)
+			cvPath = os.path.join(cvFolder, filename)
+			cvs = os.listdir(cvFolder)
 			digits = int(math.log(int(person_id), 10))+1
 			for c in cvs:
 				if(c[digits] == '_' and c[0:digits] == str(person_id)):
-					os.remove(os.path.join(cvFolderPath, c))
-			cv.save(filePath)
+					os.remove(os.path.join(cvFolder, c))
+			cv.save(cvPath)
+			update("person", "cv='{}'".format(
+				filename), "id={}".format(person_id))
+			session['person_id'] = person_id
+			
 		elif(cv):
-			flash("Please insert a pdf file.", 'danger')
-		print(cv)
-		image = imageForm.image.data
-		if(image and '.jpg' in image.filename or '.jpeg' in image.filename):
+			flash("Upload a PDF file.", 'danger')
+
+		if(image and '.jpg' in image.filename or '.jpeg' in image.filename or '.png' in image.filename):
 			date = time.gmtime()
+			extension = image.filename.split('.')[1]
 			filename = secure_filename(
-				"{}_{}.jpg".format(person_id, date[0:6]))
-			filePath = os.path.join(imageFolderPath, filename)
-			images = os.listdir(imageFolderPath)
+				"{}_{}.{}".format(person_id, date[0:6], extension))
+			imgPath = os.path.join(imgFolder, filename)
+			images = os.listdir(imgFolder)
 			digits = int(math.log(int(person_id), 10))+1
 			for im in images:
 				if(im[digits] == '_' and im[0:digits] == str(person_id)):
-					os.remove(os.path.join(imageFolderPath, im))
-			image.save(filePath)
+					os.remove(os.path.join(imgFolder, im))
+			image.save(imgPath)
+			update("member", "picture='{}'".format(
+				filename), "id={}".format(member_id))
 		elif(image):
 			flash("Please upload a file in JPG format", 'danger')
 
@@ -184,55 +192,47 @@ def admin_edit_member_page(person_id):
 						where="name='{}'".format(team))[0]
 		majorID = select(columns="id", table="major",
 						 where="id='{}'".format(major))[0]
-		memberID = select(columns="member.id",
-						  table="member join person on member.person_id=person.id",
-						  where="person.id={}".format(person_id))[0]
-
-
+		
 		update("member", "role='{}', active={}, address='{}'".format(
-			role, active, address), where="id={}".format(memberID))
+			role, active, address), where="id={}".format(member_id))
 
-		update("person", "name='{}', age='{}', phone='{}', cv={}, email='{}', \
+		update("person", "name='{}', age='{}', phone='{}',email='{}', \
 					class={}, auth_type={}, team_id={}, subteam_id={}, major_id={}".format(
-			name, age, phone, person_id, email, clas, auth_type, teamID, subteam, majorID), where="id={}".format(person_id))
+			name, age, phone, email, clas, auth_type, teamID, subteam, majorID), where="id={}".format(person_id))
 
 		return redirect(url_for('admin_edit.admin_edit_member_page', person_id=person_id, cvPath=person_id))
 	else:
-		if(session.get('auth_type') != 'admin'):
-			flash('No admin privileges...', 'danger')
-			return redirect(url_for('home.home_page'))
-		else:
-			result = select("person.name,person.email,team.name,subteam.name,member.role,member.active, \
-						member.entrydate,auth_type.id,member.address,person.phone,major.id, \
-						person.class,person.age,person.cv,member.picture",
-						"person join member on member.person_id=person.id \
-						join team on person.team_id=team.id \
-						join subteam on person.subteam_id=subteam.id \
-						join auth_type on person.auth_type=auth_type.id \
-						join major on person.major_id=major.id	",
-						"person.id={}".format(person_id))
-			print("QUERY----", result)
-			form.name.data = result[0]
-			form.email.data = result[1]
-			form.team.data = result[2]
-			form.subteam.data = result[3]
-			form.role.data = result[4]
-			form.active.data = result[5]
-			form.entry.data = result[6]
-			form.auth_type.data = result[7]
-			form.address.data = result[8]
-			form.phone.data = result[9]
-			form.major.data = result[10]
-			form.clas.data = result[11]
-			form.age.data = result[12]
-			cvPath = result[13]
-			img_name = result[14]
-	
-		return render_template('admin_edit_member_page.html', form=form, uploadImg=imageForm, uploadCV=cvForm, cvPath=cvPath, imgName=img_name)
+		
+		result = select("person.name,person.email,team.name,subteam.id,member.role,member.active, \
+					member.entrydate,auth_type.id,member.address,person.phone,major.id, \
+					person.class,person.age,person.cv,member.picture",
+					"person join member on member.person_id=person.id \
+					join team on person.team_id=team.id \
+					join subteam on person.subteam_id=subteam.id \
+					join auth_type on person.auth_type=auth_type.id \
+					join major on person.major_id=major.id	",
+					"person.id={}".format(person_id))
+		form.name.data = result[0]
+		form.email.data = result[1]
+		form.team.data = result[2]
+		form.subteam.data = result[3]
+		form.role.data = result[4]
+		form.active.data = result[5]
+		form.entry.data = result[6]
+		form.auth_type.data = result[7]
+		form.address.data = result[8]
+		form.phone.data = result[9]
+		form.major.data = result[10]
+		form.clas.data = result[11]
+		form.age.data = result[12]
+		cvPath = result[13]
+		img_name = result[14]
+
+		return render_template('admin_edit_member_page.html', form=form, uploadImg=imgForm, uploadCV=cvForm, cvPath=cvPath, imgName=img_name)
 
 
 @admin_edit.route("/download", methods=['GET', 'POST'])
 def download():
 	cvFolder = os.path.join(admin_edit.root_path, "static/cv")
-	filename = select("person.cv","person join member on member.person_id=person.id","member.id={}".format(session.get('member_id')))[0]
+	filename = select("person.cv","person join member on member.person_id=person.id","person.id={}".format(session.get('person_id')))[0]
 	return send_from_directory(directory=cvFolder, filename=filename, as_attachment=True, cache_timeout=0)
