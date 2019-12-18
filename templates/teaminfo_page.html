@@ -40,7 +40,7 @@
                         {% if session['auth_type'] == "Team leader" and session['team_id']==team[-1] %}
                             <td>
                                 <form class="form-inline my-2 my-lg-2">
-                                    <a href="{{ url_for('member_edit.member_edit_design_page',design_id=team[-1]) }}"
+                                    <a href="{{ url_for('member_edit.member_edit_design_page',design_id=team[-2]) }}"
                                         class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Edit</a>
                                 </form>
                             </td>
@@ -48,7 +48,7 @@
                                 <form class="form-inline my-2 my-lg-2">
                                     <a onclick="delete_popup()"
                                         class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Delete</a>
-                                    <a href ="{{ url_for('member_delete.member_delete_design_page',design_id=team[-1]) }}" id="DeleteLink"></a>
+                                    <a href ="{{ url_for('member_delete.member_delete_design_page',design_id=team[-2]) }}" id="DeleteLink"></a>
                                 </form>
                             </td>
 			            {% endif %}	
