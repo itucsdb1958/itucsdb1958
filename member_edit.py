@@ -374,6 +374,7 @@ def member_profile_page():
 			cv.save(cvPath)
 			update("person", "cv='{}'".format(
 				filename), "id={}".format(person_id))
+			session['person_id'] = person_id
 			# update persons cv file name
 		elif(cv):
 			flash("Upload a PDF file.", 'danger')
