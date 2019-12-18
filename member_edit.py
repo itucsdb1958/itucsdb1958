@@ -259,7 +259,7 @@ def member_edit_design_page(design_id):
 		typ = form.typ.data
 		update("design", "name='{}',year='{}',maxspeed='{}',weight='{}',duration='{}', is_autonomous='{}', team_id='{}', type_of_vehicle = '{}'".format(
 			name, year, maxspeed, weight, duration, is_autonomous, team_id, typ), where="id={}".format(design_id))
-		return redirect(url_for("visitor.visitor_teaminfo_page"))
+		return redirect(url_for("visitor.visitor_teaminfo_page",team_id=team_id))
 	else:
 		result = select("design.name,year,maxspeed,weight,duration,is_autonomous,vehicle_type.id",
 						"design join vehicle_type on design.type_of_vehicle=vehicle_type.id", "design.id={}".format(design_id))

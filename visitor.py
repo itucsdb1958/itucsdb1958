@@ -63,7 +63,7 @@ def visitor_teaminfo_page(team_id):
         where="id = {}".format(team_id)
     )
     team_designs = select(
-        columns="design.name,design.year,design.maxspeed,design.weight,design.duration,design.is_autonomous,design.id",
+        columns="design.name,design.year,design.maxspeed,design.weight,design.duration,design.is_autonomous,design.id,team.id",
         table="design join team on design.team_id=team.id",
         where="team.id = {}".format(team_id)
     )
@@ -77,7 +77,6 @@ def visitor_teaminfo_page(team_id):
         table="team join person on team.id=person.team_id join member on member.person_id=person.id join subteam on person.subteam_id=subteam.id",
         where="team.id = {}".format(team_id)
     )
-    print("Member info",members_info)
     sponsors = select(
         columns="sponsor.name,sponsortype.name,sponsor.logo",
         table="team join sponsorindex on team.id=sponsorindex.team_id join sponsor on sponsor.id=sponsorindex.sponsor_id join sponsortype on sponsortype.id=sponsor.type_id",
