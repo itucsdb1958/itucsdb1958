@@ -34,7 +34,7 @@ def member_delete_design_page(design_id):
 		flash("Not an authorized person",'danger')
 		return redirect(url_for("home.home_page"))
 	delete(table="design", where="id={}".format(design_id))
-	return redirect(url_for("visitor.visitor_teaminfo_page",team_id=session.get['team_id']))
+	return redirect(url_for("visitor.visitor_teaminfo_page",team_id=session.get('team_id')))
 
 @member_delete.route("/member/delete/member/<person_id>", methods=['GET', 'POST'])
 def member_delete_member_page(person_id):
