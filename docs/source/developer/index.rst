@@ -1,14 +1,23 @@
 Developer Guide
 ===============
 
+* :ref:`Database design`
+* :ref:`Setting environment`
+* :ref:`Database setup`
+* :ref:`Running SQL`
+* :ref:`Adding Functionalities`
+
+.. _Database design:
+
 Database Design
 ---------------
 
 DIAGRAMLAR BURAYA GELECEK
 
+.. _Setting environment:
 
 Setting up the environment for development
----------------------------------------------
+***********************************************
 
 Clone the repository from github and install requirements as follows,
 
@@ -24,8 +33,10 @@ After the installation, you can simply call the following command to run the ser
 
 	$ python server.py
 
+.. _Database setup:
+
 Database setup for local development
------------------------------------------
+**************************************
 
 The project uses Postgresql database. Therefore, to do local development, you should have postgresql installed in your system. 
 
@@ -57,7 +68,7 @@ to connect to it::
 If you successfuly complete the steps above, you are ready for development.
 
 Database initialization
------------------------------------------
+*****************************
 
 Since the website is deployed on HEROKU, the database connection has to be set up appropriately.
 When *server.py* runs on HEROKU, the database needs to be initialized by calling *db_init.py*. The code block in db_init.py does just that.
@@ -113,9 +124,137 @@ For multiple tables, add comma seperated SQL statements with triple quotation ma
 
 .. code-block:: python
 
+	RELEASE = False
+
 	if(not RELEASE):
 	    os.environ['DATABASE_URL'] = "postgres://postgres:docker@localhost:5432/postgres"
 	    initialize(os.environ.get('DATABASE_URL'))
+
+.. _Running SQL:
+
+Running SQL statements
+*****************************
+
+In order to run an SQL statement, since we cannot use ORM libraries, a boilerplate code has been written in order to save time and effort from developers. You can simply import "*queries.py*" and use the common SQL statements. These codes can be found in *queries.py* script as follows:
+
+.. code-block:: python
+
+	def insert(table,columns,values):
+	    query = """insert into {} ({}) values({})""".format(table,columns,values)
+	    run(query)
+
+	def select(columns, table, where=None):
+	    if (where != None):
+		query = """select {} from {} where {}""".format(columns, table, where)
+	    else:
+		query = """select {} from {}""".format(columns, table)
+	    return run(query)
+
+
+	def update(table, columns, where):
+	    query = """update {} set {} where {}""".format(table, columns, where)
+	    run(query)
+
+
+	def delete(table, where):
+	    query = """delete from {} where {}""".format(table, where)
+	    run(query)
+
+.. code-block:: python
+
+	def run(query):
+	    connection = None
+	    cursor = None
+	    result = None
+	    print(query)
+	    try:
+		connection = db.connect(os.getenv("DATABASE_URL"))
+		cursor = connection.cursor()
+		cursor.execute(query)
+		if(not 'drop' in query and not 'update' in query and not 'delete' in query and not 'insert' in query):
+		    result = cursor.fetchall()
+	    except db.DatabaseError as dberror:
+		if connection != None:
+		    connection.rollback()
+		result = dberror
+		print("Error",result)
+		flash(result.message, 'danger')
+	    finally:
+		if connection != None:
+		    connection.commit()
+		    connection.close()
+		if cursor != None:
+		    cursor.close()
+		if(type(result) == list and len(result) == 1):
+		    return result[0]
+		return result
+
+The functions above allows us to abstract the queries by one level. Instead of writing the database connection try/catch in each database call, it is only written once and called by a function which deals with the exceptions.
+
+.. note::
+	Query functions flashes the error if exists, and returns the error code. You can use this code to redirect the user appropriately.
+
+.. note:: 
+	Additional input checks can be added here.
+
+.. _Adding Functionalities:
+
+Adding new functionalities
+*****************************
+
+In order to add a new screen, there are a couple of steps needed to be done.
+
+1) Create the appropriate html under /templates folder extending layout.html as follows.
+
+
+	.. code-block:: html
+	
+		{% extends "layout.html" %}
+		{% block title %}PAGE TITLE COMES HERE{% endblock %}
+		{% block content %}
+
+			YOUR HTML COMES HERE		
+
+		{% endblock content %}
+
+	This will ensure that the navigation bar and the footer is the same and consistent with every page.
+
+2) If adding something to an existing page, insert the necessary function to the concering python file.
+
+	For example, if you are going to add a new functionality for admin. Simply go to *admin.py* and insert the new route and the function.
+
+	.. code-block:: python
+	
+		@admin.route("/admin/new_functionality")
+		def admin_new_functionality():
+			return render_template("new_page.html")
+
+3) Else, create a python file with an descriptive name such as admin_add which indicates that the file will contain functionalities of an admin adding something. 
+
+	Make sure that you create your blueprint as follows:
+
+	.. code-block:: python
+
+		new_method = Blueprint(name='new_method', import_name=__name__,
+		               template_folder='templates')
+
+	
+	The routing will be done as follows:
+
+	.. code-block:: python
+	
+		@new_method.route("/new_method_url")
+		def new_method_page():
+			return render_template("new_method_page.html")
+
+	Then in *server.py*, register your blueprint as follows:
+
+	.. code-block:: python
+	
+		from new_method import new_method
+		...
+		...
+		app.register_blueprint(new_method)
 
 
 .. toctree::
@@ -123,5 +262,3 @@ For multiple tables, add comma seperated SQL statements with triple quotation ma
    member1
    member2
    member3
-   member4
-   member5
