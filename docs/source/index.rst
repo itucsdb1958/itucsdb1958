@@ -1,17 +1,23 @@
 Welcome to itucsdbNN's documentation!
 =====================================
 
-:Team: Team Name
+:Team: 1958
 
 :Members:
 
-   * Member 1
-   * Member 2
-   * Member 3
-   * Member 4
-   * Member 5
+   * Farid Huseynov
+   * Joshgun Rzabayli
+   * Göktuğ Başaran
 
-**project description goes here (a few paragraphs)**
+**ITUNOM TEAMS is a website for the student project teams in Istanbul Technical University. It is their public face where they can
+introduce themselves to public and potentially find sponsors while also performing their in team objectives on the platform.**
+
+.. figure:: pictures/home_page.png
+	:scale: 40 %
+	:alt: Home Page
+	:align: center
+	
+	Home Page
 
 Contents:
 
