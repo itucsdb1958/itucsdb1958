@@ -16,7 +16,10 @@ Developer Guide
 Database Design
 ***********************
 
-DIAGRAMLAR BURAYA GELECEK
+.. figure:: db-erd.jpeg
+	:scale: 40 %
+	:alt: Entity Relation Diagram
+	:align: center
 
 .. _Setting environment:
 
