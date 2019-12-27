@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer Guide &mdash; ITUCSDB1958  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="User Guide" href="../user/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ITUCSDB1958
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#database-design">Database Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-the-environment-for-development">Setting up the environment for development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-setup-for-local-development">Database setup for local development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-initialization">Database initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-sql-statements">Running SQL statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-functionalities">Adding new functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#login-process">Login Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logout-process">Logout Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#file-and-image-upload-process">File and Image Upload Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-pages">Error Pages</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ITUCSDB1958</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Developer Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/developer/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-guide">
+<h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#database-design"><span class="std std-ref">Database Design</span></a></p></li>
+<li><p><a class="reference internal" href="#setting-environment"><span class="std std-ref">Setting up the environment for development</span></a></p></li>
+<li><p><a class="reference internal" href="#database-setup"><span class="std std-ref">Database setup for local development</span></a></p></li>
+<li><p><a class="reference internal" href="#running-sql"><span class="std std-ref">Running SQL statements</span></a></p></li>
+<li><p><a class="reference internal" href="#adding-functionalities"><span class="std std-ref">Adding new functionalities</span></a></p></li>
+<li><p><a class="reference internal" href="#login-process"><span class="std std-ref">Login Process</span></a></p></li>
+<li><p><a class="reference internal" href="#logout-process"><span class="std std-ref">Logout Process</span></a></p></li>
+<li><p><a class="reference internal" href="#file-and-image-upload"><span class="std std-ref">File and Image Upload Process</span></a></p></li>
+<li><p><a class="reference internal" href="#error-pages"><span class="std std-ref">Error Pages</span></a></p></li>
+</ul>
+<div class="section" id="database-design">
+<span id="id1"></span><h2>Database Design<a class="headerlink" href="#database-design" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/db-erd.jpeg"><img alt="Entity Relation Diagram" src="../_images/db-erd.jpeg" style="width: 468.8px; height: 337.20000000000005px;" /></a>
+</div>
+</div>
+<div class="section" id="setting-up-the-environment-for-development">
+<span id="setting-environment"></span><h2>Setting up the environment for development<a class="headerlink" href="#setting-up-the-environment-for-development" title="Permalink to this headline">¶</a></h2>
+<p>Clone the repository from github and install requirements as follows,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/itucsdb1958/itucsdb1958.git
+<span class="gp">$</span> <span class="nb">cd</span> itucsdb1958
+<span class="gp">$</span> pip install -r requirements.txt
+</pre></div>
+</div>
+<p>After the installation, you can simply call the following command to run the server.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python server.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="database-setup-for-local-development">
+<span id="database-setup"></span><h2>Database setup for local development<a class="headerlink" href="#database-setup-for-local-development" title="Permalink to this headline">¶</a></h2>
+<p>The project uses Postgresql database. Therefore, to do local development, you should have postgresql installed in your system.</p>
+<p>By default, the project is meant to be used with a PostgreSQL server.
+You can use a local installation or a hosted service like
+<a class="reference external" href="https://www.elephantsql.com/">ElephantSQL</a> (they have a free plan),
+but we recommend that you use <a class="reference external" href="https://www.docker.com/">Docker</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker pull postgres
+</pre></div>
+</div>
+<p>In order to make changes to your database persistent, you have to set up
+a folder that will be shared between your regular operating system and
+the Docker container. Create the folder, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mkdir -p $HOME/docker/volumes/postgres
+</pre></div>
+</div>
+<p>The command for running the container is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres
+</pre></div>
+</div>
+<p>This will start a PostgreSQL server that runs on the host <code class="docutils literal notranslate"><span class="pre">localhost</span></code>,
+on port 5432. The username is <code class="docutils literal notranslate"><span class="pre">postgres</span></code>, the password is <code class="docutils literal notranslate"><span class="pre">docker</span></code>,
+and the database name is <code class="docutils literal notranslate"><span class="pre">postgres</span></code>. You can use the following command
+to connect to it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ psql -h localhost -U postgres -d postgres
+</pre></div>
+</div>
+<p>If you successfuly complete the steps above, you are ready for development.</p>
+</div>
+<div class="section" id="database-initialization">
+<h2>Database initialization<a class="headerlink" href="#database-initialization" title="Permalink to this headline">¶</a></h2>
+<p>Since the website is deployed on HEROKU, the database connection has to be set up appropriately.
+When <em>server.py</em> runs on HEROKU, the database needs to be initialized by calling <em>db_init.py</em>. The code block in db_init.py does just that.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">dbapi2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">connection</span><span class="p">:</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">statement</span> <span class="ow">in</span> <span class="n">INIT_STATEMENTS</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATABASE_URL&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Usage: DATABASE_URL=url python dbinit.py&quot;</span><span class="p">)</span>  <span class="c1"># , file=sys.stderr)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">initialize</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Init statements must be filled with table initialization queries such as:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">TABLE1</span> <span class="p">(</span>
+<span class="n">ID</span> <span class="nb">SERIAL</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+<span class="n">NAME</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For multiple tables, add comma seperated SQL statements with triple quotation marks as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INIT_STATEMENTS</span> <span class="o">=</span> <span class="p">[</span>
+
+    <span class="sd">&quot;&quot;&quot;CREATE TABLE IF NOT EXISTS TABLE1 (</span>
+<span class="sd">        ID SERIAL PRIMARY KEY,</span>
+<span class="sd">        NAME VARCHAR NOT NULL,</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="sd">&quot;&quot;&quot;CREATE TABLE IF NOT EXISTS TABLE2(</span>
+<span class="sd">        ID SERIAL PRIMARY KEY,</span>
+<span class="sd">        NAME VARCHAR NOT NULL,</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The table initialization is serial. Take care of the references you make, since if the table is referenced before its creation, there will be an error.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always switch from RELEASE mode to LOCAL mode by setting the boolean RELEASE in server.py line:26 FALSE. The code block below will set up the database for your local database if it is false, and for HEROKU if it is true.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RELEASE</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">RELEASE</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DATABASE_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;postgres://postgres:docker@localhost:5432/postgres&quot;</span>
+    <span class="n">initialize</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DATABASE_URL&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-sql-statements">
+<span id="running-sql"></span><h2>Running SQL statements<a class="headerlink" href="#running-sql-statements" title="Permalink to this headline">¶</a></h2>
+<p>In order to run an SQL statement, since we cannot use ORM libraries, a boilerplate code has been written in order to save time and effort from developers. You can simply import “<em>queries.py</em>” and use the common SQL statements. These codes can be found in <em>queries.py</em> script as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="n">columns</span><span class="p">,</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;insert into </span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">) values(</span><span class="si">{}</span><span class="s2">)&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="n">columns</span><span class="p">,</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">where</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;select </span><span class="si">{}</span><span class="s2"> from </span><span class="si">{}</span><span class="s2"> where </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;select </span><span class="si">{}</span><span class="s2"> from </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">where</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;update </span><span class="si">{}</span><span class="s2"> set </span><span class="si">{}</span><span class="s2"> where </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">where</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;delete from </span><span class="si">{}</span><span class="s2"> where </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATABASE_URL&quot;</span><span class="p">))</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="s1">&#39;drop&#39;</span> <span class="ow">in</span> <span class="n">query</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s1">&#39;update&#39;</span> <span class="ow">in</span> <span class="n">query</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s1">&#39;delete&#39;</span> <span class="ow">in</span> <span class="n">query</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s1">&#39;insert&#39;</span> <span class="ow">in</span> <span class="n">query</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">db</span><span class="o">.</span><span class="n">DatabaseError</span> <span class="k">as</span> <span class="n">dberror</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">connection</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">dberror</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">flash</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="s1">&#39;danger&#39;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">connection</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cursor</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>The functions above allows us to abstract the queries by one level. Instead of writing the database connection try/catch in each database call, it is only written once and called by a function which deals with the exceptions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Query functions flashes the error if exists, and returns the error code in the catching of the exception. You can change this part to redirect the user appropriately.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If there is going to be a string input (varchar), the formatted string should be inside single quotation marks</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;id,name&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="s2">&quot;table1&quot;</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="s2">&quot;name=&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_str</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="adding-new-functionalities">
+<span id="adding-functionalities"></span><h2>Adding new functionalities<a class="headerlink" href="#adding-new-functionalities" title="Permalink to this headline">¶</a></h2>
+<p>In order to add a new screen, there are a couple of steps needed to be done.</p>
+<ol class="arabic">
+<li><p>Create the appropriate html under /templates folder extending layout.html as follows.</p>
+<blockquote>
+<div><div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% extends &quot;layout.html&quot; %}
+{% block title %}PAGE TITLE COMES HERE{% endblock %}
+{% block content %}
+
+        YOUR HTML COMES HERE
+
+{% endblock content %}
+</pre></div>
+</div>
+<p>This will ensure that the navigation bar and the footer is the same and consistent with every page.</p>
+</div></blockquote>
+</li>
+<li><p>If adding something to an existing page, insert the necessary function to the concering python file.</p>
+<blockquote>
+<div><p>For example, if you are going to add a new functionality for admin. Simply go to <em>admin.py</em> and insert the new route and the function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@admin</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/new_functionality&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">admin_new_functionality</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;new_page.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Else, create a python file with an descriptive name such as admin_add which indicates that the file will        contain functionalities of an admin adding something.</p>
+<p>Make sure that you create your blueprint as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_method</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;new_method&#39;</span><span class="p">,</span> <span class="n">import_name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">,</span>
+               <span class="n">template_folder</span><span class="o">=</span><span class="s1">&#39;templates&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The routing will be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@new_method</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/new_method_url&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">new_method_page</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;new_method_page.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then in <em>server.py</em>, register your blueprint as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">new_method</span> <span class="kn">import</span> <span class="n">new_method</span>
+<span class="o">...</span>
+<span class="o">...</span>
+<span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">new_method</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="login-process">
+<span id="id2"></span><h2>Login Process<a class="headerlink" href="#login-process" title="Permalink to this headline">¶</a></h2>
+<p>Our login procedure is secure since we do not store passwords without encryption. The encryption is built-in in postgresql by <em>pycrypto</em> extension. This extention allows us to use encryption algorithms such as BlowFish. The extension is created at the beginning of <em>db_init.py</em> as follows:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="n">EXTENSION</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">pgcrypto</span>
+</pre></div>
+</div>
+<p>While registering a new user or login, the credentials are checked at <em>login.py</em> in both among users or admins as follows:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">USERS</span> <span class="k">WHERE</span> <span class="n">USERNAME</span> <span class="o">=</span> <span class="s1">&#39;%s&#39;</span> <span class="k">AND</span> <span class="n">PASSWORD</span> <span class="o">=</span> <span class="n">crypt</span><span class="p">(</span><span class="s1">&#39;%s&#39;</span><span class="p">,</span><span class="n">PASSWORD</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It automatically encrypts the input password and checks it against the database entries. If a match occurs, we can login.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We do not store unencrypted passwords and we do not transfer the actual password in the network, just the input.</p>
+</div>
+<p>After login process is completed, we store some information that might be used about the current authorized user in <em>session</em> such as authentication type.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;logged_in&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># To check if login process is completed in other pages.</span>
+<span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
+<span class="n">session</span><span class="p">[</span><span class="s1">&#39;member_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># To easily access the member information in profile page and other pages.</span>
+<span class="n">session</span><span class="p">[</span><span class="s1">&#39;team_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="s2">&quot;team_id&quot;</span><span class="p">,</span><span class="o">...</span><span class="p">)</span> <span class="c1"># To easily access the team information in other pages.</span>
+<span class="n">session</span><span class="p">[</span><span class="s1">&#39;auth_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="s2">&quot;auth_type&quot;</span><span class="p">,</span><span class="o">...</span><span class="p">)</span> <span class="c1"># To easily check the authentication type to prevent unauthorized access.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If any additional information is needed in other pages, in order to save time and effort, it can be put into session here.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can check the authentication of the current session in python side simply by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth_type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
+        <span class="o">...</span>
+<span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth_type&quot;</span><span class="o">==</span><span class="s2">&quot;Team leader&quot;</span><span class="p">):</span>
+        <span class="o">...</span>
+<span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth_type&quot;</span><span class="o">==</span><span class="s2">&quot;Subteam leader&quot;</span><span class="p">):</span>
+        <span class="o">...</span>
+<span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth_type&quot;</span><span class="o">==</span><span class="s2">&quot;Member&quot;</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>Note that there are 4 different authentication types. Namely, <em>admin</em>,*team leader*, <em>subteam leader</em>, <em>member</em>. Team’s <em>Consultant</em> authority is soon to be added.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can check the authentication of the current session in HTML side simply by:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% if session[&#39;auth_type&#39;] == &#39;Team leader&#39; or session[&#39;auth_type&#39;] == &#39;Subteam leader&#39; %}
+        ...
+{% endif %}
+</pre></div>
+</div>
+</div>
+<p>This can be used to hide or show different aspects of the website to a certain authentication type. Such as showing admin panel to admin, member panel to member.</p>
+</div>
+<div class="section" id="logout-process">
+<span id="id3"></span><h2>Logout Process<a class="headerlink" href="#logout-process" title="Permalink to this headline">¶</a></h2>
+<p>The logout procedure is simply clearing out the information stored in session in <em>login.py</em> as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="s1">&#39;logged_in&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;member_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;logged_in&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;auth_type&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;team_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;You have been successfully logged out.&#39;</span><span class="p">,</span> <span class="s1">&#39;success&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Logging out is not completed.&#39;</span><span class="p">,</span><span class="s1">&#39;danger&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="file-and-image-upload-process">
+<span id="file-and-image-upload"></span><h2>File and Image Upload Process<a class="headerlink" href="#file-and-image-upload-process" title="Permalink to this headline">¶</a></h2>
+<p>The process is designed such that when a picture or a file is uploaded, the previous one is deleted from the server and the new one is saved in files and updated in the database.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="s2">&quot;picture&quot;</span><span class="p">,</span> <span class="s2">&quot;tutorial&quot;</span><span class="p">,</span> <span class="s2">&quot;id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Get the previous picture file name of a tutorial.</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+                <span class="n">extension</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># Get the extension of the image (png, jpeg etc)</span>
+                <span class="n">current_date</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()</span> <span class="c1"># Get the current time to generate a unique name for the new image</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">secure_filename</span><span class="p">(</span>
+                        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">current_date</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="n">extension</span><span class="p">))</span> <span class="c1"># 17_2019_12_20.jpg is a sample file name</span>
+                <span class="n">filePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imageFolderPath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="n">images</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">imageFolderPath</span><span class="p">)</span> <span class="c1"># Finding the previous image that concernes current tutorial</span>
+                <span class="n">digits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">id</span><span class="p">),</span> <span class="mi">10</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+                <span class="k">for</span> <span class="n">im</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">im</span><span class="p">[</span><span class="n">digits</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="n">im</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">digits</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)):</span>
+                                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imageFolderPath</span><span class="p">,</span> <span class="n">im</span><span class="p">))</span> <span class="c1"># Delete the previous image if exists</span>
+                <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>  <span class="c1"># Save the new image</span>
+        <span class="c1"># Provide an sql statement here to update the database.</span>
+</pre></div>
+</div>
+<p>The same is valid for a CV upload.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">cv</span> <span class="ow">and</span> <span class="s1">&#39;.pdf&#39;</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">filename</span><span class="p">):</span> <span class="c1"># To ensure pdf files.</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">secure_filename</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.pdf&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">person_id</span><span class="p">,</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]))</span>
+        <span class="n">cvPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cvFolder</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">cvs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">cvFolder</span><span class="p">)</span>
+        <span class="n">digits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">person_id</span><span class="p">),</span> <span class="mi">10</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cvs</span><span class="p">:</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">digits</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">digits</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">person_id</span><span class="p">)):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cvFolder</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+        <span class="n">cv</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">cvPath</span><span class="p">)</span>
+        <span class="c1"># Provide an sql statement here to update the database.</span>
+<span class="k">elif</span><span class="p">(</span><span class="n">cv</span><span class="p">):</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Upload a PDF file.&quot;</span><span class="p">,</span> <span class="s1">&#39;danger&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="error-pages">
+<span id="id4"></span><h2>Error Pages<a class="headerlink" href="#error-pages" title="Permalink to this headline">¶</a></h2>
+<p>We designed 2 error pages, <em>page not found</em> (404) and <em>internal server error</em> 500. The first occurs when the user goes to a non-existing page. The latter occurs if there is an error occured in the backend side such as database errors. These pages are designed in HTML and then assigned to their specific errors in <em>server.py</em> as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">not_found</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;error_404.html&quot;</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">server_error</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;error_500.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../user/index.html" class="btn btn-neutral float-left" title="User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ITUCSDB1858
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
