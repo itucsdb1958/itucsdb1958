@@ -12,7 +12,7 @@ Welcome to itucsdbNN's documentation!
 **ITUNOM TEAMS is a website for the student project teams in Istanbul Technical University. It is their public face where they can
 introduce themselves to public and potentially find sponsors while also performing their in team objectives on the platform.**
 
-.. figure:: pictures/home_page.png
+.. figure:: home_page.png
 	:scale: 40 %
 	:alt: Home Page
 	:align: center

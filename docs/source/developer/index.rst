@@ -6,11 +6,15 @@ Developer Guide
 * :ref:`Database setup`
 * :ref:`Running SQL`
 * :ref:`Adding Functionalities`
+* :ref:`Login process`
+* :ref:`Logout process`
+* :ref:`File and image upload`
+* :ref:`Error pages`
 
 .. _Database design:
 
 Database Design
----------------
+***********************
 
 DIAGRAMLAR BURAYA GELECEK
 
@@ -192,10 +196,14 @@ In order to run an SQL statement, since we cannot use ORM libraries, a boilerpla
 The functions above allows us to abstract the queries by one level. Instead of writing the database connection try/catch in each database call, it is only written once and called by a function which deals with the exceptions.
 
 .. note::
-	Query functions flashes the error if exists, and returns the error code. You can use this code to redirect the user appropriately.
+	Query functions flashes the error if exists, and returns the error code in the catching of the exception. You can change this part to redirect the user appropriately.
 
-.. note:: 
-	Additional input checks can be added here.
+.. note::
+	If there is going to be a string input (varchar), the formatted string should be inside single quotation marks
+
+	.. code-block:: python
+		
+		result = select(columns="id,name", table="table1", where="name='{}'".format(name_str))
 
 .. _Adding Functionalities:
 
@@ -229,8 +237,8 @@ In order to add a new screen, there are a couple of steps needed to be done.
 		def admin_new_functionality():
 			return render_template("new_page.html")
 
-3) Else, create a python file with an descriptive name such as admin_add which indicates that the file will contain functionalities of an admin adding something. 
-
+	Else, create a python file with an descriptive name such as admin_add which indicates that the file will 	contain functionalities of an admin adding something. 
+	
 	Make sure that you create your blueprint as follows:
 
 	.. code-block:: python
@@ -256,9 +264,144 @@ In order to add a new screen, there are a couple of steps needed to be done.
 		...
 		app.register_blueprint(new_method)
 
+.. _Login process:
 
-.. toctree::
+Login Process
+***********************
 
-   member1
-   member2
-   member3
+Our login procedure is secure since we do not store passwords without encryption. The encryption is built-in in postgresql by *pycrypto* extension. This extention allows us to use encryption algorithms such as BlowFish. The extension is created at the beginning of *db_init.py* as follows:
+
+.. code-block:: sql
+	
+	CREATE EXTENSION IF NOT EXISTS pgcrypto
+
+While registering a new user or login, the credentials are checked at *login.py* in both among users or admins as follows:
+
+.. code-block:: sql
+
+	SELECT * FROM USERS WHERE USERNAME = '%s' AND PASSWORD = crypt('%s',PASSWORD)
+ 
+It automatically encrypts the input password and checks it against the database entries. If a match occurs, we can login. 
+
+.. note::
+	We do not store unencrypted passwords and we do not transfer the actual password in the network, just the input.
+
+After login process is completed, we store some information that might be used about the current authorized user in *session* such as authentication type.
+
+.. code-block:: python
+	
+	session['logged_in'] = True # To check if login process is completed in other pages.
+	session['username'] = username 
+	session['member_id'] = result[2] # To easily access the member information in profile page and other pages.
+	session['team_id'] = select("team_id",...) # To easily access the team information in other pages.
+	session['auth_type'] = select("auth_type",...) # To easily check the authentication type to prevent unauthorized access.
+            
+.. note:: 
+	If any additional information is needed in other pages, in order to save time and effort, it can be put into session here.
+
+.. note::
+	You can check the authentication of the current session in python side simply by:
+
+	.. code-block:: python
+			
+		if session.get("auth_type") == "admin":
+			...
+		if session.get("auth_type"=="Team leader"):
+			...
+		if session.get("auth_type"=="Subteam leader"):
+			...
+		if session.get("auth_type"=="Member"):
+		
+	Note that there are 4 different authentication types. Namely, *admin*,*team leader*, *subteam leader*, *member*. Team's *Consultant* authority is soon to be added. 
+
+.. note::
+	You can check the authentication of the current session in HTML side simply by:
+	
+	.. code-block:: html
+		
+		{% if session['auth_type'] == 'Team leader' or session['auth_type'] == 'Subteam leader' %}
+			...
+		{% endif %}
+
+This can be used to hide or show different aspects of the website to a certain authentication type. Such as showing admin panel to admin, member panel to member.
+
+.. _Logout process:
+
+Logout Process
+***********************
+
+The logout procedure is simply clearing out the information stored in session in *login.py* as follows:
+
+.. code-block:: python
+
+	if 'logged_in' in session:
+		try:
+		    session.pop('username', None)
+		    session['member_id'] = 0
+		    session.pop('logged_in', None)
+		    session.pop('auth_type', None)
+		    session.pop('team_id', None)
+		    flash('You have been successfully logged out.', 'success')
+		except:
+		    flash('Logging out is not completed.','danger')
+
+.. _File and image upload:
+
+File and Image Upload Process
+*********************************
+
+The process is designed such that when a picture or a file is uploaded, the previous one is deleted from the server and the new one is saved in files and updated in the database.
+
+.. code-block:: python
+	
+	filename = select("picture", "tutorial", "id={}".format(id))[0] # Get the previous picture file name of a tutorial.
+		if(image):
+			extension = image.filename.split('.')[1] # Get the extension of the image (png, jpeg etc)
+			current_date = time.gmtime() # Get the current time to generate a unique name for the new image
+			filename = secure_filename(
+				"{}_{}.{}".format(id, current_date[0:6], extension)) # 17_2019_12_20.jpg is a sample file name
+			filePath = os.path.join(imageFolderPath, filename)
+			images = os.listdir(imageFolderPath) # Finding the previous image that concernes current tutorial
+			digits = int(math.log(int(id), 10))+1
+			for im in images:
+				if(im[digits] == '_' and im[0:digits] == str(id)):
+					os.remove(os.path.join(imageFolderPath, im)) # Delete the previous image if exists
+			image.save(filePath)  # Save the new image
+		# Provide an sql statement here to update the database.
+
+The same is valid for a CV upload.
+
+.. code-block:: python
+ 
+ 	if(cv and '.pdf' in cv.filename): # To ensure pdf files.
+		date = time.gmtime()
+		filename = secure_filename(
+			"{}_{}.pdf".format(person_id, date[0:6]))
+		cvPath = os.path.join(cvFolder, filename)
+		cvs = os.listdir(cvFolder)
+		digits = int(math.log(int(person_id), 10))+1
+		for c in cvs:
+			if(c[digits] == '_' and c[0:digits] == str(person_id)):
+				os.remove(os.path.join(cvFolder, c))
+		cv.save(cvPath)
+		# Provide an sql statement here to update the database.
+	elif(cv):
+		flash("Upload a PDF file.", 'danger')
+
+.. _Error pages:
+
+Error Pages
+*********************************
+
+We designed 2 error pages, *page not found* (404) and *internal server error* 500. The first occurs when the user goes to a non-existing page. The latter occurs if there is an error occured in the backend side such as database errors. These pages are designed in HTML and then assigned to their specific errors in *server.py* as follows:
+
+.. code-block:: python
+
+	@app.errorhandler(404)
+	def not_found(e):
+		return render_template("error_404.html")
+
+	@app.errorhandler(500)
+	def server_error(e):
+		return render_template("error_500.html")
+
